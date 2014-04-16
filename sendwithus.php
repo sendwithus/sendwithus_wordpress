@@ -141,4 +141,12 @@ function sendwithus_conf_main() {
 	<?
 }
 
+// Override of WordPress' wp_mail function.
+// Sendwithus' capabilities will be provided within here.
+if ( !function_exists('wp_mail') ) {
+	function wp_mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
+		echo("This is the wp_mail function.");
+	}
+}
+
 ?>
