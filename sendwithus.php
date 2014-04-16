@@ -12,6 +12,8 @@ Version: 0.1
 Author URI: http://www.sendwithus.com
 */
 
+require('sendwithus_php/lib/API.php');
+
 add_action('admin_menu', 'activate_sidebar_shortcut');
 // Creates link to plugin settings in WordPress control panel.
 function activate_sidebar_shortcut() {
@@ -33,6 +35,37 @@ function sendwithus_validate_settings($args) {
 	echo("Sanitized!<br/>");
 	return $args;
 }
+
+//Wrapper for the emails() function in the API
+function getTemplates(){
+    $api_key = get_option('api_key');
+    $api = new \sendwithus\API($api_key);
+    $response = $api->emails();
+
+    return $response;
+}
+
+// Generate a template selection drop down list;
+// value = template id
+// text = template name
+function generateTemplateSelection($name, $array)
+{
+    if (get_option('api_key')) {
+
+        $input_code = '<select name="' . $name . '">';
+
+        foreach ($array as $template) {
+            $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
+        }
+
+        $input_code .= '</select>';
+        return $input_code;
+    } else {
+        echo "<p>Please set your API Key</p>";
+    }
+}
+
+$GLOBALS['templates'] = getTemplates();
 
 // Used for displaying the main menu page.
 // Activated when user clicks on link in sidebar.
@@ -72,22 +105,18 @@ function sendwithus_conf_main() {
 					<td>Event Example #1</td>
 					<td>
 						<!-- This should pull from swu to list the available templates -->
-						<select style="width: 100%">
-							<option>Template Example 1</option>
-							<option>Template Example 2</option>
-							<option>Template Example 3</option>
-						</select>
+                        <?php
+                            echo  generateTemplateSelection("event1", $GLOBALS['templates']);
+                        ?>
 					</td>
 				</tr>
 				<tr>
 					<td>Event Example #2</td>
 					<td>
 						<!-- This should pull from swu to list the available templates -->
-						<select style="width: 100%">
-							<option>Template Example 1</option>
-							<option>Template Example 2</option>
-							<option>Template Example 3</option>
-						</select>
+                        <?php
+                            echo  generateTemplateSelection("event1", $GLOBALS['templates']);
+                        ?>
 					</td>
 				</tr>
 				<tfoot>
@@ -108,6 +137,7 @@ function sendwithus_conf_main() {
 			</div>
 		</form>
 	</div>
+    <pre>
 	<?
 }
 
