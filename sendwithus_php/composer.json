@@ -1,0 +1,7 @@
+{
+    "name": "sendwithus/api",
+    "description": "sendwithus.com PHP Client",
+    "autoload": {
+        "classmap": ["lib"]
+    }
+}
