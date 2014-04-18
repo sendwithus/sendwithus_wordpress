@@ -36,7 +36,7 @@ function sendwithus_validate_settings($args) {
 	return $args;
 }
 
-//Wrapper for the emails() function in the API
+// Wrapper for the emails() function in the API
 function getTemplates(){
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
@@ -45,13 +45,17 @@ function getTemplates(){
     return $response;
 }
 
+// Get the API key for use as a global variable.
+function getAPIKey() {
+	return get_option('api_key');
+}
+
 // Generate a template selection drop down list;
 // value = template id
 // text = template name
 function generateTemplateSelection($name, $array)
 {
     if (get_option('api_key')) {
-
         $input_code = '<select name="' . $name . '">';
 
         foreach ($array as $template) {
@@ -66,6 +70,7 @@ function generateTemplateSelection($name, $array)
 }
 
 $GLOBALS['templates'] = getTemplates();
+$GLOABLS['api_key'] = getAPIKey();
 
 // Used for displaying the main menu page.
 // Activated when user clicks on link in sidebar.
@@ -124,7 +129,7 @@ function sendwithus_conf_main() {
 						<td>sendwithus API Key</td>
 						<td>
 							<input type="text" name="api_key" placeholder="Your sendwithus API key." style="width: 100%" 
-								value="<?php echo get_option('api_key'); ?>"/>
+								value="<?php echo getAPIKey(); ?>"/>
 						</td>
 					</tr>
 				</tfoot>
