@@ -12,6 +12,8 @@ Version: 0.1
 Author URI: http://www.sendwithus.com
 */
 
+require('sendwithus_php/lib/API.php');
+
 add_action('admin_menu', 'activate_sidebar_shortcut');
 // Creates link to plugin settings in WordPress control panel.
 function activate_sidebar_shortcut() {
@@ -26,12 +28,84 @@ function activate_sidebar_shortcut() {
 function sendwithus_register_settings() {
 	// Save settings within wp_options table as 'sendwithus_settings'
 	register_setting('sendwithus_settings', 'api_key');
+    register_setting('sendwithus_settings', 'new_comment');
 }
 
 function sendwithus_validate_settings($args) {
 	// Used to validate settings passed to the plugin.
 	echo("Sanitized!<br/>");
 	return $args;
+}
+
+//Wrapper for the emails() function in the API
+function getTemplates(){
+    $api_key = get_option('api_key');
+    $api = new \sendwithus\API($api_key);
+    $response = $api->emails();
+
+    return $response;
+}
+
+// Generate a template selection drop down list;
+// value = template id
+// text = template name
+function generateTemplateSelection($name, $array)
+{
+    if (get_option('api_key')) {
+
+        $input_code = '<select name="' . $name . '">';
+        $current_template = get_option($name);
+
+        foreach ($array as $template) {
+            if($template->id == $current_template){
+                $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
+            }
+            else {
+                $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
+            }
+        }
+
+        $input_code .= '</select>';
+        return $input_code;
+    } else {
+        echo "<p>Please set your API Key</p>";
+    }
+}
+
+$GLOBALS['templates'] = getTemplates();
+
+// Replace comment alert with sendwithus
+if( ! function_exists('wp_notify_postauthor') ) {
+    function wp_notify_postauthor( $comment_id ){
+        $api_key = get_option('api_key');
+        $api = new \sendwithus\API($api_key);
+
+        $comment = get_comment($comment_id);
+
+        $response = $api->send(
+            get_option('new_comment'),
+            array('address' => get_option('admin_email')),
+            array(
+                'email_data' => array(
+                    'comment_ID' => $comment->comment_ID,
+                    'comment_post_ID' => $comment->comment_post_ID,
+                    'comment_author' => $comment->comment_author,
+                    'comment_author_email' => $comment->comment_author_,
+                    'comment_author_url' => $comment->comment_author_url,
+                    'comment_author_IP' => $comment->comment_author_IP,
+                    'comment_date' => $comment->comment_date,
+                    'comment_date_gmt' => $comment->comment_date_gmt,
+                    'comment_content' => $comment->comment_content,
+                    'comment_karma' => $comment->comment_karma,
+                    'comment_approved' => $comment->comment_approved,
+                    'comment_agent' => $comment->comment_agent,
+                    'comment_type' => $comment->comment_type,
+                    'comment_parent' => $comment->comment_parent,
+                    'user_id' => $comment->user_id,
+                )
+            )
+        );
+    }
 }
 
 // Used for displaying the main menu page.
@@ -69,25 +143,21 @@ function sendwithus_conf_main() {
 				</thead>
 				<!-- For now this is static, but we should find a way to poll wordpress and gather all the emails  -->
 				<tr>
-					<td>Event Example #1</td>
+					<td>New Comment</td>
 					<td>
 						<!-- This should pull from swu to list the available templates -->
-						<select style="width: 100%">
-							<option>Template Example 1</option>
-							<option>Template Example 2</option>
-							<option>Template Example 3</option>
-						</select>
+                        <?php
+                            echo  generateTemplateSelection("new_comment", $GLOBALS['templates']);
+                        ?>
 					</td>
 				</tr>
 				<tr>
 					<td>Event Example #2</td>
 					<td>
 						<!-- This should pull from swu to list the available templates -->
-						<select style="width: 100%">
-							<option>Template Example 1</option>
-							<option>Template Example 2</option>
-							<option>Template Example 3</option>
-						</select>
+                        <?php
+                            echo  generateTemplateSelection("event1", $GLOBALS['templates']);
+                        ?>
 					</td>
 				</tr>
 				<tfoot>
@@ -108,7 +178,30 @@ function sendwithus_conf_main() {
 			</div>
 		</form>
 	</div>
+    <pre>
 	<?
+}
+
+// Override of WordPress' wp_mail function.
+// Sendwithus' capabilities will be provided within here.
+if ( !function_exists('wp_mail') ) {
+	function wp_mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
+        $api_key = get_option('api_key');
+        $api = new \sendwithus\API($api_key);
+
+
+        $response = $api->send(
+            'tem_6QgMzYhXB22QFt5wgbikqi',
+            array('address' => $to),
+            array(
+                'email_data' => array(
+                    'first_name' => $subject,
+                    'comment_id' => 1,
+                    'comment_notification_text' => $message,
+                )
+            )
+        );
+	}
 }
 
 ?>
