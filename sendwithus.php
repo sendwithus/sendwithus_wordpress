@@ -28,7 +28,24 @@ function activate_sidebar_shortcut() {
 function sendwithus_register_settings() {
 	// Save settings within wp_options table as 'sendwithus_settings'
 	register_setting('sendwithus_settings', 'api_key');
+
     register_setting('sendwithus_settings', 'new_comment');
+    register_setting('sendwithus_settings', 'new_user');
+    register_setting('sendwithus_settings', 'password_change');
+    register_setting('sendwithus_settings', 'awaiting_approval');
+    
+    // Whether user is using multisite functionality or not.
+    register_setting('sendwithus_settings', 'multisite_enabled');
+
+    // Multisite specific settings.
+    register_setting('sendwithus_settings', 'ms_new_user');
+    register_setting('sendwithus_settings', 'ms_new_blog');
+    register_setting('sendwithus_settings', 'ms_new_user_network_admin');
+    register_setting('sendwithus_settings', 'ms_new_blog_network_admin');
+    register_setting('sendwithus_settings', 'ms_new_user_success');
+    register_setting('sendwithus_settings', 'ms_new_blog_success');
+    register_setting('sendwithus_settings', 'ms_welcome_user_notification');
+    register_setting('sendwithus_settings', 'ms_welcome_notification');
 }
 
 function sendwithus_validate_settings($args) {
@@ -114,26 +131,126 @@ function sendwithus_conf_main() {
 					<th>sendwithus Template</th>
 				</thead>
 				<!-- For now this is static, but we should find a way to poll wordpress and gather all the emails  -->
-				<tr>
-					<td>New Comment</td>
-					<td>
-						<!-- This should pull from swu to list the available templates -->
+                <tr>
+                    <td>New User Created</td>
+                    <td>
+                        <!-- Pull from swu to list the available templates -->
                         <?php
-
-                            echo  generateTemplateSelection("new_comment", $GLOBALS['templates']);
-
+                            echo  generateTemplateSelection('new_user', $GLOBALS['templates']);
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+					<td>New Comment Posted by User</td>
+					<td>
+						<!-- Pull from swu to list the available templates -->
+                        <?php
+                            echo  generateTemplateSelection('new_comment', $GLOBALS['templates']);
                         ?>
 					</td>
 				</tr>
-				<tr>
-					<td>Event Example #2</td>
-					<td>
-						<!-- This should pull from swu to list the available templates -->
+                <tr>
+                    <td>User Comment Awaiting Approval</td>
+                    <td>
+                        <!-- Pull from swu to list the available templates -->
                         <?php
-                            echo  generateTemplateSelection("event1", $GLOBALS['templates']);
+                            echo  generateTemplateSelection('awaiting_approval', $GLOBALS['templates']);
                         ?>
-					</td>
-				</tr>
+                    </td>
+                </tr>          
+                <tr>
+                    <td>Password Change Requested</td>
+                    <td>
+                        <!-- Pull from swu to list the available templates -->
+                        <?php
+                            echo  generateTemplateSelection('password_change', $GLOBALS['templates']);
+                        ?>
+                    </td>
+                </tr>
+                <tr class="multiside_option">
+                    <td>Enable Multisite Events</td>
+                    <td> 
+                        <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled" 
+                            <?php
+                                checked('multisite_enabled', get_option('multisite_enabled'))
+                            ?>
+                        />
+                    </td>
+                </tr>
+                <!-- Events that are displayed when multisite events are enabled -->
+                <tr>
+                <td colspan="2">
+                <table class="multisite wp-list-table widefat" id="multisite_table">
+                    <thead>
+                        <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
+                    </thead>
+                    <tr>
+                        <td>New User Notification</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_user', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New Blog Notification</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_blog', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New User Notification - Notify Network Admin</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_user_network_admin', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New Blog Notification - Notify Network Admin</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_blog_network_admin', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New User Success - Notify User</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_user_success', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New Blog Success - Notify User</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_blog_success', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New User Welcome - Notify User</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_welcome_user_notification', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New Blog Welcome - Notify User</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_welcome_notification', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+                </td>
+                </tr>
 				<tfoot>
 					<tr>
 						<td>sendwithus API Key</td>
@@ -151,8 +268,34 @@ function sendwithus_conf_main() {
 				<?php submit_button() ?>
 			</div>
 		</form>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            // Check to see if the multisite options should be listed or not.
+            var is_multisite_enabled = '<?php echo get_option("multisite_enabled") ?>';
+            
+            if (is_multisite_enabled === 'multisite_enabled') {
+                is_multisite_enabled = true;
+            } else {
+                is_multisite_enabled = false;
+            }
+
+            function toggle_multisite() {
+                if(is_multisite_enabled === true) {
+                    is_multisite_enabled = !is_multisite_enabled;
+                    $('#multisite_table').css('display', 'table');
+                } else {
+                    is_multisite_enabled = !is_multisite_enabled;
+                    $('#multisite_table').css('display', 'none');
+                }            
+            }
+
+            toggle_multisite();
+
+            $("#multisite_enabled").change(function() {
+                toggle_multisite();
+            })
+        </script>
 	</div>
-    <pre>
 	<?
 }
 
