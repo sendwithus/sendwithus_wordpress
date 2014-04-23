@@ -190,4 +190,28 @@ if( ! function_exists('wp_notify_postauthor') ) {
     }
 }
 
-?>
+
+    if (!function_exists('wp_new_user_notification')) {
+        function wp_new_user_notification()
+        {
+
+        }
+    }
+
+    if (!function_exists('wp_notify_moderator')) {
+        function wp_notify_moderator()
+        {
+
+        }
+    }
+
+    if (!function_exists('wp_password_change_notification')) {
+        function wp_password_change_notification()
+        {
+
+        }
+    }
+
+
+
+    ?>
