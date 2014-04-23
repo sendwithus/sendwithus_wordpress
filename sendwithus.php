@@ -398,7 +398,7 @@ if (!function_exists('wp_notify_moderator')) {
 
         foreach ( $emails as $email ) {
             $response = $api->send(
-                get_option('new_comment'),
+                get_option('awaiting_approval'),
                 array('address' => $email),
                 array(
                     'email_data' => array(
