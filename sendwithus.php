@@ -29,6 +29,9 @@ function sendwithus_register_settings() {
 	// Save settings within wp_options table as 'sendwithus_settings'
 	register_setting('sendwithus_settings', 'api_key');
     register_setting('sendwithus_settings', 'new_comment');
+    register_setting('sendwithus_settings', 'new_user');
+    register_setting('sendwithus_settings', 'password_change');
+    register_setting('sendwithus_settings', 'awaiting_approval');
 }
 
 function sendwithus_validate_settings($args) {
@@ -114,10 +117,19 @@ function sendwithus_conf_main() {
 					<th>sendwithus Template</th>
 				</thead>
 				<!-- For now this is static, but we should find a way to poll wordpress and gather all the emails  -->
-				<tr>
-					<td>New Comment</td>
+                <tr>
+                    <td>New User Created</td>
+                    <td>
+                        <!-- Pull from swu to list the available templates -->
+                        <?php
+                            echo  generateTemplateSelection("new_user", $GLOBALS['templates']);
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+					<td>New Comment Posted by User</td>
 					<td>
-						<!-- This should pull from swu to list the available templates -->
+						<!-- Pull from swu to list the available templates -->
                         <?php
 
                             echo  generateTemplateSelection("new_comment", $GLOBALS['templates']);
@@ -125,15 +137,24 @@ function sendwithus_conf_main() {
                         ?>
 					</td>
 				</tr>
-				<tr>
-					<td>Event Example #2</td>
-					<td>
-						<!-- This should pull from swu to list the available templates -->
+                <tr>
+                    <td>User Comment Awaiting Approval</td>
+                    <td>
+                        <!-- Pull from swu to list the available templates -->
                         <?php
-                            echo  generateTemplateSelection("event1", $GLOBALS['templates']);
+                            echo  generateTemplateSelection("new_user", $GLOBALS['templates']);
                         ?>
-					</td>
-				</tr>
+                    </td>
+                </tr>          
+                <tr>
+                    <td>Password Change Requested</td>
+                    <td>
+                        <!-- Pull from swu to list the available templates -->
+                        <?php
+                            echo  generateTemplateSelection("password_change", $GLOBALS['templates']);
+                        ?>
+                    </td>
+                </tr>
 				<tfoot>
 					<tr>
 						<td>sendwithus API Key</td>
