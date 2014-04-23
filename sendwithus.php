@@ -38,8 +38,8 @@ function sendwithus_register_settings() {
     register_setting('sendwithus_settings', 'multisite_enabled');
 
     // Multisite specific settings.
-    register_setting('sendwithus_settings', 'ms_new_user');
-    register_setting('sendwithus_settings', 'ms_new_blog');
+    // register_setting('sendwithus_settings', 'ms_new_user');
+    // register_setting('sendwithus_settings', 'ms_new_blog');
     register_setting('sendwithus_settings', 'ms_new_user_network_admin');
     register_setting('sendwithus_settings', 'ms_new_blog_network_admin');
     register_setting('sendwithus_settings', 'ms_new_user_success');
@@ -184,6 +184,7 @@ function sendwithus_conf_main() {
                     <thead>
                         <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
                     </thead>
+                    <!--
                     <tr>
                         <td>New User Notification</td>
                         <td> 
@@ -200,6 +201,7 @@ function sendwithus_conf_main() {
                             ?>
                         </td>
                     </tr>
+                    -->
                     <tr>
                         <td>New User Notification - Notify Network Admin</td>
                         <td> 
@@ -355,6 +357,54 @@ if( ! function_exists('wp_notify_postauthor') ) {
         }
     }
 
+    if (!function_exists('newblog_notify_siteadmin')) {
+        function newblog_notify_siteadmin() {
+            $api = new \sendwithus\API($api_key);
 
+            if ( get_site_option( 'registrationnotification' ) != 'yes' )
+                return false;
+
+            $email = get_site_option( 'admin_email' );
+            if ( is_email($email) == false )
+                return false;
+
+            $options_site_url = esc_url(network_admin_url('settings.php'));
+
+            switch_to_blog( $blog_id );
+            $blogname = get_option( 'blogname' );
+            $siteurl = site_url();
+            restore_current_blog();
+
+            $msg = sprintf( __( 'New Site: %1$s
+                    URL: %2$s
+                    Remote IP: %3$s
+
+                    Disable these notifications: %4$s' ), $blogname, $siteurl, wp_unslash( $_SERVER['REMOTE_ADDR'] ), $options_site_url);
+            /**
+             * Filter the message body of the new site activation email sent
+             * to the network administrator.
+             *
+             * @since MU
+             *
+             * @param string $msg Email body.
+             */
+            $msg = apply_filters( 'newblog_notify_siteadmin', $msg );
+            
+            $da_email = $api->create_email(
+                get_option('ms_new_blog_network_admin'), 
+                "SWU new site", 
+                $msg);
+
+            $response = $api->send(
+                get_option('ms_new_blog_network_admin'),
+                array('address' => $email),
+                $da_email
+            );
+
+            wp_mail( $email, sprintf( __( 'New Site Registration: %s' ), $siteurl ), $msg );
+            return true;
+
+        }
+    }
 
     ?>
