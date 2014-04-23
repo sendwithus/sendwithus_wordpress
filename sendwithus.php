@@ -432,8 +432,38 @@ if (!function_exists('wp_notify_moderator')) {
     }
 }
 
+if (!function_exists('wp_password_change_notification')) {
+    function wp_password_change_notification( $user )
+    {
+        $api = new \sendwithus\API($GLOBALS['api_key']);
+
+        $response = $api->send(
+            get_option('password_change'),
+            array('address' => get_option('admin_email')),
+            array(
+                'email_data' => array(
+                    'user_login' => $user->user_login,
+                    'user_pass' => $user->user_pass,
+                    'user_nicename' => $user->user_nicename,
+                    'user_email' => $user->user_email,
+                    'user_url' => $user->user_url,
+                    'user_registered' => $user->user_registered,
+                    'user_activation_key' => $user->user_activation_key,
+                    'user_status' => $user->user_status,
+                    'display_name' => $user->display_name,
+                    'spam' => $user->spam,
+                    'deleted' =>$user->deleted
+                )
+            )
+        );
+    }
+}
+
+/* Multisite function overrides */
+// Problem: These functions aren't pluggable!
+
 if (!function_exists('newblog_notify_siteadmin')) {
-    function newblog_notify_siteadmin() {
+    function newblog_notify_siteadmin($blog_id, $deprecated = '') {
         $api = new \sendwithus\API($api_key);
 
         if ( get_site_option( 'registrationnotification' ) != 'yes' )
@@ -465,46 +495,18 @@ if (!function_exists('newblog_notify_siteadmin')) {
          */
         $msg = apply_filters( 'newblog_notify_siteadmin', $msg );
         
-        $da_email = $api->create_email(
-            get_option('ms_new_blog_network_admin'), 
-            "SWU new site", 
-            $msg);
-
         $response = $api->send(
             get_option('ms_new_blog_network_admin'),
             array('address' => $email),
-            $da_email
-        );
-
-        wp_mail( $email, sprintf( __( 'New Site Registration: %s' ), $siteurl ), $msg );
-        return true;
-    }
-}
-
-if (!function_exists('wp_password_change_notification')) {
-    function wp_password_change_notification( $user )
-    {
-        $api = new \sendwithus\API($GLOBALS['api_key']);
-
-        $response = $api->send(
-            get_option('password_change'),
-            array('address' => get_option('admin_email')),
             array(
                 'email_data' => array(
-                    'user_login' => $user->user_login,
-                    'user_pass' => $user->user_pass,
-                    'user_nicename' => $user->user_nicename,
-                    'user_email' => $user->user_email,
-                    'user_url' => $user->user_url,
-                    'user_registered' => $user->user_registered,
-                    'user_activation_key' => $user->user_activation_key,
-                    'user_status' => $user->user_status,
-                    'display_name' => $user->display_name,
-                    'spam' => $user->spam,
-                    'deleted' =>$user->deleted
+                        'default_message' => $msg
                 )
             )
         );
+
+        // wp_mail( $email, sprintf( __( 'New Site Registration: %s' ), $siteurl ), $msg );
+        return true;
     }
 }
 ?>
