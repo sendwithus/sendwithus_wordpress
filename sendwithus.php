@@ -180,7 +180,6 @@ function sendwithus_conf_main() {
                 </tr>
                 <!-- Events that are displayed when multisite events are enabled -->
                 <tr>
-<<<<<<< HEAD
                 <td colspan="2">
                 <table class="multisite wp-list-table widefat" id="multisite_table">
                     <thead>
