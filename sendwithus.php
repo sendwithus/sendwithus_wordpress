@@ -170,7 +170,7 @@ function sendwithus_conf_main() {
                 <tr class="multiside_option">
                     <td>Enable Multisite Events</td>
                     <td> 
-                        <input type="checkbox" name="multisite_enabled" value="multisite_enabled" 
+                        <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled" 
                             <?php
                                 checked('multisite_enabled', get_option('multisite_enabled'))
                             ?>
@@ -180,9 +180,9 @@ function sendwithus_conf_main() {
                 <!-- Events that are displayed when multisite events are enabled -->
                 <tr>
                 <td colspan="2">
-                <table class="multisite wp-list-table widefat">
+                <table class="multisite wp-list-table widefat" id="multisite_table">
                     <thead>
-                        <th colspan="2" style="text-align: center;">Multisite Events</th>
+                        <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
                     </thead>
                     <tr>
                         <td>New User Notification</td>
@@ -268,8 +268,34 @@ function sendwithus_conf_main() {
 				<?php submit_button() ?>
 			</div>
 		</form>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            // Check to see if the multisite options should be listed or not.
+            var is_multisite_enabled = '<?php echo get_option("multisite_enabled") ?>';
+            
+            if (is_multisite_enabled === 'multisite_enabled') {
+                is_multisite_enabled = true;
+            } else {
+                is_multisite_enabled = false;
+            }
+
+            function toggle_multisite() {
+                if(is_multisite_enabled === true) {
+                    is_multisite_enabled = !is_multisite_enabled;
+                    $('#multisite_table').css('display', 'table');
+                } else {
+                    is_multisite_enabled = !is_multisite_enabled;
+                    $('#multisite_table').css('display', 'none');
+                }            
+            }
+
+            toggle_multisite();
+
+            $("#multisite_enabled").change(function() {
+                toggle_multisite();
+            })
+        </script>
 	</div>
-    <pre>
 	<?
 }
 
