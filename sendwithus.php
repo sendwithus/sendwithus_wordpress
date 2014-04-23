@@ -428,12 +428,31 @@ if (!function_exists('wp_notify_moderator')) {
 }
 
 if (!function_exists('wp_password_change_notification')) {
-    function wp_password_change_notification($user)
+    function wp_password_change_notification( $user )
     {
+        $api = new \sendwithus\API($GLOBALS['api_key']);
 
+        $response = $api->send(
+            get_option('password_change'),
+            array('address' => get_option('admin_email')),
+            array(
+                'email_data' => array(
+                    'user_login' => $user->user_login,
+                    'user_pass' => $user->user_pass,
+                    'user_nicename' => $user->user_nicename,
+                    'user_email' => $user->user_email,
+                    'user_url' => $user->user_url,
+                    'user_registered' => $user->user_registered,
+                    'user_activation_key' => $user->user_activation_key,
+                    'user_status' => $user->user_status,
+                    'display_name' => $user->display_name,
+                    'spam' => $user->spam,
+                    'deleted' =>$user->deleted
+                )
+            )
+        );
     }
 }
-
 
 
 ?>
