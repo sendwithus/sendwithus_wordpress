@@ -28,10 +28,24 @@ function activate_sidebar_shortcut() {
 function sendwithus_register_settings() {
 	// Save settings within wp_options table as 'sendwithus_settings'
 	register_setting('sendwithus_settings', 'api_key');
+
     register_setting('sendwithus_settings', 'new_comment');
     register_setting('sendwithus_settings', 'new_user');
     register_setting('sendwithus_settings', 'password_change');
     register_setting('sendwithus_settings', 'awaiting_approval');
+    
+    // Whether user is using multisite functionality or not.
+    register_setting('sendwithus_settings', 'multisite_enabled');
+
+    // Multisite specific settings.
+    register_setting('sendwithus_settings', 'ms_new_user');
+    register_setting('sendwithus_settings', 'ms_new_blog');
+    register_setting('sendwithus_settings', 'ms_new_user_network_admin');
+    register_setting('sendwithus_settings', 'ms_new_blog_network_admin');
+    register_setting('sendwithus_settings', 'ms_new_user_success');
+    register_setting('sendwithus_settings', 'ms_new_blog_success');
+    register_setting('sendwithus_settings', 'ms_welcome_user_notification');
+    register_setting('sendwithus_settings', 'ms_welcome_notification');
 }
 
 function sendwithus_validate_settings($args) {
@@ -122,7 +136,7 @@ function sendwithus_conf_main() {
                     <td>
                         <!-- Pull from swu to list the available templates -->
                         <?php
-                            echo  generateTemplateSelection("new_user", $GLOBALS['templates']);
+                            echo  generateTemplateSelection('new_user', $GLOBALS['templates']);
                         ?>
                     </td>
                 </tr>
@@ -131,9 +145,7 @@ function sendwithus_conf_main() {
 					<td>
 						<!-- Pull from swu to list the available templates -->
                         <?php
-
-                            echo  generateTemplateSelection("new_comment", $GLOBALS['templates']);
-
+                            echo  generateTemplateSelection('new_comment', $GLOBALS['templates']);
                         ?>
 					</td>
 				</tr>
@@ -142,7 +154,7 @@ function sendwithus_conf_main() {
                     <td>
                         <!-- Pull from swu to list the available templates -->
                         <?php
-                            echo  generateTemplateSelection("new_user", $GLOBALS['templates']);
+                            echo  generateTemplateSelection('awaiting_approval', $GLOBALS['templates']);
                         ?>
                     </td>
                 </tr>          
@@ -151,9 +163,93 @@ function sendwithus_conf_main() {
                     <td>
                         <!-- Pull from swu to list the available templates -->
                         <?php
-                            echo  generateTemplateSelection("password_change", $GLOBALS['templates']);
+                            echo  generateTemplateSelection('password_change', $GLOBALS['templates']);
                         ?>
                     </td>
+                </tr>
+                <tr class="multiside_option">
+                    <td>Enable Multisite Events</td>
+                    <td> 
+                        <input type="checkbox" name="multisite_enabled" value="multisite_enabled" 
+                            <?php
+                                checked('multisite_enabled', get_option('multisite_enabled'))
+                            ?>
+                        />
+                    </td>
+                </tr>
+                <!-- Events that are displayed when multisite events are enabled -->
+                <tr>
+                <td colspan="2">
+                <table class="multisite wp-list-table widefat">
+                    <thead>
+                        <th colspan="2" style="text-align: center;">Multisite Events</th>
+                    </thead>
+                    <tr>
+                        <td>New User Notification</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_user', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New Blog Notification</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_blog', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New User Notification - Notify Network Admin</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_user_network_admin', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New Blog Notification - Notify Network Admin</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_blog_network_admin', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New User Success - Notify User</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_user_success', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New Blog Success - Notify User</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_new_blog_success', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New User Welcome - Notify User</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_welcome_user_notification', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>New Blog Welcome - Notify User</td>
+                        <td> 
+                            <?php
+                                echo generateTemplateSelection('ms_welcome_notification', $GLOBALS['templates']);
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+                </td>
                 </tr>
 				<tfoot>
 					<tr>
