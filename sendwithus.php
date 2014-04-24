@@ -510,33 +510,45 @@ if (!function_exists('newblog_notify_siteadmin')) {
     }
 }
 
-// Adds a function to occur when the action lostpassword_post is called
-add_action("lostpassword_post", "reset_password_notification");
+// Adds a function to occur when the filter retrieve_password_message is called
+add_filter ("retrieve_password_message", "reset_password_notification", 10, 2 );
 
-//This is just copied and pasted from another function, doesnt actual send and info
-function reset_password_notification() {;
+function reset_password_notification($content, $key) {
 
+   //Grabs the information about the user attempting to reset their password
+    $input = filter_input( INPUT_POST, 'user_login', FILTER_SANITIZE_STRING );
+    if( is_email( $input ) )
+        {
+            $user = get_user_by( 'email', $user_login );
+        }
+    else
+        {
+            $user = get_user_by( 'login', sanitize_user( $input ) );
+        }
+
+    $user_info = get_userdata($user->ID);
+
+    //Creates a string to hold the end section of the password reset link
+    $message = 'wp-login.php?action=rp&key='. $key. '&login='.$user->user_login;
+    //Appends the password reset link to the url of the site we want the password to be reset on            
+    $url = network_site_url($message);
+    //Gets the blogname
+    $blogname = get_bloginfo('name');
+
+    //Create a new SWU email with the password reset information
     $api = new \sendwithus\API($GLOBALS['api_key']);
-
         $response = $api->send(
             get_option('password_change'),
             array('address' => get_option('admin_email')),
             array(
                 'email_data' => array(
                     'user_login' => $user->user_login,
-                    'user_pass' => $user->user_pass,
+                    'reset_url' => $url,
                     'user_nicename' => $user->user_nicename,
                     'user_email' => $user->user_email,
-                    'user_url' => $user->user_url,
-                    'user_registered' => $user->user_registered,
-                    'user_activation_key' => $user->user_activation_key,
-                    'user_status' => $user->user_status,
-                    'display_name' => $user->display_name,
-                    'spam' => $user->spam,
-                    'deleted' =>$user->deleted
+                    'blog_name' => $blogname
                 )
             )
         );
-
 }
 ?>
