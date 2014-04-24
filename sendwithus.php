@@ -14,6 +14,22 @@ Author URI: http://www.sendwithus.com
 
 require('sendwithus_php/lib/API.php');
 
+$GLOBALS['wp_notifications'] = array(
+    'new_user'          => 'New User Created',
+    'new_comment'       => 'New Comment Posted',
+    'awaiting_approval' => 'User Comment Awaiting Approval',
+    'password_change'   => 'Password Change Requested',
+);
+
+$GLOBALS['wp_ms_notifications'] = array(
+    'ms_new_user_network_admin'    => 'New User Notification - Notify Network Admin',
+    'ms_new_blog_network_admin'    => 'New Blog Notification - Notify Network Admin',
+    'ms_new_user_success'          => 'New User Success - Notify User',
+    'ms_new_blog_success'          => 'New Blog Success - Notify User',
+    'ms_welcome_user_notification' => 'New User Welcome - Notify User',
+    'ms_welcome_notification'      => 'New Blog Welcome - Notify User',
+);
+
 add_action('admin_menu', 'activate_sidebar_shortcut');
 // Creates link to plugin settings in WordPress control panel.
 function activate_sidebar_shortcut() {
@@ -29,23 +45,17 @@ function sendwithus_register_settings() {
 	// Save settings within wp_options table as 'sendwithus_settings'
 	register_setting('sendwithus_settings', 'api_key');
 
-    register_setting('sendwithus_settings', 'new_comment');
-    register_setting('sendwithus_settings', 'new_user');
-    register_setting('sendwithus_settings', 'password_change');
-    register_setting('sendwithus_settings', 'awaiting_approval');
-
     // Whether user is using multisite functionality or not.
     register_setting('sendwithus_settings', 'multisite_enabled');
 
-    // Multisite specific settings.
-    // register_setting('sendwithus_settings', 'ms_new_user');
-    // register_setting('sendwithus_settings', 'ms_new_blog');
-    register_setting('sendwithus_settings', 'ms_new_user_network_admin');
-    register_setting('sendwithus_settings', 'ms_new_blog_network_admin');
-    register_setting('sendwithus_settings', 'ms_new_user_success');
-    register_setting('sendwithus_settings', 'ms_new_blog_success');
-    register_setting('sendwithus_settings', 'ms_welcome_user_notification');
-    register_setting('sendwithus_settings', 'ms_welcome_notification');
+
+    foreach($GLOBALS['wp_notifications'] as $key => $value) {
+        register_setting('sendwithus_settings', $key);
+    }
+
+    foreach($GLOBALS['wp_ms_notifications'] as $key => $value) {
+        register_setting('sendwithus_settings', $key);
+    }
 }
 
 function sendwithus_validate_settings($args) {
@@ -94,6 +104,17 @@ function generateTemplateSelection($name, $array)
     }
 }
 
+// Generate table body from the wp_notification arrays
+function generateTemplateTable($notification_array)
+{
+    foreach ($notification_array as $name => $text) {
+        echo '<tr><td>' . $text;
+        echo '</td><td>';
+        echo generateTemplateSelection($name,$GLOBALS['templates']);
+        echo '</td></tr>';
+    }
+}
+
 $GLOBALS['templates'] = getTemplates();
 $GLOBALS['api_key'] = getAPIKey();
 
@@ -130,45 +151,9 @@ function sendwithus_conf_main() {
 					<th>WordPress Event</th>
 					<th>sendwithus Template</th>
 				</thead>
-                <tr>
-                    <td>
-                        New User Created
-
-                    </td>
-                    <td>
-                        <!-- Pull from swu to list the available templates -->
-                        <?php
-                            echo  generateTemplateSelection('new_user', $GLOBALS['templates']);
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-					<td>New Comment Posted by User</td>
-					<td>
-						<!-- Pull from swu to list the available templates -->
-                        <?php
-                            echo  generateTemplateSelection('new_comment', $GLOBALS['templates']);
-                        ?>
-					</td>
-				</tr>
-                <tr>
-                    <td>User Comment Awaiting Approval</td>
-                    <td>
-                        <!-- Pull from swu to list the available templates -->
-                        <?php
-                            echo  generateTemplateSelection('awaiting_approval', $GLOBALS['templates']);
-                        ?>
-                    </td>
-                </tr>          
-                <tr>
-                    <td>Password Change Requested</td>
-                    <td>
-                        <!-- Pull from swu to list the available templates -->
-                        <?php
-                            echo  generateTemplateSelection('password_change', $GLOBALS['templates']);
-                        ?>
-                    </td>
-                </tr>
+                <?php
+                    generateTemplateTable($GLOBALS['wp_notifications']);
+                ?>
                 <tr class="multiside_option">
                     <td>Enable Multisite Events</td>
                     <td> 
@@ -187,72 +172,9 @@ function sendwithus_conf_main() {
                     <thead>
                         <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
                     </thead>
-                    <!--
-                    <tr>
-                        <td>New User Notification</td>
-                        <td> 
-                            <?php
-                                echo generateTemplateSelection('ms_new_user', $GLOBALS['templates']);
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>New Blog Notification</td>
-                        <td> 
-                            <?php
-                                echo generateTemplateSelection('ms_new_blog', $GLOBALS['templates']);
-                            ?>
-                        </td>
-                    </tr>
-                    -->
-                    <tr>
-                        <td>New User Notification - Notify Network Admin</td>
-                        <td> 
-                            <?php
-                                echo generateTemplateSelection('ms_new_user_network_admin', $GLOBALS['templates']);
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>New Blog Notification - Notify Network Admin</td>
-                        <td> 
-                            <?php
-                                echo generateTemplateSelection('ms_new_blog_network_admin', $GLOBALS['templates']);
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>New User Success - Notify User</td>
-                        <td> 
-                            <?php
-                                echo generateTemplateSelection('ms_new_user_success', $GLOBALS['templates']);
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>New Blog Success - Notify User</td>
-                        <td> 
-                            <?php
-                                echo generateTemplateSelection('ms_new_blog_success', $GLOBALS['templates']);
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>New User Welcome - Notify User</td>
-                        <td> 
-                            <?php
-                                echo generateTemplateSelection('ms_welcome_user_notification', $GLOBALS['templates']);
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>New Blog Welcome - Notify User</td>
-                        <td> 
-                            <?php
-                                echo generateTemplateSelection('ms_welcome_notification', $GLOBALS['templates']);
-                            ?>
-                        </td>
-                    </tr>
+                    <?php
+                    generateTemplateTable($GLOBALS['wp_ms_notifications']);
+                    ?>
                 </table>
                 </td>
                 </tr>
@@ -566,7 +488,7 @@ if (!function_exists('wp_password_change_notification')) {
 
 if (!function_exists('newblog_notify_siteadmin')) {
     function newblog_notify_siteadmin($blog_id, $deprecated = '') {
-        $api = new \sendwithus\API($api_key);
+        $api = new \sendwithus\API($GLOBALS['api_key']);
 
         if ( get_site_option( 'registrationnotification' ) != 'yes' )
             return false;
