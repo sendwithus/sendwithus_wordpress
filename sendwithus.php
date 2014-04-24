@@ -509,4 +509,34 @@ if (!function_exists('newblog_notify_siteadmin')) {
         return true;
     }
 }
+
+// Adds a function to occur when the action lostpassword_post is called
+add_action("lostpassword_post", "reset_password_notification");
+
+//This is just copied and pasted from another function, doesnt actual send and info
+function reset_password_notification() {;
+
+    $api = new \sendwithus\API($GLOBALS['api_key']);
+
+        $response = $api->send(
+            get_option('password_change'),
+            array('address' => get_option('admin_email')),
+            array(
+                'email_data' => array(
+                    'user_login' => $user->user_login,
+                    'user_pass' => $user->user_pass,
+                    'user_nicename' => $user->user_nicename,
+                    'user_email' => $user->user_email,
+                    'user_url' => $user->user_url,
+                    'user_registered' => $user->user_registered,
+                    'user_activation_key' => $user->user_activation_key,
+                    'user_status' => $user->user_status,
+                    'display_name' => $user->display_name,
+                    'spam' => $user->spam,
+                    'deleted' =>$user->deleted
+                )
+            )
+        );
+
+}
 ?>
