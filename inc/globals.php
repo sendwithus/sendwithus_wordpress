@@ -1,4 +1,7 @@
 <?php
+/*
+ * GLOBAL VARIABLES
+ */
 
 $GLOBALS['wp_notifications'] = array(
     'new_user'                       => 'New User Created',

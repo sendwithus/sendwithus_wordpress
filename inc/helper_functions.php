@@ -1,4 +1,8 @@
 <?php
+/*
+ *  MISCELLANEOUS FUNCTIONS
+ */
+
 function sendwithus_validate_settings($args) {
     // Used to validate settings passed to the plugin.
     echo("Sanitized!<br/>");
