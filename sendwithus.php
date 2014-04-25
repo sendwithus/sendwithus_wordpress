@@ -550,41 +550,31 @@ function reset_password_notification($content, $key) {
 
 // Problem: These functions aren't pluggable!
 // Solution: Filters! 
+
+// Filter for when a new blog is created on a multisite site.
 add_filter ("newblog_notify_siteadmin", "swu_newblog_notify_siteadmin", 10, 1);
 
 function swu_newblog_notify_siteadmin($msg) {
     $api = new \sendwithus\API($GLOBALS['api_key']);
 
-    if ( get_site_option( 'registrationnotification' ) != 'yes' )
-        return false;
-
-    $email = get_site_option( 'admin_email' );
-    if ( is_email($email) == false )
-        return false;
-
-    $options_site_url = esc_url(network_admin_url('settings.php'));
-
     // Extract pertinent information from the message.
     // Maybe a better way to do this? Filter is called after message is assembled...
+    preg_match("/New\sSite:\s([^\\n]*)/", $msg, $site_name);
+    preg_match("/URL:\s([^\\n]*)/", $msg, $site_url);
+    preg_match("/Remote\sIP:\s([^\\n]*)/", $msg, $remote_ip);
+    preg_match("/Disable\sthese\snotifications:\s([^\\n]*)/", $msg, $disable_notifications);
 
-
-    /*
-    switch_to_blog( $blog_id );
-    $blogname = get_option( 'blogname' );
-    $siteurl = site_url();
-    restore_current_blog();
-    */
-
-    /*error_log(print_r($msg));
-    error_log(print($email); */
-
-    error_log(print(htmlDefaultMessage($msg)));
+    $email = get_site_option( 'admin_email' );
 
     $response = $api->send(
         get_option('ms_new_blog_network_admin'),
         array('address' => $email),
         array(
             'email_data' => array(
+                    'site_name' => $site_name[1],
+                    'site_url' => $site_url[1],
+                    'remote_ip' => $remote_ip[1],
+                    'disable_notifications' => $disable_notifications[1],
                     'default_message' => htmlDefaultMessage($msg)
             )
         )
