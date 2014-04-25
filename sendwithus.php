@@ -15,10 +15,11 @@ Author URI: http://www.sendwithus.com
 require('sendwithus_php/lib/API.php');
 
 $GLOBALS['wp_notifications'] = array(
-    'new_user'          => 'New User Created',
-    'new_comment'       => 'New Comment Posted',
-    'awaiting_approval' => 'User Comment Awaiting Approval',
-    'password_change'   => 'Password Change Requested',
+    'new_user'                       => 'New User Created',
+    'new_comment'                    => 'New Comment Posted',
+    'awaiting_approval'              => 'User Comment Awaiting Approval',
+    'password_change_notification'   => 'Password Change Requested (Notify Admin)',
+    'password_reset'                 => 'Password Reset Requested (Notify User)'
 );
 
 $GLOBALS['wp_ms_notifications'] = array(
@@ -113,6 +114,12 @@ function generateTemplateTable($notification_array)
         echo generateTemplateSelection($name,$GLOBALS['templates']);
         echo '</td></tr>';
     }
+}
+
+// Make 'default_message' HTML friendly.
+function htmlDefaultMessage($default_message) {
+    // Convert newline into line breaks.
+    return preg_replace('/\\n/', '<br>', $default_message);
 }
 
 $GLOBALS['templates'] = getTemplates();
@@ -227,6 +234,10 @@ function sendwithus_conf_main() {
 	<?
 }
 
+/* 
+ * FUNCTION OVERRIDE BASED OVERRIDES	
+ */
+
 // Replace new comment alert with sendwithus
 if (!function_exists('wp_notify_postauthor')) {
     function wp_notify_postauthor($comment_id)
@@ -306,7 +317,7 @@ if (!function_exists('wp_notify_postauthor')) {
                     'comment_parent' => $comment->comment_parent,
                     'user_id' => $comment->user_id,
                     'blogname' => get_option('blogname'),
-                    'default_message'=> $notify_message
+                    'default_message'=> htmlDefaultMessage($notify_message)
                 )
             )
         );
@@ -346,7 +357,7 @@ if (!function_exists('wp_new_user_notification')) {
                     'last_name' => $user->last_name,
                     'caps' => $user->caps,
                     'blogname' => get_option('blogname'),
-                    'default_message' => $message
+                    'default_message' => htmlDefaultMessage($message)
                 )
             )
         );
@@ -443,7 +454,7 @@ if (!function_exists('wp_notify_moderator')) {
                         'comment_parent' => $comment->comment_parent,
                         'user_id' => $comment->user_id,
                         'blogname' => get_option('blogname'),
-                        'default_message' => $notify_message
+                        'default_message' => htmlDefaultMessage($notify_message)
                     )
                 )
             );
@@ -461,7 +472,7 @@ if (!function_exists('wp_password_change_notification')) {
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
         $response = $api->send(
-            get_option('password_change'),
+            get_option('password_change_notification'),
             array('address' => get_option('admin_email')),
             array(
                 'email_data' => array(
@@ -476,61 +487,100 @@ if (!function_exists('wp_password_change_notification')) {
                     'display_name' => $user->display_name,
                     'spam' => $user->spam,
                     'deleted' =>$user->deleted,
-                    'default_message' => $message
+                    'default_message' => htmlDefaultMessage($message)
                 )
             )
         );
     }
 }
 
-/* Multisite function overrides */
+/* 
+ * FILTER BASED OVERRIDES	
+ */
+
+// Adds a function to occur when the filter retrieve_password_message is called
+add_filter ("retrieve_password_message", "reset_password_notification", 10, 2 );
+
+function reset_password_notification($content, $key) {
+   //Grabs the information about the user attempting to reset their password
+    $input = filter_input( INPUT_POST, 'user_login', FILTER_SANITIZE_STRING );
+
+    if( is_email( $input ) ) {
+	    $user = get_user_by( 'email', $input );
+    } else {
+        $user = get_user_by( 'login', sanitize_user( $input ) );
+    }
+
+    $user_info = get_userdata($user->ID);
+
+    //Creates a string to hold the end section of the password reset link
+    $message = 'wp-login.php?action=rp&key='. $key. '&login='.$user->user_login;
+    //Appends the password reset link to the url of the site we want the password to be reset on            
+    $url = network_site_url($message);
+    //Gets the blogname
+    $blogname = get_bloginfo('name');
+
+    // Modify the message content to include the URL
+    $content .= $url;
+
+    //Create a new SWU email with the password reset information
+   	$api = new \sendwithus\API($GLOBALS['api_key']);
+    $response = $api->send(
+        get_option('password_reset'),
+        array('address' => $user->user_email),
+        array(
+            'email_data' => array(
+                'user_login' => $user->user_login,
+                'reset_url' => $url,
+                'user_nicename' => $user->user_nicename,
+                'user_email' => $user->user_email,
+                'blog_name' => $blogname,
+                'default_message' => htmlDefaultMessage($content)
+            )
+        )
+    ); 
+
+    return false;
+}
+
+
+/* 
+ * MULTISITE BASED OVERRIDES	
+ */
+
 // Problem: These functions aren't pluggable!
+// Solution: Filters! 
 
-if (!function_exists('newblog_notify_siteadmin')) {
-    function newblog_notify_siteadmin($blog_id, $deprecated = '') {
-        $api = new \sendwithus\API($GLOBALS['api_key']);
+// Filter for when a new blog is created on a multisite site.
+add_filter ("newblog_notify_siteadmin", "swu_newblog_notify_siteadmin", 10, 1);
 
-        if ( get_site_option( 'registrationnotification' ) != 'yes' )
-            return false;
+function swu_newblog_notify_siteadmin($msg) {
+    $api = new \sendwithus\API($GLOBALS['api_key']);
 
-        $email = get_site_option( 'admin_email' );
-        if ( is_email($email) == false )
-            return false;
+    // Extract pertinent information from the message.
+    // Maybe a better way to do this? Filter is called after message is assembled...
+    preg_match("/New\sSite:\s([^\\n]*)/", $msg, $site_name);
+    preg_match("/URL:\s([^\\n]*)/", $msg, $site_url);
+    preg_match("/Remote\sIP:\s([^\\n]*)/", $msg, $remote_ip);
+    preg_match("/Disable\sthese\snotifications:\s([^\\n]*)/", $msg, $disable_notifications);
 
-        $options_site_url = esc_url(network_admin_url('settings.php'));
+    $email = get_site_option( 'admin_email' );
 
-        switch_to_blog( $blog_id );
-        $blogname = get_option( 'blogname' );
-        $siteurl = site_url();
-        restore_current_blog();
-
-        $msg = sprintf( __( 'New Site: %1$s
-                URL: %2$s
-                Remote IP: %3$s
-
-                Disable these notifications: %4$s' ), $blogname, $siteurl, wp_unslash( $_SERVER['REMOTE_ADDR'] ), $options_site_url);
-        /**
-         * Filter the message body of the new site activation email sent
-         * to the network administrator.
-         *
-         * @since MU
-         *
-         * @param string $msg Email body.
-         */
-        $msg = apply_filters( 'newblog_notify_siteadmin', $msg );
-        
-        $response = $api->send(
-            get_option('ms_new_blog_network_admin'),
-            array('address' => $email),
-            array(
-                'email_data' => array(
-                        'default_message' => $msg
-                )
+    $response = $api->send(
+        get_option('ms_new_blog_network_admin'),
+        array('address' => $email),
+        array(
+            'email_data' => array(
+                    'site_name' => $site_name[1],
+                    'site_url' => $site_url[1],
+                    'remote_ip' => $remote_ip[1],
+                    'disable_notifications' => $disable_notifications[1],
+                    'default_message' => htmlDefaultMessage($msg)
             )
-        );
+        )
+    );
 
-        // wp_mail( $email, sprintf( __( 'New Site Registration: %s' ), $siteurl ), $msg );
-        return true;
-    }
+    return false;
 }
+
 ?>
