@@ -116,6 +116,12 @@ function generateTemplateTable($notification_array)
     }
 }
 
+// Make 'default_message' HTML friendly.
+function htmlDefaultMessage($default_message) {
+    // Convert newline into line breaks.
+    return preg_replace('/\\n/', '<br>', $default_message);
+}
+
 $GLOBALS['templates'] = getTemplates();
 $GLOBALS['api_key'] = getAPIKey();
 
@@ -311,7 +317,7 @@ if (!function_exists('wp_notify_postauthor')) {
                     'comment_parent' => $comment->comment_parent,
                     'user_id' => $comment->user_id,
                     'blogname' => get_option('blogname'),
-                    'default_message'=> $notify_message
+                    'default_message'=> htmlDefaultMessage($notify_message)
                 )
             )
         );
@@ -351,7 +357,7 @@ if (!function_exists('wp_new_user_notification')) {
                     'last_name' => $user->last_name,
                     'caps' => $user->caps,
                     'blogname' => get_option('blogname'),
-                    'default_message' => $message
+                    'default_message' => htmlDefaultMessage($message)
                 )
             )
         );
@@ -448,7 +454,7 @@ if (!function_exists('wp_notify_moderator')) {
                         'comment_parent' => $comment->comment_parent,
                         'user_id' => $comment->user_id,
                         'blogname' => get_option('blogname'),
-                        'default_message' => $notify_message
+                        'default_message' => htmlDefaultMessage($notify_message)
                     )
                 )
             );
@@ -481,7 +487,7 @@ if (!function_exists('wp_password_change_notification')) {
                     'display_name' => $user->display_name,
                     'spam' => $user->spam,
                     'deleted' =>$user->deleted,
-                    'default_message' => $message
+                    'default_message' => htmlDefaultMessage($message)
                 )
             )
         );
@@ -529,10 +535,12 @@ function reset_password_notification($content, $key) {
                 'user_nicename' => $user->user_nicename,
                 'user_email' => $user->user_email,
                 'blog_name' => $blogname,
-                'default_message' => $content
+                'default_message' => htmlDefaultMessage($content)
             )
         )
     ); 
+
+    return false;
 }
 
 
@@ -541,53 +549,48 @@ function reset_password_notification($content, $key) {
  */
 
 // Problem: These functions aren't pluggable!
+// Solution: Filters! 
+add_filter ("newblog_notify_siteadmin", "swu_newblog_notify_siteadmin", 10, 1);
 
-if (!function_exists('newblog_notify_siteadmin')) {
-    function newblog_notify_siteadmin($blog_id, $deprecated = '') {
-        $api = new \sendwithus\API($GLOBALS['api_key']);
+function swu_newblog_notify_siteadmin($msg) {
+    $api = new \sendwithus\API($GLOBALS['api_key']);
 
-        if ( get_site_option( 'registrationnotification' ) != 'yes' )
-            return false;
+    if ( get_site_option( 'registrationnotification' ) != 'yes' )
+        return false;
 
-        $email = get_site_option( 'admin_email' );
-        if ( is_email($email) == false )
-            return false;
+    $email = get_site_option( 'admin_email' );
+    if ( is_email($email) == false )
+        return false;
 
-        $options_site_url = esc_url(network_admin_url('settings.php'));
+    $options_site_url = esc_url(network_admin_url('settings.php'));
 
-        switch_to_blog( $blog_id );
-        $blogname = get_option( 'blogname' );
-        $siteurl = site_url();
-        restore_current_blog();
+    // Extract pertinent information from the message.
+    // Maybe a better way to do this? Filter is called after message is assembled...
 
-        $msg = sprintf( __( 'New Site: %1$s
-                URL: %2$s
-                Remote IP: %3$s
 
-                Disable these notifications: %4$s' ), $blogname, $siteurl, wp_unslash( $_SERVER['REMOTE_ADDR'] ), $options_site_url);
-        /**
-         * Filter the message body of the new site activation email sent
-         * to the network administrator.
-         *
-         * @since MU
-         *
-         * @param string $msg Email body.
-         */
-        $msg = apply_filters( 'newblog_notify_siteadmin', $msg );
-        
-        $response = $api->send(
-            get_option('ms_new_blog_network_admin'),
-            array('address' => $email),
-            array(
-                'email_data' => array(
-                        'default_message' => $msg
-                )
+    /*
+    switch_to_blog( $blog_id );
+    $blogname = get_option( 'blogname' );
+    $siteurl = site_url();
+    restore_current_blog();
+    */
+
+    /*error_log(print_r($msg));
+    error_log(print($email); */
+
+    error_log(print(htmlDefaultMessage($msg)));
+
+    $response = $api->send(
+        get_option('ms_new_blog_network_admin'),
+        array('address' => $email),
+        array(
+            'email_data' => array(
+                    'default_message' => htmlDefaultMessage($msg)
             )
-        );
+        )
+    );
 
-        // wp_mail( $email, sprintf( __( 'New Site Registration: %s' ), $siteurl ), $msg );
-        return true;
-    }
+    return false;
 }
 
 ?>
