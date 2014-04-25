@@ -514,21 +514,25 @@ function reset_password_notification($content, $key) {
     //Gets the blogname
     $blogname = get_bloginfo('name');
 
+    // Modify the message content to include the URL
+    $content .= $url;
+
     //Create a new SWU email with the password reset information
    	$api = new \sendwithus\API($GLOBALS['api_key']);
-        $response = $api->send(
-            get_option('password_reset'),
-            array('address' => $user->user_email),
-            array(
-                'email_data' => array(
-                    'user_login' => $user->user_login,
-                    'reset_url' => $url,
-                    'user_nicename' => $user->user_nicename,
-                    'user_email' => $user->user_email,
-                    'blog_name' => $blogname
-                )
+    $response = $api->send(
+        get_option('password_reset'),
+        array('address' => $user->user_email),
+        array(
+            'email_data' => array(
+                'user_login' => $user->user_login,
+                'reset_url' => $url,
+                'user_nicename' => $user->user_nicename,
+                'user_email' => $user->user_email,
+                'blog_name' => $blogname,
+                'default_message' => $content
             )
-        ); 
+        )
+    ); 
 }
 
 
