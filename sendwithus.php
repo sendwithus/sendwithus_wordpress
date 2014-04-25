@@ -245,7 +245,6 @@ if (!function_exists('wp_notify_postauthor')) {
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
         $comment = get_comment($comment_id);
-
         $post    = get_post( $comment->comment_post_ID );
         $author  = get_userdata( $post->post_author );
 
@@ -298,7 +297,7 @@ if (!function_exists('wp_notify_postauthor')) {
 
         $response = $api->send(
             get_option('new_comment'),
-            array('address' => $author),
+            array('address' => $author->user_email),
             array(
                 'email_data' => array(
                     'comment_ID' => $comment->comment_ID,
@@ -374,6 +373,7 @@ if (!function_exists('wp_notify_moderator')) {
         $comment = get_comment($comment_id);
         $post = get_post($comment->comment_post_ID);
         $user = get_userdata( $post->post_author );
+
         // Send to the administration and to the post author if the author can modify the comment.
         $emails = array( get_option( 'admin_email' ) );
         if ( user_can( $user->ID, 'edit_comment', $comment_id ) && ! empty( $user->user_email ) ) {
