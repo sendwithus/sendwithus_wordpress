@@ -65,3 +65,5 @@ function htmlDefaultMessage($default_message) {
     // Convert newline into line breaks.
     return preg_replace('/\\n/', '<br>', $default_message);
 }
+
+?>

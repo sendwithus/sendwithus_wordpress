@@ -38,3 +38,4 @@ function swu_newblog_notify_siteadmin($msg) {
     return false;
 }
 
+?>

@@ -19,3 +19,5 @@ $GLOBALS['wp_ms_notifications'] = array(
     'ms_welcome_user_notification' => 'New User Welcome - Notify User',
     'ms_welcome_notification'      => 'New Blog Welcome - Notify User',
 );
+
+?>

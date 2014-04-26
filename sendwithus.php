@@ -17,7 +17,6 @@ require('inc/globals.php');
 require('inc/helper_functions.php');
 require('inc/single_site_overrides.php');
 require('inc/multisite_overrides.php');
-require('inc/filter_overrides.php');
 
 add_action('admin_menu', 'activate_sidebar_shortcut');
 // Creates link to plugin settings in WordPress control panel.
