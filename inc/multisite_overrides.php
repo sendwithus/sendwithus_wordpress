@@ -38,4 +38,32 @@ function swu_newblog_notify_siteadmin($msg) {
     return false;
 }
 
+// Filter for when a new user has been activated - notify the network admin.
+add_filter ("newuser_notify_siteadmin", "swu_newuser_notify_siteadmin", 10, 2);
+
+function swu_newuser_notify_siteadmin($msg, $user) {
+    $api = new \sendwithus\API($GLOBALS['api_key']);    
+
+    $email = get_site_option( 'admin_email' );
+    $options_site_url = esc_url(network_admin_url('settings.php'));
+    $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
+
+    $msg .= "Test add";
+
+    $response = $api->send(
+        get_option(''),
+        array('address' => $email),
+        array(
+            'email_data' => array(
+                'user' => $user->user_login,
+                'site_url' => $options_site_url,
+                'remote_ip' => $remote_ip,
+                'default_message' => htmlDefaultMessage($msg)
+            )
+        )
+    );
+
+    return false;
+}
+
 ?>

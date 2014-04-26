@@ -104,10 +104,9 @@ if (!function_exists('wp_new_user_notification')) {
 
         // Below is used to create 'default_message'
         $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
-        $message  = sprintf(__('New user registration on your site %s:'), $blogname) . "\r\n\r\n";
-        $message .= sprintf(__('Username: %s'), $user->user_login) . "\r\n\r\n";
+        $message  = sprintf(__('New user registration on your site %s:'), $blogname) . "\r\n";
+        $message .= sprintf(__('Username: %s'), $user->user_login) . "\r\n";
         $message .= sprintf(__('E-mail: %s'), $user->user_email) . "\r\n";
-        $message  = sprintf(__('Username: %s'), $user->user_login) . "\r\n";
         $message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n";
         $message .= wp_login_url() . "\r\n";
 
