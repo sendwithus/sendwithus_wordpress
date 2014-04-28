@@ -139,21 +139,20 @@ function sendwithus_conf_main() {
             }
 
             function toggle_multisite() {
-                if(is_multisite_enabled === true) {
+                if (is_multisite_enabled === true) {
                     is_multisite_enabled = !is_multisite_enabled;
                     $('#multisite_table').css('display', 'table');
                 } else {
                     is_multisite_enabled = !is_multisite_enabled;
                     $('#multisite_table').css('display', 'none');
-
-                }            
+                }
             }
 
             toggle_multisite();
 
-            $("#multisite_enabled").change(function() {
+            $('#multisite_enabled').change(function() {
                 toggle_multisite();
-            })
+            });
         </script>
 	</div>
 	<?
