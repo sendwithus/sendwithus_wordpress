@@ -51,7 +51,7 @@ function swu_newuser_notify_siteadmin($msg, $user) {
     $msg .= "Test add";
 
     $response = $api->send(
-        get_option(''),
+        get_option('ms_new_user_network_admin'),
         array('address' => $email),
         array(
             'email_data' => array(
