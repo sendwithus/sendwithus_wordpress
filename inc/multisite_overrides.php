@@ -66,4 +66,32 @@ function swu_newuser_notify_siteadmin($msg, $user) {
     return false;
 }
 
+add_filter( 'wpmu_signup_user_notification', 'swu_wpmu_signup_user_notification', 10, 4 );
+
+function swu_wpmu_signup_user_notification($user, $user_email, $key, $meta = '') {
+    $api = new \sendwithus\API($GLOBALS['api_key']);
+    $blog_name = get_bloginfo('name');
+    $blog_url = network_site_url();
+
+    $message = '/wp-activate.php?key='. $key;  
+    $url = network_site_url($message);
+
+    $response = $api->send(
+        get_option(''),
+        array('address' => $user_email),
+        array(
+            'email_data' => array(
+                    'user_login' => $user,
+                    'user_email' => $user_email,
+                    'registered' => current_time('mysql', true),
+                    'activation_key' => $url,
+                    'blog_name' => $blog_name,
+                    'blog_url' => $blog_url,
+                    'meta' => $meta
+            )
+        )
+    );
+
+    return false;
+}
 ?>
