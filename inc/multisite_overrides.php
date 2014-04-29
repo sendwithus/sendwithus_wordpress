@@ -77,7 +77,7 @@ function swu_wpmu_signup_user_notification($user, $user_email, $key, $meta = '')
     $url = network_site_url($message);
 
     $response = $api->send(
-        get_option(''),
+        get_option('ms_welcome_user_notification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
