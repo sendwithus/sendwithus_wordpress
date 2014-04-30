@@ -172,7 +172,7 @@ function swu_newuser_notify_siteadmin($msg, $user) {
 // Filter for when a new signup has been successful. Used when site registration is enabled.
 add_filter("wpmu_signup_blog_notification_email", "swu_wpmu_signup_blog_notification", 10, 8);
 
-function swu_wpmu_signup_blog_nofitication($content, $domain, $path, $title, $user, $user_email, $key, $meta) {
+function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $user, $user_email, $key, $meta) {
     $api = new \sendwithus\API($GLOBALS['api_key']); 
 
     // Generate the activation link.
@@ -196,7 +196,13 @@ function swu_wpmu_signup_blog_nofitication($content, $domain, $path, $title, $us
         array('address' => $user_email),
         array(
             'email_data' => array(
-                'default_message' => htmlDefaultMessage($default_message)
+                'default_message' => htmlDefaultMessage($default_message),
+                'domain' => $domain,
+                'path' => $path,
+                'user' => $user,
+                'user_mail' => $user_email,
+                'key' => $key,
+                'content' => $content
                 )
             )
         );
