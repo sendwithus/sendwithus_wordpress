@@ -18,6 +18,13 @@ require('inc/helper_functions.php');
 require('inc/single_site_overrides.php');
 require('inc/multisite_overrides.php');
 
+// Add stylesheet
+add_action('admin_enqueue_scripts','register_style_sheet');
+function register_style_sheet(){
+    wp_register_style( 'sendwithus_style', plugins_url('/css/sendwithus_style.css', __FILE__));
+    wp_enqueue_style('sendwithus_style');
+}
+
 add_action('admin_menu', 'activate_sidebar_shortcut');
 // Creates link to plugin settings in WordPress control panel.
 function activate_sidebar_shortcut() {
@@ -45,7 +52,6 @@ function sendwithus_register_settings() {
         register_setting('sendwithus_settings', $key);
     }
 }
-
 
 $GLOBALS['templates'] = getTemplates();
 $GLOBALS['api_key'] = getAPIKey();
