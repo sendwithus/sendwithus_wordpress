@@ -47,7 +47,7 @@ function sendwithus_register_settings() {
     }
 }
 
-// Add stylesheet
+// Add stylesheet\
 function add_style_sheet(){
     wp_register_style( 'prefix-style', plugins_url('css/style.css', __FILE__) );
     wp_enqueue_style( 'prefix-style' );
