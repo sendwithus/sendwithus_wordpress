@@ -54,6 +54,13 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ){
     if ( empty( $current_site->site_name ) )
         $current_site->site_name = 'WordPress';
 
+    $default_message = get_site_option( 'welcome_user_email' );
+    $default_message = apply_filters( 'update_welcome_user_email', $default_message, $user_id, $password, $meta );
+    $default_message = str_replace( 'SITE_NAME', $current_site->site_name, $default_message );
+    $default_message = str_replace( 'USERNAME', $user->user_login, $default_message );
+    $default_message = str_replace( 'PASSWORD', $password, $default_message );
+    $default_message = str_replace( 'LOGINLINK', wp_login_url(), $default_message );
+
     $response = $api->send(
         get_option('ms_welcome_user_notification'),
         array('address' => $user->user_email),
@@ -65,6 +72,7 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ){
                 'password' => $password,
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
+                'default_message' => $default_message
             )
         )
     );
@@ -87,6 +95,32 @@ function swu_wpmu_welcome_notification($blog_id, $user_id, $password, $title, $m
     if ( empty( $current_site->site_name ) )
         $current_site->site_name = 'WordPress';
 
+    $default_message = get_site_option( 'welcome_email' );
+    if ( $default_message == false )
+        $default_message = __( 'Dear User,
+
+Your new SITE_NAME site has been successfully set up at:
+BLOG_URL
+
+You can log in to the administrator account with the following information:
+Username: USERNAME
+Password: PASSWORD
+Log in here: BLOG_URLwp-login.php
+
+We hope you enjoy your new site. Thanks!
+
+--The Team @ SITE_NAME' );
+
+    $url = get_blogaddress_by_id($blog_id);
+    $user = get_userdata( $user_id );
+
+    $default_message = str_replace( 'SITE_NAME', $current_site->site_name, $default_message );
+    $default_message = str_replace( 'BLOG_TITLE', $title, $default_message );
+    $default_message = str_replace( 'BLOG_URL', $url, $default_message );
+    $default_message = str_replace( 'USERNAME', $user->user_login, $default_message );
+    $default_message = str_replace( 'PASSWORD', $password, $default_message );
+
+
     $response = $api->send(
         get_option('ms_welcome_notification'),
         array('address' => $user->user_email),
@@ -99,6 +133,7 @@ function swu_wpmu_welcome_notification($blog_id, $user_id, $password, $title, $m
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
                 'site_url' => $url,
+                'default_message' => htmlDefaultMessage($default_message),
             )
         )
     );
