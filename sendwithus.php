@@ -18,6 +18,13 @@ require('inc/helper_functions.php');
 require('inc/single_site_overrides.php');
 require('inc/multisite_overrides.php');
 
+// Add stylesheet
+add_action('admin_enqueue_scripts','register_style_sheet');
+function register_style_sheet(){
+    wp_register_style( 'sendwithus_style', plugins_url('/css/sendwithus_style.css', __FILE__));
+    wp_enqueue_style('sendwithus_style');
+}
+
 add_action('admin_menu', 'activate_sidebar_shortcut');
 // Creates link to plugin settings in WordPress control panel.
 function activate_sidebar_shortcut() {
@@ -45,13 +52,6 @@ function sendwithus_register_settings() {
         register_setting('sendwithus_settings', $key);
     }
 }
-
-// Add stylesheet\
-function add_style_sheet(){
-    wp_register_style( 'prefix-style', plugins_url('css/style.css', __FILE__) );
-    wp_enqueue_style( 'prefix-style' );
-}
-add_action('wp_enqueue_scripts','add_style_sheet');
 
 $GLOBALS['templates'] = getTemplates();
 $GLOBALS['api_key'] = getAPIKey();
@@ -128,7 +128,7 @@ function sendwithus_conf_main() {
 			</table>
 			<div style="width: 100%; margin-left: auto; margin-right: auto; display: block; padding: 0px 0px 10px;">
 				<!--
-				<input type="submit" name="key" id="api_key_settings" class="button button-primary save-button" value="Save Changes" style="margin: 10px 0px; width: 100%"/>
+				<input type="submit" name="key" id="api_key_settings" class="button button-primary" value="Save Changes" style="margin: 10px 0px; width: 100%"/>
 				-->
 				<?php submit_button() ?>
 			</div>
