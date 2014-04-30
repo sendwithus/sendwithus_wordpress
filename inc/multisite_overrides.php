@@ -212,21 +212,25 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
 }
 
 // Filter for when a new user has signed up for a multiuser site.
-add_filter( 'wpmu_signup_user_notification', 'swu_wpmu_signup_user_notification', 10, 4 );
+add_filter( 'wpmu_signup_user_notification_email', 'swu_wpmu_signup_user_notification', 10, 5 );
 
-function swu_wpmu_signup_user_notification($user, $user_email, $key, $meta = '') {
+function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $meta = '') {
     $api = new \sendwithus\API($GLOBALS['api_key']);
+
     $blog_name = get_bloginfo('name');
     $blog_url = network_site_url();
 
     $message = '/wp-activate.php?key='. $key;  
     $url = network_site_url($message);
 
+    $content = str_replace("%s",$url,$content);
+    
     $response = $api->send(
         get_option('ms_welcome_user_notification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
+                    'default_message' => $content,
                     'user_login' => $user,
                     'user_email' => $user_email,
                     'registered' => current_time('mysql', true),
