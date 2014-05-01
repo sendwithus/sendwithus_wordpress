@@ -10,7 +10,7 @@ function sendwithus_validate_settings($args) {
 }
 
 // Wrapper for the emails() function in the API
-function getTemplates(){
+function getTemplates() {
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
@@ -26,8 +26,7 @@ function getAPIKey() {
 // Generate a template selection drop down list;
 // value = template id
 // text = template name
-function generateTemplateSelection($name, $array)
-{
+function generateTemplateSelection($name, $array) {
     $input_code = '<select name="' . $name . '">';
     $current_template = get_option($name);
 
@@ -45,15 +44,24 @@ function generateTemplateSelection($name, $array)
 }
 
 // Generate table body from the wp_notification arrays
-function generateTemplateTable($notification_array)
-{
-    foreach ($notification_array as $name => $text) {
-        echo '<tr><td><strong>' . $text['event'] .'</strong>';
-        echo '<div class="' . $name . '-description">' . $text['description'] . '</div>';
-        echo '</td><td>';
-        echo generateTemplateSelection($name,$GLOBALS['templates']);
+function generateTemplateTable($notification_array) {
+    foreach ($notification_array as $current => $text) {
+        echo '<tr><td style="width: 49%;"><strong>' . $text['event'] .'</strong>';
+            echo '<div class="' . $current . '-description">' . $text['description'] . '</div>';
+            echo generateParameterListing($current, $text);
+        echo '</td><td style="text-align: right;">';
+        echo generateTemplateSelection($current, $GLOBALS['templates']);
         echo '</td></tr>';
     }
+}
+
+// Generate code to display/hide parameters sent with events.
+function generateParameterListing($name, $parameterData) {
+    $parameterListing = '
+        <div class="parameters" style="display: none;">' . $parameterData['parameters'] . 
+        '</div>';
+
+    return $parameterListing;
 }
 
 // Make 'default_message' HTML friendly.
