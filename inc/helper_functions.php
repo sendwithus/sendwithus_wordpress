@@ -28,32 +28,28 @@ function getAPIKey() {
 // text = template name
 function generateTemplateSelection($name, $array)
 {
-    if (get_option('api_key')) {
-        $input_code = '<select name="' . $name . '">';
-        $current_template = get_option($name);
+    $input_code = '<select name="' . $name . '">';
+    $current_template = get_option($name);
 
-        foreach ($array as $template) {
-            if($template->id == $current_template){
-                $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
-            }
-            else {
-                $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
-            }
+    foreach ($array as $template) {
+        if($template->id == $current_template){
+            $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
         }
-
-        $input_code .= '</select>';
-        return $input_code;
-
-    } else {
-        echo "<p>Please set your API Key</p>";
+        else {
+            $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
+        }
     }
+
+    $input_code .= '</select>';
+    return $input_code;
 }
 
 // Generate table body from the wp_notification arrays
 function generateTemplateTable($notification_array)
 {
     foreach ($notification_array as $name => $text) {
-        echo '<tr><td>' . $text;
+        echo '<tr><td><strong>' . $text['event'] .'</strong>';
+        echo '<div class="' . $name . '-description">' . $text['description'] . '</div>';
         echo '</td><td>';
         echo generateTemplateSelection($name,$GLOBALS['templates']);
         echo '</td></tr>';

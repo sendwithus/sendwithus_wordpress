@@ -58,8 +58,7 @@ $GLOBALS['api_key'] = getAPIKey();
 
 // Establish whether an API key has been entered and that it is valid.
 $GLOBALS['valid_key'] = true;
-if($GLOBALS['api_key'] == '' || 
-   $GLOBALS['templates']->status == 'error') {
+if($GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error') {
     $GLOBALS['valid_key'] = false;
 }
 
