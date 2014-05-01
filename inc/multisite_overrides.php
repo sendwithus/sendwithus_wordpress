@@ -151,8 +151,6 @@ function swu_newuser_notify_siteadmin($msg, $user) {
     $options_site_url = esc_url(network_admin_url('settings.php'));
     $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
 
-    $msg .= "Test add";
-
     $response = $api->send(
         get_option('ms_new_user_network_admin'),
         array('address' => $email),
