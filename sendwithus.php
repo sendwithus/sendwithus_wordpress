@@ -56,6 +56,13 @@ function sendwithus_register_settings() {
 $GLOBALS['templates'] = getTemplates();
 $GLOBALS['api_key'] = getAPIKey();
 
+// Establish whether an API key has been entered and that it is valid.
+$GLOBALS['valid_key'] = true;
+if($GLOBALS['api_key'] == '' || 
+   $GLOBALS['templates']->status == 'error') {
+    $GLOBALS['valid_key'] = false;
+}
+
 // Used for displaying the main menu page.
 // Activated when user clicks on link in sidebar.
 function sendwithus_conf_main() {
@@ -90,19 +97,30 @@ function sendwithus_conf_main() {
 					<th>sendwithus Template</th>
 				</thead>
                 <?php
-                    generateTemplateTable($GLOBALS['wp_notifications']);
+                    // Check that an API Key has been etered before displaying these.
+                    if($GLOBALS['valid_key']) {
+                        generateTemplateTable($GLOBALS['wp_notifications']);  
+                    } 
                 ?>
-                <tr class="multiside_option">
-                    <td>Enable Multisite Events</td>
-                    <td> 
-                        <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled" 
-                            <?php
-                                checked('multisite_enabled', get_option('multisite_enabled'))
-                            ?>
-                        />
+                <!-- Only display multisite option if API key is populated -->
+                <?php if($GLOBALS['valid_key']) : ?>
+                    <tr class="multiside_option">
+                        <td>Enable Multisite Events</td>
+                        <td> 
+                            <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled" 
+                                <?php
+                                    checked('multisite_enabled', get_option('multisite_enabled'))
+                                ?>
+                            />
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                <!-- Display a notice telling the user to enter their API key & save -->
+                <?php else : ?>
+                    <tr>
+                        <td colspan="2" style="text-align: center;"><h2>In order to proceed, please enter a valid API key and save changes.</h2></td>
+                    </tr>
+                <?php endif; ?>
                 <!-- Events that are displayed when multisite events are enabled -->
                 <tr>
                 <td colspan="2">
@@ -111,7 +129,10 @@ function sendwithus_conf_main() {
                         <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
                     </thead>
                     <?php
-                    generateTemplateTable($GLOBALS['wp_ms_notifications']);
+                    // Check that an API Key has been etered before displaying these.
+                    if($GLOBALS['valid_key']) {                
+                        generateTemplateTable($GLOBALS['wp_ms_notifications']);
+                    }
                     ?>
                 </table>
                 </td>
