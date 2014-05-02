@@ -233,7 +233,7 @@ if (!function_exists('wp_password_change_notification')) {
     function wp_password_change_notification( $user )
     {
         $message = sprintf(__('Password Lost and Changed for user: %s'), $user->user_login) . "\r\n";
-
+        $blogname = get_bloginfo('name');
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
         $response = $api->send(
@@ -252,6 +252,7 @@ if (!function_exists('wp_password_change_notification')) {
                     'display_name' => $user->display_name,
                     'spam' => $user->spam,
                     'deleted' =>$user->deleted,
+                    'blogname' => $blogname,
                     'default_message' => htmlDefaultMessage($message)
                 )
             )
@@ -295,7 +296,7 @@ function reset_password_notification($content, $key) {
                 'reset_url' => $url,
                 'user_nicename' => $user->user_nicename,
                 'user_email' => $user->user_email,
-                'blog_name' => $blogname,
+                'blogname' => $blogname,
                 'default_message' => htmlDefaultMessage($content)
             )
         )

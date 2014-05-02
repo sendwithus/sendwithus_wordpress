@@ -190,7 +190,7 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
     $default_message = sprintf($content, $activate_url, esc_url( "http://{$domain}{$path}" ), $key);
 
     $response = $api->send(
-        get_option('ms_new_user_network_admin'),
+        get_option('ms_new_user_success'),
         array('address' => $user_email),
         array(
             'email_data' => array(
@@ -198,7 +198,7 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
                 'domain' => $domain,
                 'path' => $path,
                 'user' => $user,
-                'user_mail' => $user_email,
+                'user_email' => $user_email,
                 'key' => $key,
                 'content' => $content
                 )
@@ -232,8 +232,8 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
                     'user_login' => $user,
                     'user_email' => $user_email,
                     'registered' => current_time('mysql', true),
-                    'activation_key' => $url,
-                    'blog_name' => $blog_name,
+                    'user_activation_key' => $url,
+                    'blogname' => $blog_name,
                     'blog_url' => $blog_url,
                     'meta' => $meta
             )
