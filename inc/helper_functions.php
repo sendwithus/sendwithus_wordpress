@@ -27,7 +27,7 @@ function getAPIKey() {
 // value = template id
 // text = template name
 function generateTemplateSelection($name, $array) {
-    $input_code = '<select name="' . $name . '">';
+    $input_code = '<select name="' . $name . '" style="width: 100%">';
     $current_template = get_option($name);
 
     foreach ($array as $template) {
