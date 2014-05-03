@@ -21,7 +21,7 @@ require('inc/multisite_overrides.php');
 // Add stylesheet
 add_action('admin_enqueue_scripts','register_style_sheet');
 function register_style_sheet(){
-    wp_register_style( 'sendwithus_style', plugins_url('./css/sendwithus_style.css', __FILE__));
+    wp_register_style('sendwithus_style', plugins_url('/sendwithus/css/sendwithus_style.css', __FILE__));
     wp_enqueue_style('sendwithus_style');
 }
 
