@@ -168,9 +168,11 @@ function sendwithus_conf_main() {
                 $('.parameters_' + name).toggleClass('visible');
 
                 if ( $('.parameters_' + name).hasClass('visible')) {
+                    $('#display_parameters_' + name).val('Hide parameters');
                     $('.parameters_' + name).css('display', 'inline-block');
                 } else {
                     $('.parameters_' + name).css('display', 'none');
+                    $('#display_parameters_' + name).val('Display parameters');
                 }         
             }
 
@@ -183,58 +185,49 @@ function sendwithus_conf_main() {
 
 
             //Events to cause sendwithus parameters for each email
-            $('#display_parameters_new_user').change(function() { 
+            $('#display_parameters_new_user').click(function() { 
                 toggle_parameters('new_user');
             });
-            $('#display_parameters_new_user').mouseover(function() { 
-                $('.new_user-display').children('strong').show();
-            });
-            $('#display_parameters_new_user').mouseout(function() { 
-                $('.new_user-display').children('strong').hide();
-            });
-            $('#display_parameters_new_comment').change(function() { 
+            $('#display_parameters_new_comment').click(function() { 
                 toggle_parameters('new_comment');
             });
 
-            $('#display_parameters_awaiting_approval').change(function() { 
+            $('#display_parameters_awaiting_approval').click(function() { 
                 toggle_parameters('awaiting_approval');
             });
 
-            $('#display_parameters_password_change_notification').change(function() { 
+            $('#display_parameters_password_change_notification').click(function() { 
                 toggle_parameters('password_change_notification');
             });
 
-            $('#display_parameters_password_reset').change(function() { 
+            $('#display_parameters_password_reset').click(function() { 
                 toggle_parameters('password_reset');
             });
 
-            $('#display_parameters_ms_new_user_network_admin').change(function() { 
+            $('#display_parameters_ms_new_user_network_admin').click(function() { 
                 toggle_parameters('ms_new_user_network_admin');
             });
 
-            $('#display_parameters_ms_new_blog_network_admin').change(function() { 
+            $('#display_parameters_ms_new_blog_network_admin').click(function() { 
                 toggle_parameters('ms_new_blog_network_admin');
             });
 
-            $('#display_parameters_ms_new_user_success').change(function() { 
+            $('#display_parameters_ms_new_user_success').click(function() { 
                 toggle_parameters('ms_new_user_success');
             });
 
-            $('#display_parameters_ms_new_blog_success').change(function() { 
+            $('#display_parameters_ms_new_blog_success').click(function() { 
                 toggle_parameters('ms_new_blog_success');
             });
 
-            $('#display_parameters_ms_welcome_user_notification').change(function() { 
+            $('#display_parameters_ms_welcome_user_notification').click(function() { 
                 toggle_parameters('ms_welcome_user_notification');
             });
 
-            $('#display_parameters_ms_welcome_notification').change(function() { 
+            $('#display_parameters_ms_welcome_notification').click(function() { 
                 toggle_parameters('ms_welcome_notification');
             });
 
-            $('#display_parameters_ms_new_user_success').change(function() { 
-                toggle_parameters('ms_new_user_success');
-            });
         </script>
 	</div>
 	<?
