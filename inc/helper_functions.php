@@ -26,7 +26,7 @@ function getAPIKey() {
 // Generate a template selection drop down list;
 // value = template id
 // text = template name
-function generateTemplateSelection($name, $array) {
+function generateTemplateSelection($name, $array, $notification_button) {
     $input_code = '<select name="' . $name . '">';
     $current_template = get_option($name);
 
@@ -40,17 +40,20 @@ function generateTemplateSelection($name, $array) {
     }
 
     $input_code .= '</select>';
+
+    $input_code .= $notification_button;
     return $input_code;
 }
 
 // Generate table body from the wp_notification arrays
 function generateTemplateTable($notification_array) {
     foreach ($notification_array as $current => $text) {
-        echo '<tr><td style="width: 49%;"><strong id="event_name">' . $text['event'] .'</strong> <div class="' . $current . '-display show">' . $text['display_parameters'] . '</div>';
+        echo '<tr><td style="width: 49%;"><strong id="event_name">' . $text['event'];
+        $notification_button = '</strong> <div class="' . $current . '-display show">' . $text['display_parameters'] . '</div>';
             echo '<div class="' . $current . '-description">' . $text['description'] . '</div>';
             echo generateParameterListing($current, $text);
         echo '</td><td style="text-align: right;">';
-        echo generateTemplateSelection($current, $GLOBALS['templates']);
+        echo generateTemplateSelection($current, $GLOBALS['templates'], $notification_button);
         echo '</td></tr>';
     }
 }
