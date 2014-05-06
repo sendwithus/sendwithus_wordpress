@@ -97,13 +97,6 @@ function sendwithus_conf_main() {
                 />                 
                 <strong>Enable multisite events.</strong>  
             </div>
-            <div>
-                <input type="checkbox" id="display_parameters" name="display_parameters" value="display_parameters"
-                    <?php checked('display_parameters', get_option('display_parameters')) ?>
-                />
-                <strong>Display descriptions of parameters sent to sendwithus</strong>
-
-            </div>
 
 			<table class="wp-list-table widefat sendwithus_table">
 				<thead>
@@ -151,22 +144,16 @@ function sendwithus_conf_main() {
 		</form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
+            $('.show').children('strong').hide();
             // Check to see if the multisite options should be listed or not.
             var is_multisite_enabled = '<?php echo get_option("multisite_enabled") ?>';
-            var are_parameters_displayed = '<?php echo get_option("display_parameters") ?>'
+
 
             if (is_multisite_enabled === 'multisite_enabled') {
                 is_multisite_enabled = true;
             } else {
                 is_multisite_enabled = false;
             }
-
-            if (are_parameters_displayed === 'display_parameters') {
-                are_parameters_displayed = true;
-            } else {
-                are_parameters_displayed = false;
-            }
-
             function toggle_multisite() {
                 if (is_multisite_enabled === true) {
                     $('#multisite_table').css('display', 'table');
@@ -177,14 +164,14 @@ function sendwithus_conf_main() {
                 is_multisite_enabled = !is_multisite_enabled;
             }
 
-            function toggle_parameters() {
-                if (are_parameters_displayed === true) {
-                    $('.parameters').css('display', 'inline-block');
-                } else {
-                    $('.parameters').css('display', 'none');
-                }         
+            function toggle_parameters(name) {
+                $('.parameters_' + name).toggleClass('visible');
 
-                are_parameters_displayed = !are_parameters_displayed;
+                if ( $('.parameters_' + name).hasClass('visible')) {
+                    $('.parameters_' + name).css('display', 'inline-block');
+                } else {
+                    $('.parameters_' + name).css('display', 'none');
+                }         
             }
 
             toggle_multisite();
@@ -194,8 +181,59 @@ function sendwithus_conf_main() {
                 toggle_multisite();
             });
 
-            $('#display_parameters').change(function() { 
-                toggle_parameters();
+
+            //Events to cause sendwithus parameters for each email
+            $('#display_parameters_new_user').change(function() { 
+                toggle_parameters('new_user');
+            });
+            $('#display_parameters_new_user').mouseover(function() { 
+                $('.new_user-display').children('strong').show();
+            });
+            $('#display_parameters_new_user').mouseout(function() { 
+                $('.new_user-display').children('strong').hide();
+            });
+            $('#display_parameters_new_comment').change(function() { 
+                toggle_parameters('new_comment');
+            });
+
+            $('#display_parameters_awaiting_approval').change(function() { 
+                toggle_parameters('awaiting_approval');
+            });
+
+            $('#display_parameters_password_change_notification').change(function() { 
+                toggle_parameters('password_change_notification');
+            });
+
+            $('#display_parameters_password_reset').change(function() { 
+                toggle_parameters('password_reset');
+            });
+
+            $('#display_parameters_ms_new_user_network_admin').change(function() { 
+                toggle_parameters('ms_new_user_network_admin');
+            });
+
+            $('#display_parameters_ms_new_blog_network_admin').change(function() { 
+                toggle_parameters('ms_new_blog_network_admin');
+            });
+
+            $('#display_parameters_ms_new_user_success').change(function() { 
+                toggle_parameters('ms_new_user_success');
+            });
+
+            $('#display_parameters_ms_new_blog_success').change(function() { 
+                toggle_parameters('ms_new_blog_success');
+            });
+
+            $('#display_parameters_ms_welcome_user_notification').change(function() { 
+                toggle_parameters('ms_welcome_user_notification');
+            });
+
+            $('#display_parameters_ms_welcome_notification').change(function() { 
+                toggle_parameters('ms_welcome_notification');
+            });
+
+            $('#display_parameters_ms_new_user_success').change(function() { 
+                toggle_parameters('ms_new_user_success');
             });
         </script>
 	</div>

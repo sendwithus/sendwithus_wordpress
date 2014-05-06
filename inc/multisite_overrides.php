@@ -231,7 +231,7 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
                     'default_message' => $content,
                     'user_login' => $user,
                     'user_email' => $user_email,
-                    'registered' => current_time('mysql', true),
+                    'user_registered_date' => current_time('mysql', true),
                     'user_activation_key' => $url,
                     'blogname' => $blog_name,
                     'blog_url' => $blog_url,

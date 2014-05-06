@@ -1,0 +1,13 @@
+ul{
+	list-style-type: circle;
+	padding-left: 30px
+}
+
+#event_name{
+	float: left;
+	margin-right: 10px;
+}
+
+.welcome-panel li {
+ font-size: 12px; 
+}

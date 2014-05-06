@@ -46,7 +46,7 @@ function generateTemplateSelection($name, $array) {
 // Generate table body from the wp_notification arrays
 function generateTemplateTable($notification_array) {
     foreach ($notification_array as $current => $text) {
-        echo '<tr><td style="width: 49%;"><strong>' . $text['event'] .'</strong>';
+        echo '<tr><td style="width: 49%;"><strong id="event_name">' . $text['event'] .'</strong> <div class="' . $current . '-display show">' . $text['display_parameters'] . '</div>';
             echo '<div class="' . $current . '-description">' . $text['description'] . '</div>';
             echo generateParameterListing($current, $text);
         echo '</td><td style="text-align: right;">';
@@ -58,7 +58,7 @@ function generateTemplateTable($notification_array) {
 // Generate code to display/hide parameters sent with events.
 function generateParameterListing($name, $parameterData) {
     $parameterListing = '
-        <div class="parameters" style="display: none;">' . $parameterData['parameters'] . 
+        <div class="parameters_'.$name.'" style="display: none;">' . $parameterData['parameters'] . 
         '</div>';
 
     return $parameterListing;
