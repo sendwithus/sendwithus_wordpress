@@ -104,16 +104,16 @@ function sendwithus_conf_main() {
 	                <!-- Events that are displayed when multisite events are enabled -->
 	                <tr>
 	                <td colspan="2">
-	                <table class="multisite wp-list-table widefat" id="multisite_table">
-	                    <thead>
-	                        <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
-	                    </thead>
-	                    <?php
-	                        // Check that an API Key has been etered before displaying these.
-	                        if($GLOBALS['valid_key']) {                
-	                            generateTemplateTable($GLOBALS['wp_ms_notifications']);
-	                        }
-	                    ?>
+                        <?php if (is_multisite()) {
+                            echo '<table class="multisite wp-list-table widefat" id="multisite_table">';
+                            echo '<thead>';
+                            echo '<th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>';
+                            echo '</thead>';
+                            // Check that an API Key has been etered before displaying these.
+                            if ($GLOBALS['valid_key']) {
+                                generateTemplateTable($GLOBALS['wp_ms_notifications']);
+                            }
+                        } ?>
 	                </table>
 	                </td>
 	                </tr>
@@ -145,19 +145,6 @@ function sendwithus_conf_main() {
 			<div style="width: 100%; margin-left: auto; margin-right: auto; display: block; padding: 0px 0px 10px;">
 				<?php submit_button() ?>
 			</div>
-            <div>
-                <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled"
-                    <?php checked('multisite_enabled', get_option('multisite_enabled')) ?>
-                    />
-                <strong>Enable multisite events.</strong>
-            </div>
-            <div>
-                <input style="visibility: hidden;" type="checkbox" id="display_parameters" name="display_parameters" value="display_parameters"
-                    <?php checked('display_parameters', get_option('display_parameters')) ?>
-                    />
-                <strong style="visibility: hidden;">Display descriptions of parameters sent to sendwithus</strong>
-
-            </div>
 		</form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
