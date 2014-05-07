@@ -190,9 +190,13 @@ function sendwithus_conf_main() {
 
             function toggle_parameters() {
                 if (are_parameters_displayed === true) {
-                    $('.parameters').css('display', 'inline-block');
+                    $('.parameters').css('display', 'initial');
+                    $('.display_info').addClass('visible');
+                    $('.display_info').text('Hide Description');
                 } else {
                     $('.parameters').css('display', 'none');
+                    $('.display_info').removeClass('visible');
+                    $('.display_info').text('Display Description');
                 }         
 
                 are_parameters_displayed = !are_parameters_displayed;
