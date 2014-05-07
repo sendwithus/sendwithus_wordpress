@@ -95,20 +95,6 @@ function sendwithus_conf_main() {
 			?>
             <!-- Only display if API key is populated -->
 	        <?php if($GLOBALS['valid_key']) : ?>
-	            <div>
-	                <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled" 
-	                    <?php checked('multisite_enabled', get_option('multisite_enabled')) ?>
-	                />                 
-	                <strong>Enable multisite events.</strong>  
-	            </div>
-	            <div>
-	                <input type="checkbox" id="display_parameters" name="display_parameters" value="display_parameters"
-	                    <?php checked('display_parameters', get_option('display_parameters')) ?>
-	                />
-	                <strong>Display descriptions of parameters sent to sendwithus</strong>
-
-	            </div>
-
 				<table class="wp-list-table widefat sendwithus_table">
 					<thead>
 						<th style="width: 49%">WordPress Event</th>
@@ -159,6 +145,19 @@ function sendwithus_conf_main() {
 			<div style="width: 100%; margin-left: auto; margin-right: auto; display: block; padding: 0px 0px 10px;">
 				<?php submit_button() ?>
 			</div>
+            <div>
+                <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled"
+                    <?php checked('multisite_enabled', get_option('multisite_enabled')) ?>
+                    />
+                <strong>Enable multisite events.</strong>
+            </div>
+            <div>
+                <input style="visibility: hidden;" type="checkbox" id="display_parameters" name="display_parameters" value="display_parameters"
+                    <?php checked('display_parameters', get_option('display_parameters')) ?>
+                    />
+                <strong style="visibility: hidden;">Display descriptions of parameters sent to sendwithus</strong>
+
+            </div>
 		</form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
@@ -191,12 +190,8 @@ function sendwithus_conf_main() {
             function toggle_parameters() {
                 if (are_parameters_displayed === true) {
                     $('.parameters').css('display', 'initial');
-                    $('.display_info').addClass('visible');
-                    $('.display_info').text('Hide Description');
                 } else {
                     $('.parameters').css('display', 'none');
-                    $('.display_info').removeClass('visible');
-                    $('.display_info').text('Display Description');
                 }         
 
                 are_parameters_displayed = !are_parameters_displayed;
@@ -213,16 +208,12 @@ function sendwithus_conf_main() {
                 toggle_parameters();
             });
 
-            $('.display_info').click(function(){
-                if(!$(this).hasClass('visible')){
-                    $(this).addClass('visible');
-                    $(this).text('Hide Description');
-                }
-                else{
-                    $(this).removeClass('visible');
-                    $(this).text('Display Description');
-                }
-                $(this).parent().siblings().find('.parameters').toggle();
+            $('.display_info').click(function () {
+                $(this).text(function(i, text){
+                    return text === "Display Description" ? "Hide Description" : "Display Description"
+                });
+
+                $(this).parent().siblings().find('.parameters').slideToggle(150);
             });
         </script>
 	</div>
