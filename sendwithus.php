@@ -29,7 +29,7 @@ add_action('admin_menu', 'activate_sidebar_shortcut');
 // Creates link to plugin settings in WordPress control panel.
 function activate_sidebar_shortcut() {
     // Add the shortcut for the plugin settings underneath the 'plugins' sidebar menu.
-    add_submenu_page('plugins.php', 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus_admin_menu', 'sendwithus_conf_main');
+    add_menu_page( 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus.php', 'sendwithus_conf_main', 'dashicons-email-alt');
 
     // Create an area in WordPress to store the settings saved by the user.
     add_action('admin_init', 'sendwithus_register_settings');
@@ -148,53 +148,6 @@ function sendwithus_conf_main() {
 		</form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
-            // Check to see if the multisite options should be listed or not.
-            var is_multisite_enabled = '<?php echo get_option("multisite_enabled") ?>';
-            var are_parameters_displayed = '<?php echo get_option("display_parameters") ?>'
-
-            if (is_multisite_enabled === 'multisite_enabled') {
-                is_multisite_enabled = true;
-            } else {
-                is_multisite_enabled = false;
-            }
-
-            if (are_parameters_displayed === 'display_parameters') {
-                are_parameters_displayed = true;
-            } else {
-                are_parameters_displayed = false;
-            }
-
-            function toggle_multisite() {
-                if (is_multisite_enabled === true) {
-                    $('#multisite_table').css('display', 'table');
-                } else {
-                    $('#multisite_table').css('display', 'none');
-                }
-
-                is_multisite_enabled = !is_multisite_enabled;
-            }
-
-            function toggle_parameters() {
-                if (are_parameters_displayed === true) {
-                    $('.parameters').css('display', 'initial');
-                } else {
-                    $('.parameters').css('display', 'none');
-                }         
-
-                are_parameters_displayed = !are_parameters_displayed;
-            }
-
-            toggle_multisite();
-            toggle_parameters();
-
-            $('#multisite_enabled').change(function() {
-                toggle_multisite();
-            });
-
-            $('#display_parameters').change(function() { 
-                toggle_parameters();
-            });
-
             $('.display_info').click(function () {
                 $(this).text(function(i, text){
                     return text === "Display Description" ? "Hide Description" : "Display Description"
