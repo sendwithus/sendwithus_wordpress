@@ -6,3 +6,21 @@
 .swu_select {
 	width: 100%;
 }
+
+ul{
+    list-style-type: circle;
+    padding-left: 30px
+}
+
+#event_name{
+    float: left;
+    margin-right: 10px;
+}
+
+.welcome-panel li {
+    font-size: 12px;
+}
+
+.parameters_button{
+    font-size:12px !important;
+}
