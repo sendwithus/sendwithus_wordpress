@@ -208,6 +208,10 @@ function sendwithus_conf_main() {
             $('#display_parameters').change(function() { 
                 toggle_parameters();
             });
+
+            $('.display_info').click(function(){
+                $(this).siblings('.parameters').toggle();
+            });
         </script>
 	</div>
 	<?
