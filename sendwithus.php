@@ -164,15 +164,15 @@ function sendwithus_conf_main() {
                 is_multisite_enabled = !is_multisite_enabled;
             }
 
-            function toggle_parameters(name) {
-                $('.parameters_' + name).toggleClass('visible');
+            function toggle_parameters(parameter_name, source_button) {
+                $('.parameters_' + parameter_name).toggleClass('visible');
 
-                if ( $('.parameters_' + name).hasClass('visible')) {
-                    $('#display_parameters_' + name).val('Hide parameters');
+                if ( $('.parameters_' + parameter_name).hasClass('visible')) {
+                    $(source_button).val('Hide parameters');
                     $('.parameters_' + name).css('display', 'inline-block');
                 } else {
-                    $('.parameters_' + name).css('display', 'none');
-                    $('#display_parameters_' + name).val('Display parameters');
+                    $('.parameters_' + parameter_name).css('display', 'none');
+                    $(source_button).val('Display parameters');
                 }         
             }
 
@@ -184,48 +184,10 @@ function sendwithus_conf_main() {
             });
 
 
-            //Events to cause sendwithus parameters for each email
-            $('#display_parameters_new_user').click(function() { 
-                toggle_parameters('new_user');
-            });
-            $('#display_parameters_new_comment').click(function() { 
-                toggle_parameters('new_comment');
-            });
-
-            $('#display_parameters_awaiting_approval').click(function() { 
-                toggle_parameters('awaiting_approval');
-            });
-
-            $('#display_parameters_password_change_notification').click(function() { 
-                toggle_parameters('password_change_notification');
-            });
-
-            $('#display_parameters_password_reset').click(function() { 
-                toggle_parameters('password_reset');
-            });
-
-            $('#display_parameters_ms_new_user_network_admin').click(function() { 
-                toggle_parameters('ms_new_user_network_admin');
-            });
-
-            $('#display_parameters_ms_new_blog_network_admin').click(function() { 
-                toggle_parameters('ms_new_blog_network_admin');
-            });
-
-            $('#display_parameters_ms_new_user_success').click(function() { 
-                toggle_parameters('ms_new_user_success');
-            });
-
-            $('#display_parameters_ms_new_blog_success').click(function() { 
-                toggle_parameters('ms_new_blog_success');
-            });
-
-            $('#display_parameters_ms_welcome_user_notification').click(function() { 
-                toggle_parameters('ms_welcome_user_notification');
-            });
-
-            $('#display_parameters_ms_welcome_notification').click(function() { 
-                toggle_parameters('ms_welcome_notification');
+            //Shows sendwithus parameters for selected default wordpress email
+            $('.parameters_button').click(function(){
+                parameter_name = $(this).attr('id');
+                toggle_parameters(parameter_name, this);
             });
 
         </script>
