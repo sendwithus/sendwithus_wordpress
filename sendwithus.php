@@ -169,7 +169,7 @@ function sendwithus_conf_main() {
 
                 if ( $('.parameters_' + parameter_name).hasClass('visible')) {
                     $(source_button).val('Hide parameters');
-                    $('.parameters_' + name).css('display', 'inline-block');
+                    $('.parameters_' + parameter_name).css('display', 'inline-block');
                 } else {
                     $('.parameters_' + parameter_name).css('display', 'none');
                     $(source_button).val('Display parameters');
