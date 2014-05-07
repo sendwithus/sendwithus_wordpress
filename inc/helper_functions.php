@@ -47,10 +47,10 @@ function generateTemplateSelection($name, $array) {
 function generateTemplateTable($notification_array) {
     foreach ($notification_array as $current => $text) {
         echo '<tr><td style="width: 49%;"><strong>' . $text['event'] .'</strong>';
-            echo '<div class="' . $current . '-description">' . $text['description'] . '</div>';
             echo generateParameterListing($current, $text);
         echo '</td><td style="text-align: right;">';
         echo generateTemplateSelection($current, $GLOBALS['templates']);
+        echo '<div class="button display_info parameters_button">Display Description</div>';
         echo '</td></tr>';
     }
 }
