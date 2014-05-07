@@ -29,7 +29,7 @@ add_action('admin_menu', 'activate_sidebar_shortcut');
 // Creates link to plugin settings in WordPress control panel.
 function activate_sidebar_shortcut() {
     // Add the shortcut for the plugin settings underneath the 'plugins' sidebar menu.
-    add_submenu_page('plugins.php', 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus_admin_menu', 'sendwithus_conf_main');
+    add_menu_page( 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus.php', 'sendwithus_conf_main', 'dashicons-email-alt');
 
     // Create an area in WordPress to store the settings saved by the user.
     add_action('admin_init', 'sendwithus_register_settings');
@@ -95,20 +95,6 @@ function sendwithus_conf_main() {
 			?>
             <!-- Only display if API key is populated -->
 	        <?php if($GLOBALS['valid_key']) : ?>
-	            <div>
-	                <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled" 
-	                    <?php checked('multisite_enabled', get_option('multisite_enabled')) ?>
-	                />                 
-	                <strong>Enable multisite events.</strong>  
-	            </div>
-	            <div>
-	                <input type="checkbox" id="display_parameters" name="display_parameters" value="display_parameters"
-	                    <?php checked('display_parameters', get_option('display_parameters')) ?>
-	                />
-	                <strong>Display descriptions of parameters sent to sendwithus</strong>
-
-	            </div>
-
 				<table class="wp-list-table widefat sendwithus_table">
 					<thead>
 						<th style="width: 49%">WordPress Event</th>
@@ -118,16 +104,16 @@ function sendwithus_conf_main() {
 	                <!-- Events that are displayed when multisite events are enabled -->
 	                <tr>
 	                <td colspan="2">
-	                <table class="multisite wp-list-table widefat" id="multisite_table">
-	                    <thead>
-	                        <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
-	                    </thead>
-	                    <?php
-	                        // Check that an API Key has been etered before displaying these.
-	                        if($GLOBALS['valid_key']) {                
-	                            generateTemplateTable($GLOBALS['wp_ms_notifications']);
-	                        }
-	                    ?>
+                        <?php if (is_multisite()) {
+                            echo '<table class="multisite wp-list-table widefat" id="multisite_table">';
+                            echo '<thead>';
+                            echo '<th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>';
+                            echo '</thead>';
+                            // Check that an API Key has been etered before displaying these.
+                            if ($GLOBALS['valid_key']) {
+                                generateTemplateTable($GLOBALS['wp_ms_notifications']);
+                            }
+                        } ?>
 	                </table>
 	                </td>
 	                </tr>
@@ -162,51 +148,12 @@ function sendwithus_conf_main() {
 		</form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
-            // Check to see if the multisite options should be listed or not.
-            var is_multisite_enabled = '<?php echo get_option("multisite_enabled") ?>';
-            var are_parameters_displayed = '<?php echo get_option("display_parameters") ?>'
+            $('.display_info').click(function () {
+                $(this).text(function(i, text){
+                    return text === "Display Description" ? "Hide Description" : "Display Description"
+                });
 
-            if (is_multisite_enabled === 'multisite_enabled') {
-                is_multisite_enabled = true;
-            } else {
-                is_multisite_enabled = false;
-            }
-
-            if (are_parameters_displayed === 'display_parameters') {
-                are_parameters_displayed = true;
-            } else {
-                are_parameters_displayed = false;
-            }
-
-            function toggle_multisite() {
-                if (is_multisite_enabled === true) {
-                    $('#multisite_table').css('display', 'table');
-                } else {
-                    $('#multisite_table').css('display', 'none');
-                }
-
-                is_multisite_enabled = !is_multisite_enabled;
-            }
-
-            function toggle_parameters() {
-                if (are_parameters_displayed === true) {
-                    $('.parameters').css('display', 'inline-block');
-                } else {
-                    $('.parameters').css('display', 'none');
-                }         
-
-                are_parameters_displayed = !are_parameters_displayed;
-            }
-
-            toggle_multisite();
-            toggle_parameters();
-
-            $('#multisite_enabled').change(function() {
-                toggle_multisite();
-            });
-
-            $('#display_parameters').change(function() { 
-                toggle_parameters();
+                $(this).parent().siblings().find('.parameters').slideToggle(150);
             });
         </script>
 	</div>
