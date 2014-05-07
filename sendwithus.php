@@ -210,6 +210,14 @@ function sendwithus_conf_main() {
             });
 
             $('.display_info').click(function(){
+                if(!$(this).hasClass('visible')){
+                    $(this).addClass('visible');
+                    $(this).text('Hide Description');
+                }
+                else{
+                    $(this).removeClass('visible');
+                    $(this).text('Display Description');
+                }
                 $(this).parent().siblings().find('.parameters').toggle();
             });
         </script>
