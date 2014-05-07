@@ -210,7 +210,7 @@ function sendwithus_conf_main() {
             });
 
             $('.display_info').click(function(){
-                $(this).siblings('.parameters').toggle();
+                $(this).parent().siblings().find('.parameters').toggle();
             });
         </script>
 	</div>
