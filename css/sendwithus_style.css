@@ -1,17 +1,26 @@
+.save-button {
+    background: none repeat scroll 0% 0% #5fcc36;
+    border-color: #0aa247;
+}
+
+.swu_select {
+	width: 100%;
+}
+
 ul{
-	list-style-type: circle;
-	padding-left: 30px
+    list-style-type: circle;
+    padding-left: 30px
 }
 
 #event_name{
-	float: left;
-	margin-right: 10px;
+    float: left;
+    margin-right: 10px;
 }
 
 .welcome-panel li {
- font-size: 12px; 
+    font-size: 12px;
 }
 
 .parameters_button{
-	font-size:12px;
+    font-size:12px !important;
 }

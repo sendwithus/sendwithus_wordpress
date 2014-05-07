@@ -21,7 +21,7 @@ require('inc/multisite_overrides.php');
 // Add stylesheet
 add_action('admin_enqueue_scripts','register_style_sheet');
 function register_style_sheet(){
-    wp_register_style( 'sendwithus_style', plugins_url('/css/sendwithus_style.css', __FILE__));
+    wp_register_style( 'sendwithus_style', plugins_url('./css/sendwithus_style.css', __FILE__));
     wp_enqueue_style('sendwithus_style');
 }
 
@@ -80,9 +80,11 @@ function sendwithus_conf_main() {
 	</h1>
 	<p>Send transactional emails with ease.</p>
 	<div class="welcome-panel">
-		<h3>Events</h3>
-		<p>Events that trigger the sending of transactional emails are listed below.</p>
-
+        <!-- Only display if API key is populated -->
+        <?php if($GLOBALS['valid_key']) : ?>
+			<h3>Events</h3>
+			<p>Events that trigger the sending of transactional emails are listed below.</p>
+		<?php endif; ?>
 		<!-- A check should be performed before loading the table to ensure that the user
 			 has entered an API key - otherwise only an entry for API key should be displayed. -->
 		<form action="options.php" method="post">
@@ -91,44 +93,60 @@ function sendwithus_conf_main() {
 				settings_fields('sendwithus_settings');
 				do_settings_sections('sendwithus_settings');
 			?>
-            <div>
-                <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled" 
-                    <?php checked('multisite_enabled', get_option('multisite_enabled')) ?>
-                />                 
-                <strong>Enable multisite events.</strong>  
-            </div>
+            <!-- Only display if API key is populated -->
+	        <?php if($GLOBALS['valid_key']) : ?>
+	            <div>
+	                <input type="checkbox" id="multisite_enabled" name="multisite_enabled" value="multisite_enabled" 
+	                    <?php checked('multisite_enabled', get_option('multisite_enabled')) ?>
+	                />                 
+	                <strong>Enable multisite events.</strong>  
+	            </div>
+	            <div>
+	                <input type="checkbox" id="display_parameters" name="display_parameters" value="display_parameters"
+	                    <?php checked('display_parameters', get_option('display_parameters')) ?>
+	                />
+	                <strong>Display descriptions of parameters sent to sendwithus</strong>
 
-			<table class="wp-list-table widefat sendwithus_table">
-				<thead>
-					<th style="width: 49%">WordPress Event</th>
-					<th style="width: 49%">sendwithus Template</th>
-				</thead>
-                <!-- Only display multisite option if API key is populated -->
-                <?php if($GLOBALS['valid_key']) : ?>
-                    <?php generateTemplateTable($GLOBALS['wp_notifications']); ?>
-                <!-- Display a notice telling the user to enter their API key & save -->
-                <?php else : ?>
-                    <tr>
-                        <td colspan="2" style="text-align: center;"><h2>In order to proceed, please enter a valid API key and save changes.</h2></td>
-                    </tr>
-                <?php endif; ?>
-                <!-- Events that are displayed when multisite events are enabled -->
-                <tr>
-                <td colspan="2">
-                <table class="multisite wp-list-table widefat" id="multisite_table">
-                    <thead>
-                        <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
-                    </thead>
-                    <?php
-                        // Check that an API Key has been etered before displaying these.
-                        if($GLOBALS['valid_key']) {                
-                            generateTemplateTable($GLOBALS['wp_ms_notifications']);
-                        }
-                    ?>
-                </table>
-                </td>
-                </tr>
-				<tfoot>
+	            </div>
+
+				<table class="wp-list-table widefat sendwithus_table">
+					<thead>
+						<th style="width: 49%">WordPress Event</th>
+						<th style="width: 49%">sendwithus Template</th>
+					</thead>
+	                    <?php generateTemplateTable($GLOBALS['wp_notifications']); ?>
+	                <!-- Events that are displayed when multisite events are enabled -->
+	                <tr>
+	                <td colspan="2">
+	                <table class="multisite wp-list-table widefat" id="multisite_table">
+	                    <thead>
+	                        <th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>
+	                    </thead>
+	                    <?php
+	                        // Check that an API Key has been etered before displaying these.
+	                        if($GLOBALS['valid_key']) {                
+	                            generateTemplateTable($GLOBALS['wp_ms_notifications']);
+	                        }
+	                    ?>
+	                </table>
+	                </td>
+	                </tr>
+					<tfoot>
+						<tr>
+							<td><strong>sendwithus API Key</strong></td>
+							<td>
+								<input type="text" name="api_key" placeholder="Your sendwithus API key." style="width: 100%"
+									value="<?php echo getAPIKey(); ?>"/>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+            <!-- Display a notice telling the user to enter their API key & save -->
+            <?php else : ?>
+            	<table>
+	                <tr>
+	                    <td colspan="2" style="text-align: center;"><h2>In order to proceed, please enter a valid API key and save your changes.</h2></td>
+	                </tr>
 					<tr>
 						<td><strong>sendwithus API Key</strong></td>
 						<td>
@@ -136,24 +154,30 @@ function sendwithus_conf_main() {
 								value="<?php echo getAPIKey(); ?>"/>
 						</td>
 					</tr>
-				</tfoot>
-			</table>
+				</table>
+            <?php endif; ?>
 			<div style="width: 100%; margin-left: auto; margin-right: auto; display: block; padding: 0px 0px 10px;">
 				<?php submit_button() ?>
 			</div>
 		</form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
-            $('.show').children('strong').hide();
             // Check to see if the multisite options should be listed or not.
             var is_multisite_enabled = '<?php echo get_option("multisite_enabled") ?>';
-
+            var are_parameters_displayed = '<?php echo get_option("display_parameters") ?>'
 
             if (is_multisite_enabled === 'multisite_enabled') {
                 is_multisite_enabled = true;
             } else {
                 is_multisite_enabled = false;
             }
+
+            if (are_parameters_displayed === 'display_parameters') {
+                are_parameters_displayed = true;
+            } else {
+                are_parameters_displayed = false;
+            }
+
             function toggle_multisite() {
                 if (is_multisite_enabled === true) {
                     $('#multisite_table').css('display', 'table');
@@ -164,16 +188,14 @@ function sendwithus_conf_main() {
                 is_multisite_enabled = !is_multisite_enabled;
             }
 
-            function toggle_parameters(parameter_name, source_button) {
-                $('.parameters_' + parameter_name).toggleClass('visible');
-
-                if ( $('.parameters_' + parameter_name).hasClass('visible')) {
-                    $(source_button).val('Hide parameters');
-                    $('.parameters_' + parameter_name).css('display', 'inline-block');
+            function toggle_parameters() {
+                if (are_parameters_displayed === true) {
+                    $('.parameters').css('display', 'inline-block');
                 } else {
-                    $('.parameters_' + parameter_name).css('display', 'none');
-                    $(source_button).val('Display parameters');
+                    $('.parameters').css('display', 'none');
                 }         
+
+                are_parameters_displayed = !are_parameters_displayed;
             }
 
             toggle_multisite();
@@ -183,13 +205,13 @@ function sendwithus_conf_main() {
                 toggle_multisite();
             });
 
-
-            //Shows sendwithus parameters for selected default wordpress email
-            $('.parameters_button').click(function(){
-                parameter_name = $(this).attr('id');
-                toggle_parameters(parameter_name, this);
+            $('#display_parameters').change(function() { 
+                toggle_parameters();
             });
 
+            $('.display_info').click(function(){
+                $(this).parent().siblings().find('.parameters').toggle();
+            });
         </script>
 	</div>
 	<?

@@ -26,8 +26,8 @@ function getAPIKey() {
 // Generate a template selection drop down list;
 // value = template id
 // text = template name
-function generateTemplateSelection($name, $array, $notification_button) {
-    $input_code = '<select name="' . $name . '">';
+function generateTemplateSelection($name, $array) {
+    $input_code = '<select name="' . $name . '" style="width: 100%">';
     $current_template = get_option($name);
 
     foreach ($array as $template) {
@@ -40,20 +40,17 @@ function generateTemplateSelection($name, $array, $notification_button) {
     }
 
     $input_code .= '</select>';
-
-    $input_code .= $notification_button;
     return $input_code;
 }
 
 // Generate table body from the wp_notification arrays
 function generateTemplateTable($notification_array) {
     foreach ($notification_array as $current => $text) {
-        echo '<tr><td style="width: 49%;"><strong id="event_name">' . $text['event']. '</strong> <br />';
-        $notification_button = ' <div class="' . $current . '-display show">' . $text['display_parameters'] . '</div>';
-            echo '<div class="' . $current . '-description">' . $text['description'] . '</div>';
+        echo '<tr><td style="width: 49%;"><strong>' . $text['event'] .'</strong>';
             echo generateParameterListing($current, $text);
         echo '</td><td style="text-align: right;">';
-        echo generateTemplateSelection($current, $GLOBALS['templates'], $notification_button);
+        echo generateTemplateSelection($current, $GLOBALS['templates']);
+        echo '<div class="button display_info parameters_button">Display Description</div>';
         echo '</td></tr>';
     }
 }
@@ -61,7 +58,7 @@ function generateTemplateTable($notification_array) {
 // Generate code to display/hide parameters sent with events.
 function generateParameterListing($name, $parameterData) {
     $parameterListing = '
-        <div class="parameters_'.$name.'" style="display: none;">' . $parameterData['parameters'] . 
+        <div class="parameters" style="display: none;">' . $parameterData['parameters'] . 
         '</div>';
 
     return $parameterListing;
