@@ -163,17 +163,17 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
             </ul>'        
     ),
-    'ms_new_blog_success'          => array(
-        'event'       => 'New Blog Success - Notify User',
-        'description' => 'Placeholder description.',
-        'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_blog_success" name="display_parameters" value="Display parameters"'.
-         checked("display_parameters", get_option("display_parameters"))
-        .'/>',
-        'parameters'  => '
-            <ul>
-                We dont have this function
-            </ul>'        
-    ),
+//    'ms_new_blog_success'          => array(
+//        'event'       => 'New Blog Success - Notify User',
+//        'description' => 'Placeholder description.',
+//        'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_blog_success" name="display_parameters" value="Display parameters"'.
+//         checked("display_parameters", get_option("display_parameters"))
+//        .'/>',
+//        'parameters'  => '
+//            <ul>
+//                We dont have this function
+//            </ul>'
+//    ),
     'ms_welcome_user_notification' => array(
         'event'       => 'New User Welcome - Notify User',
         'description' => 'Activates when a new user creation is successful.',
