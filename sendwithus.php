@@ -80,11 +80,6 @@ function sendwithus_conf_main() {
 	</h1>
 	<p>Send transactional emails with ease.</p>
 	<div class="welcome-panel">
-        <!-- Only display if API key is populated -->
-        <?php if($GLOBALS['valid_key']) : ?>
-			<h3>Events</h3>
-			<p>Events that trigger the sending of transactional emails are listed below.</p>
-		<?php endif; ?>
 		<!-- A check should be performed before loading the table to ensure that the user
 			 has entered an API key - otherwise only an entry for API key should be displayed. -->
 		<form action="options.php" method="post">
@@ -93,6 +88,22 @@ function sendwithus_conf_main() {
 				settings_fields('sendwithus_settings');
 				do_settings_sections('sendwithus_settings');
 			?>
+
+            <!-- Only display if API key is populated -->
+            <?php if($GLOBALS['valid_key']) : ?>
+                <h3>Events</h3>
+                <p style="display: inline-block; float: left;">Events that trigger the sending of transactional emails are listed below.</p>
+
+                <div id="change_api_key">
+                    <input id="api_box" style="display: none;" type="text" name="api_key"
+                           placeholder="Your sendwithus API key." style="width: 100%"
+                           value="<?php echo getAPIKey(); ?>"/>
+
+                    <div id="api_button" style="float: right;" class="button">Change API Key</div>
+                </div>
+
+            <?php endif; ?>
+
             <!-- Only display if API key is populated -->
 	        <?php if($GLOBALS['valid_key']) : ?>
 				<table class="wp-list-table widefat sendwithus_table">
@@ -117,15 +128,6 @@ function sendwithus_conf_main() {
 	                </table>
 	                </td>
 	                </tr>
-					<tfoot>
-						<tr>
-							<td><strong>sendwithus API Key</strong></td>
-							<td>
-								<input type="text" name="api_key" placeholder="Your sendwithus API key." style="width: 100%"
-									value="<?php echo getAPIKey(); ?>"/>
-							</td>
-						</tr>
-					</tfoot>
 				</table>
             <!-- Display a notice telling the user to enter their API key & save -->
             <?php else : ?>
@@ -155,6 +157,11 @@ function sendwithus_conf_main() {
 
                 $(this).parent().siblings().find('.parameters').slideToggle(150);
             });
+
+            $('#api_button').click(function() {
+                $(this).hide();
+                $('#api_box').show(300,"linear", { direction: "left" });
+            })
         </script>
 	</div>
 	<?
