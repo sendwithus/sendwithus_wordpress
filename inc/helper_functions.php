@@ -53,14 +53,17 @@ function generateTemplateTable($notification_array) {
         echo generateTemplateSelection($current, $GLOBALS['templates']);
         echo '<div class="button display_info parameters_button">Display Description</div>';
         echo '</td></tr>';
+        echo '<tr><td colspan="2">';
+        echo generateParameterListing($current, $text);
+        echo '</tr></td>';
     }
 }
 
 // Generate code to display/hide parameters sent with events.
 function generateParameterListing($name, $parameterData) {
     $parameterListing = '
-        <div class="parameters" style="display: none;">' . $parameterData['parameters'] . 
-        '</div>';
+        <span class="parameters" style="display: none; margin-bottom: 0px;">' . $parameterData['parameters'] . 
+        '</span>';
 
     return $parameterListing;
 }
