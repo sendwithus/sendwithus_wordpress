@@ -7,6 +7,23 @@
 	width: 100%;
 }
 
+.welcome-panel li {
+    font-size: 12px;
+}
+
+.parameters_button{
+    font-size:12px !important;
+}
+
+.description {
+    display: inline-block;
+    float: left;
+}
+
+h1 {
+    font-family: 'Open Sans', sans-serif;
+}
+
 ul {
     list-style-type: circle;
     padding-left: 30px
@@ -17,14 +34,6 @@ ul {
     margin-right: 10px;
 }
 
-.welcome-panel li {
-    font-size: 12px;
-}
-
-.parameters_button{
-    font-size:12px !important;
-}
-
 #change_api_key{
     padding-top: 10px;
 }
@@ -32,4 +41,19 @@ ul {
 #api_box {
     float: right;
     min-width: 40%;
+    display: none;
+    margin-bottom: 5px;
+}
+
+#api_button {
+    float: right;
+    margin-bottom: 5px;
+}
+
+#submit_button_area {
+    width: 100%; 
+    margin-left: auto; 
+    margin-right: auto; 
+    display: block; 
+    padding: 0px 0px 10px;
 }

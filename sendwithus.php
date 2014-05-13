@@ -21,7 +21,7 @@ require('inc/multisite_overrides.php');
 // Add stylesheet
 add_action('admin_enqueue_scripts','register_style_sheet');
 function register_style_sheet(){
-    wp_register_style('sendwithus_style', plugins_url('/sendwithus/css/sendwithus_style.css', __FILE__));
+    wp_register_style('sendwithus_style', plugins_url('/css/sendwithus_style.css', __FILE__));
     wp_enqueue_style('sendwithus_style');
 }
 
@@ -75,7 +75,7 @@ function sendwithus_conf_main() {
 	<!-- Font for sendwithus' logo -->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
-	<h1 style="font-family: 'Open Sans', sans-serif;">
+	<h1>
 		<span style="color: #777">send<span style="color: #f7931d">with</span>us</span>
 	</h1>
 	<p>Send transactional emails with ease.</p>
@@ -92,16 +92,16 @@ function sendwithus_conf_main() {
             <!-- Only display if API key is populated -->
             <?php if($GLOBALS['valid_key']) : ?>
                 <h3>Events</h3>
-                <p style="display: inline-block; float: left;">Events that trigger the sending of transactional emails are listed below.</p>
 
                 <div id="change_api_key">
-                    <input id="api_box" style="display: none;" type="text" name="api_key"
-                           placeholder="Your sendwithus API key." style="width: 100%"
+                    <input id="api_box" type="text" name="api_key"
+                           placeholder="Your sendwithus API key." 
                            value="<?php echo getAPIKey(); ?>"/>
 
-                    <div id="api_button" style="float: right;" class="button">Change API Key</div>
+                    <div id="api_button" class="button">Change API Key</div>
                 </div>
 
+                <p class="description">Events that trigger the sending of transactional emails are listed below.</p>
             <?php endif; ?>
 
             <!-- Only display if API key is populated -->
@@ -144,15 +144,15 @@ function sendwithus_conf_main() {
 					</tr>
 				</table>
             <?php endif; ?>
-			<div style="width: 100%; margin-left: auto; margin-right: auto; display: block; padding: 0px 0px 10px;">
+			<div class="display_button_area">
 				<?php submit_button() ?>
 			</div>
 		</form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
-            $('.display_info').click(function () {
-                $(this).text(function(i, text){
-                    return text === "Display Description" ? "Hide Description" : "Display Description"
+            $('.display_info').click(function() {
+                $(this).text(function(i, text) {
+                    return text === 'Display Description' ? 'Hide Description' : 'Display Description';
                 });
 
                 $(this).parent().siblings().find('.parameters').slideToggle(150);
@@ -160,8 +160,8 @@ function sendwithus_conf_main() {
 
             $('#api_button').click(function() {
                 $(this).hide();
-                $('#api_box').show(300,"linear", { direction: "left" });
-            })
+                $('#api_box').show(300, 'linear', { direction: 'left' });
+            });
         </script>
 	</div>
 	<?
