@@ -20,6 +20,10 @@
     float: left;
 }
 
+.column_width {
+    width: 49%;
+}
+
 h1 {
     font-family: 'Open Sans', sans-serif;
 }

@@ -92,43 +92,43 @@ function sendwithus_conf_main() {
             <!-- Only display if API key is populated -->
             <?php if($GLOBALS['valid_key']) : ?>
                 <h3>Events</h3>
+                <table style="width: 100%">
+                    <tr>
+                        <td>
+                            <p class="description">Events that trigger the sending of transactional emails are listed below.</p>
+                        </td>
+                        <td>
+                            <input id="api_box" type="text" name="api_key"
+                                placeholder="Your sendwithus API key." 
+                                value="<?php echo getAPIKey(); ?>"/>
 
-                <div id="change_api_key">
-                    <input id="api_box" type="text" name="api_key"
-                           placeholder="Your sendwithus API key." 
-                           value="<?php echo getAPIKey(); ?>"/>
-
-                    <div id="api_button" class="button">Change API Key</div>
-                </div>
-
-                <p class="description">Events that trigger the sending of transactional emails are listed below.</p>
+                            <div id="api_button" class="button">Change API Key</div>
+                        </td>
+                    </tr>
+                </table>
             <?php endif; ?>
 
             <!-- Only display if API key is populated -->
 	        <?php if($GLOBALS['valid_key']) : ?>
 				<table class="wp-list-table widefat sendwithus_table">
 					<thead>
-						<th style="width: 49%">WordPress Event</th>
-						<th style="width: 49%">sendwithus Template</th>
+						<th class="column_width">WordPress Event</th>
+						<th class="column_width">sendwithus Template</th>
 					</thead>
 	                    <?php generateTemplateTable($GLOBALS['wp_notifications']); ?>
-	                <!-- Events that are displayed when multisite events are enabled -->
-	                <tr>
-	                <td colspan="2">
-                        <?php if (is_multisite()) {
-                            echo '<table class="multisite wp-list-table widefat" id="multisite_table">';
-                            echo '<thead>';
-                            echo '<th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>';
-                            echo '</thead>';
-                            // Check that an API Key has been etered before displaying these.
-                            if ($GLOBALS['valid_key']) {
-                                generateTemplateTable($GLOBALS['wp_ms_notifications']);
-                            }
-                        } ?>
-	                </table>
-	                </td>
-	                </tr>
-				</table>
+                </table>    
+                <!-- Events that are displayed when multisite events are enabled -->
+                <?php if (is_multisite()) {
+                    echo '<table class="multisite wp-list-table widefat" id="multisite_table">';
+                    echo '<thead>';
+                    echo '<th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>';
+                    echo '</thead>';
+                    // Check that an API Key has been etered before displaying these.
+                    if ($GLOBALS['valid_key']) {
+                        generateTemplateTable($GLOBALS['wp_ms_notifications']);
+                    }
+                    echo '</table>';
+                } ?>
             <!-- Display a notice telling the user to enter their API key & save -->
             <?php else : ?>
             	<table>
@@ -152,7 +152,7 @@ function sendwithus_conf_main() {
         <script type="text/javascript">
             $('.display_info').click(function() {
                 $(this).text(function(i, text) {
-                    return text === 'Display Description' ? 'Hide Description' : 'Display Description';
+                    return text === 'Show parameters sent to sendwithus' ? 'Hide parameters' : 'Show parameters sent to sendwithus';
                 });
 
                 $(this).parent().siblings().find('.parameters').slideToggle(150);

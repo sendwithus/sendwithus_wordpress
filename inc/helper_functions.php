@@ -51,7 +51,7 @@ function generateTemplateTable($notification_array) {
         echo generateParameterListing($current, $text);
         echo '</td><td style="text-align: right;">';
         echo generateTemplateSelection($current, $GLOBALS['templates']);
-        echo '<div class="button display_info parameters_button">Display Description</div>';
+        echo '<div class="button display_info parameters_button">Show parameters sent to sendwithus</div>';
         echo '</td></tr>';
         echo '<tr><td colspan="2">';
         echo generateParameterListing($current, $text);
