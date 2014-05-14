@@ -11,11 +11,11 @@ $GLOBALS['wp_notifications'] = array(
         'parameters'  => '   
             <ul>
                 <li><strong>user_login</strong>  - Numeric ID of the user.</li>
-                <li><strong>password</strong> - User\'s plaintext password.</li>
+                <li><strong>user_password</strong> - User\'s plaintext password.</li>
                 <li><strong>first_name</strong> - First name of the new user.</li>
                 <li><strong>last_name</strong> - Last name of the new user.</li>
                 <li><strong>caps</strong> - Individual capabilities the user has been given.</li>
-                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     ),
@@ -39,8 +39,8 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>comment_agent</strong> - Comment\'s agent information (browser, Operating System, etc.).</li>
                 <li><strong>comment_type</strong> - Commment\'s type if meaningful (pingback|trackback), and empty for normal comments.</li>
                 <li><strong>comment_parent</strong> - Parent comment\'s numerical ID.</li>
-                <li><strong>user_id</strong> - Numerical user ID of the comment poster</li>
-                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>user_id</strong> - Numerical user ID of the comment poster.</li>
+                <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     ),
@@ -76,9 +76,9 @@ $GLOBALS['wp_notifications'] = array(
         'parameters'  => '
             <ul>
                 <li><strong>user_login</strong> - User login name.</li>
-                <li><strong>user_pass</strong> - User\'s plaintext password.</li>
                 <li><strong>user_nicename</strong> - User\'s nicename.</li>
                 <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>user_password</strong> - User\'s plaintext password.</li>
                 <li><strong>user_url</strong> - User\'s URL, if provided.</li>
                 <li><strong>user_registered</strong> - Date the user registered.</li>
                 <li><strong>user_activation_key</strong> - URL allowing the user to reset their password.</li>
@@ -86,7 +86,7 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>display_name</strong> - What parameter contains.</li>
                 <li><strong>spam</strong> - What parameter contains.</li>
                 <li><strong>deleted</strong> - What parameter contains.</li>
-                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     ),
@@ -97,10 +97,10 @@ $GLOBALS['wp_notifications'] = array(
         'parameters'  => '
             <ul>
                 <li><strong>user_login</strong> - User\'s login name.</li>
-                <li><strong>reset_url</strong> - URL allowing the user to reset their password.</li>
                 <li><strong>user_nicename</strong> - User\'s nicename.</li>
                 <li><strong>user_email</strong> - User\'s email address.</li>
-                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>reset_url</strong> - URL allowing the user to reset their password.</li>
+                <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     )
@@ -113,7 +113,7 @@ $GLOBALS['wp_ms_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_network_admin" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>user</strong> - User name.</li>
+                <li><strong>user_name</strong> - User name.</li>
                 <li><strong>site_url</strong> - WordPress site URL.</li>
                 <li><strong>remote_ip</strong> - What parameter contains.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
@@ -140,7 +140,7 @@ $GLOBALS['wp_ms_notifications'] = array(
             <ul>
                 <li><strong>domain</strong> - What parameter contains.</li>
                 <li><strong>path</strong> - What parameter contains.</li>
-                <li><strong>user</strong> - User\'s login name.</li>
+                <li><strong>user_name</strong> - User\'s login name.</li>
                 <li><strong>user_email</strong> - User\'s email address.</li>
                 <li><strong>key</strong> - What parameter contains.</li>
                 <li><strong>content</strong> - What parameter contains.</li>
@@ -168,7 +168,7 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>user_email</strong> - User\'s email address.</li>
                 <li><strong>user_registered_date</strong> - Date user was created.</li>
                 <li><strong>user_activation_key</strong> - URL for the user to activate their account.</li>
-                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>blog_url</strong> - URL of the blog.</li>
                 <li><strong>meta</strong> - Returns a blank array</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
@@ -181,9 +181,9 @@ $GLOBALS['wp_ms_notifications'] = array(
         'parameters'  => '
             <ul>
                 <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>user_password</strong> - User\'s plaintext password.</li>
                 <li><strong>first_name</strong> - User\'s first name.</li>
                 <li><strong>last_name</strong> - User\'s last name.</li>
-                <li><strong>password</strong> - User\'s plaintext password.</li>
                 <li><strong>admin_email</strong> - Admin\'s email address.</li>
                 <li><strong>site_name</strong> - New blog\'s site name.</li>
                 <li><strong>site_url</strong> - New blog\'s site URL.</li>
