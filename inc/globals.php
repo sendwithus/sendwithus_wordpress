@@ -10,13 +10,13 @@ $GLOBALS['wp_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="new_user" name="display_parameters" value="Display parameters"',
         'parameters'  => '   
             <ul>
-                <li><strong>user_login</strong>  - Returns the numeric ID of the user.</li>
-                <li><strong>password</strong> - Returns the user\'s plaintext password.</li>
-                <li><strong>first_name</strong> - Returns the first name of the new user.</li>
-                <li><strong>last_name</strong> - Returns the last name of the new user.</li>
-                <li><strong>caps</strong> - Returns the individual capabilities the user has been given.</li>
-                <li><strong>blogname</strong> - Returns the name of the blog.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>user_login</strong>  - Numeric ID of the user.</li>
+                <li><strong>password</strong> - User\'s plaintext password.</li>
+                <li><strong>first_name</strong> - First name of the new user.</li>
+                <li><strong>last_name</strong> - Last name of the new user.</li>
+                <li><strong>caps</strong> - Individual capabilities the user has been given.</li>
+                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     ),
     'new_comment'                    => array(
@@ -25,23 +25,23 @@ $GLOBALS['wp_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="new_comment" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>comment_ID</strong> - Returns the numeric ID of the comment.</li>
-                <li><strong>comment_post_ID</strong> - Returns the numberic ID of the post.</li>
-                <li><strong>comment_author</strong> - Returns the comment author\'s name.</li>
-                <li><strong>comment_author_email</strong> - Returns the comment author\'s email.</li>
-                <li><strong>comment_author_url</strong> - Returns the comment author\'s url if provided.</li>
-                <li><strong>comment_author_IP</strong> - Returns the comment author\'s IP address.</li>
-                <li><strong>comment_date</strong> - Returns the date the comment was posted.</li>
-                <li><strong>comment_date_gmt</strong> - Returns the gmt date the comment was posted.</li>
-                <li><strong>comment_content</strong> - Returns the content of the comment.</li>
-                <li><strong>comment_karma</strong> - Returns the numerical karma given to the comment.</li>
+                <li><strong>comment_ID</strong> - Numeric ID of the comment.</li>
+                <li><strong>comment_post_ID</strong> - Numeric ID of the post.</li>
+                <li><strong>comment_author</strong> - Comment author\'s name.</li>
+                <li><strong>comment_author_email</strong> - Comment author\'s email.</li>
+                <li><strong>comment_author_url</strong> - Comment author\'s URL if provided.</li>
+                <li><strong>comment_author_IP</strong> - Comment author\'s IP address.</li>
+                <li><strong>comment_date</strong> - Date the comment was posted.</li>
+                <li><strong>comment_date_gmt</strong> - GMT date the comment was posted.</li>
+                <li><strong>comment_content</strong> - Content of the comment.</li>
+                <li><strong>comment_karma</strong> - Numerical karma given to the comment.</li>
                 <li><strong>comment_approved</strong> - Returns a 1 for approved, 0 for not approved.</li>
-                <li><strong>comment_agent</strong> - Returns The comment\'s agent (browser, Operating System, etc.).</li>
-                <li><strong>comment_type</strong> - Returns The comment\'s type if meaningfull (pingback|trackback), and empty for normal comments.</li>
-                <li><strong>comment_parent</strong> - Returns the parent comment\'s numerical ID.</li>
-                <li><strong>user_id</strong> - Returns the numerical user ID of the comment poster</li>
-                <li><strong>blogname</strong> - Returns the name of the blog.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>comment_agent</strong> - Comment\'s agent information (browser, Operating System, etc.).</li>
+                <li><strong>comment_type</strong> - Commment\'s type if meaningful (pingback|trackback), and empty for normal comments.</li>
+                <li><strong>comment_parent</strong> - Parent comment\'s numerical ID.</li>
+                <li><strong>user_id</strong> - Numerical user ID of the comment poster</li>
+                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     ),
     'awaiting_approval'              => array(
@@ -50,23 +50,23 @@ $GLOBALS['wp_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="awaiting_approval" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>comment_ID</strong> - Returns the numeric ID of the comment.</li>
-                <li><strong>comment_post_ID</strong> - Returns the numberic ID of the post.</li>
-                <li><strong>comment_author</strong> - Returns the comment author\'s name.</li>
-                <li><strong>comment_author_email</strong> - Returns the comment author\'s email.</li>
-                <li><strong>comment_author_url</strong> - Returns the comment author\'s url if provided.</li>
-                <li><strong>comment_author_IP</strong> - Returns the comment author\'s IP address.</li>
-                <li><strong>comment_date</strong> - Returns the date the comment was posted.</li>
-                <li><strong>comment_date_gmt</strong> - Returns the gmt date the comment was posted.</li>
-                <li><strong>comment_content</strong> - Returns the content of the comment.</li>
-                <li><strong>comment_karma</strong> - Returns the numerical karma given to the comment.</li>
+                <li><strong>comment_ID</strong> - Numeric ID of the comment.</li>
+                <li><strong>comment_post_ID</strong> - Numeric ID of the post.</li>
+                <li><strong>comment_author</strong> - Comment author\'s name.</li>
+                <li><strong>comment_author_email</strong> - Comment author\'s email.</li>
+                <li><strong>comment_author_url</strong> - Comment author\'s url if provided.</li>
+                <li><strong>comment_author_IP</strong> - Comment author\'s IP address.</li>
+                <li><strong>comment_date</strong> - Date the comment was posted.</li>
+                <li><strong>comment_date_gmt</strong> - GMT date the comment was posted.</li>
+                <li><strong>comment_content</strong> - Content of the comment.</li>
+                <li><strong>comment_karma</strong> - Numerical karma given to the comment.</li>
                 <li><strong>comment_approved</strong> - Returns a 1 for approved, 0 for not approved.</li>
-                <li><strong>comment_agent</strong> - Returns The comment\'s agent (browser, Operating System, etc.).</li>
-                <li><strong>comment_type</strong> - Returns The comment\'s type if meaningfull (pingback|trackback), and empty for normal comments.</li>
-                <li><strong>comment_parent</strong> - Returns the parent comment\'s numerical ID.</li>
-                <li><strong>user_id</strong> - Returns the numerical user ID of the comment poster</li>
-                <li><strong>blogname</strong> - Returns the name of the blog.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>comment_agent</strong> - Comment\'s agent information (browser, Operating System, etc.).</li>
+                <li><strong>comment_type</strong> - Comment\'s type if meaningful (pingback|trackback), and empty for normal comments.</li>
+                <li><strong>comment_parent</strong> - Parent comment\'s numerical ID.</li>
+                <li><strong>user_id</strong> - Numerical user ID of the commenter.</li>
+                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     ),
     'password_change_notification'   => array(
@@ -75,19 +75,19 @@ $GLOBALS['wp_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="password_change_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>user_login</strong> - Returns the user login name.</li>
-                <li><strong>user_pass</strong> - Returns the user\'s plaintext password.</li>
-                <li><strong>user_nicename</strong> - Returns the user\'s nicename.</li>
-                <li><strong>user_email</strong> - Returns the user\'s email address.</li>
-                <li><strong>user_url</strong> - Returns the user\'s url if provided.</li>
-                <li><strong>user_registered</strong> - Returns the date the user was registered.</li>
-                <li><strong>user_activation_key</strong> - Returns the url for the user to change their password.</li>
+                <li><strong>user_login</strong> - User login name.</li>
+                <li><strong>user_pass</strong> - User\'s plaintext password.</li>
+                <li><strong>user_nicename</strong> - User\'s nicename.</li>
+                <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>user_url</strong> - User\'s URL, if provided.</li>
+                <li><strong>user_registered</strong> - Date the user registered.</li>
+                <li><strong>user_activation_key</strong> - URL allowing the user to reset their password.</li>
                 <li><strong>user_status</strong> - What parameter contains.</li>
                 <li><strong>display_name</strong> - What parameter contains.</li>
                 <li><strong>spam</strong> - What parameter contains.</li>
                 <li><strong>deleted</strong> - What parameter contains.</li>
-                <li><strong>blogname</strong> - Returns the name of the blog.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     ),
     'password_reset'                 => array(
@@ -96,12 +96,12 @@ $GLOBALS['wp_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="password_reset" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>user_login</strong> - Returns the user login name.</li>
-                <li><strong>reset_url</strong> - Returns the url for the user to reset their password.</li>
-                <li><strong>user_nicename</strong> - Returns the user nicename.</li>
-                <li><strong>user_email</strong> - Returns the user\'s email address.</li>
-                <li><strong>blogname</strong> - Returns the name of the blog.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>user_login</strong> - User\'s login name.</li>
+                <li><strong>reset_url</strong> - URL allowing the user to reset their password.</li>
+                <li><strong>user_nicename</strong> - User\'s nicename.</li>
+                <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
     )
 );
@@ -113,10 +113,10 @@ $GLOBALS['wp_ms_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_network_admin" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>user</strong> - Returns the user name.</li>
-                <li><strong>site_url</strong> - Returns the wordpress site url.</li>
+                <li><strong>user</strong> - User name.</li>
+                <li><strong>site_url</strong> - WordPress site URL.</li>
                 <li><strong>remote_ip</strong> - What parameter contains.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'        
     ),
     'ms_new_blog_network_admin'    => array(
@@ -125,11 +125,11 @@ $GLOBALS['wp_ms_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_blog_network_admin" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>site_name</strong> - Returns the wordpress site name.</li>
-                <li><strong>site_url</strong> - Returns the wordpress site url.</li>
+                <li><strong>site_name</strong> - New blog site name.</li>
+                <li><strong>site_url</strong> - New blog site url.</li>
                 <li><strong>remote_ip</strong> - What parameter contains.</li>
                 <li><strong>disable_notifications</strong> - Returns a url to disable this type of notification.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'        
     ),
     'ms_new_user_success'          => array(
@@ -140,11 +140,11 @@ $GLOBALS['wp_ms_notifications'] = array(
             <ul>
                 <li><strong>domain</strong> - What parameter contains.</li>
                 <li><strong>path</strong> - What parameter contains.</li>
-                <li><strong>user</strong> - returns the user login name.</li>
-                <li><strong>user_email</strong> - Returns the user\'s email address.</li>
+                <li><strong>user</strong> - User\'s login name.</li>
+                <li><strong>user_email</strong> - User\'s email address.</li>
                 <li><strong>key</strong> - What parameter contains.</li>
                 <li><strong>content</strong> - What parameter contains.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'        
     ),
 //    'ms_new_blog_success'          => array(
@@ -164,14 +164,14 @@ $GLOBALS['wp_ms_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_welcome_user_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>user_login</strong> - Returns the user login name.</li>
-                <li><strong>user_email</strong> - Returns the user\'s email address.</li>
-                <li><strong>user_registered_date</strong> - Returns the date the user was created.</li>
-                <li><strong>user_activation_key</strong> - Returns the url for the user to activate their account.</li>
-                <li><strong>blogname</strong> - Returns the name of the blog.</li>
-                <li><strong>blog_url</strong> - Returns the url of the blog.</li>
+                <li><strong>user_login</strong> - User\'s login name.</li>
+                <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>user_registered_date</strong> - Date user was created.</li>
+                <li><strong>user_activation_key</strong> - URL for the user to activate their account.</li>
+                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>blog_url</strong> - URL of the blog.</li>
                 <li><strong>meta</strong> - Returns a blank array</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'        
     ),
     'ms_welcome_notification'      => array(
@@ -180,14 +180,14 @@ $GLOBALS['wp_ms_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_welcome_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>user_email</strong> - Returns the user\'s email address.</li>
-                <li><strong>first_name</strong> - Returns the user\'s first name.</li>
-                <li><strong>last_name</strong> - Returns the user\'s last name.</li>
-                <li><strong>password</strong> - Returns the user\'s plaintext password.</li>
-                <li><strong>admin_email</strong> - Returns the admin\'s email address.</li>
-                <li><strong>site_name</strong> - Returns the wordpress site name.</li>
-                <li><strong>site_url</strong> - Returns the wordpress site url.</li>
-                <li><strong>default_message</strong> - Returns the default wordpress email content.</li>
+                <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>first_name</strong> - User\'s first name.</li>
+                <li><strong>last_name</strong> - User\'s last name.</li>
+                <li><strong>password</strong> - User\'s plaintext password.</li>
+                <li><strong>admin_email</strong> - Admin\'s email address.</li>
+                <li><strong>site_name</strong> - New blog\'s site name.</li>
+                <li><strong>site_url</strong> - New blog\'s site URL.</li>
+                <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'        
     )
 );

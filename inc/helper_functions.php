@@ -47,22 +47,21 @@ function generateTemplateSelection($name, $array) {
 function generateTemplateTable($notification_array) {
     foreach ($notification_array as $current => $text) {
         echo '<tr><td style="width: 49%;"><strong>' . $text['event'] .'</strong>';
-        echo '<div class="' . $current . '-description">' . $text['description'] . '</div>';
-        echo generateParameterListing($current, $text);
+        echo '<div class="' . $current . '-description"><p class="description">' . $text['description'] . '</p></div>';
         echo '</td><td style="text-align: right;">';
         echo generateTemplateSelection($current, $GLOBALS['templates']);
-        echo '<div class="button display_info parameters_button">Show parameters sent to sendwithus</div>';
+        echo '<div class="button display_info parameters_button ' . $current . '">Show parameters sent to sendwithus</div>';
         echo '</td></tr>';
         echo '<tr><td colspan="2">';
         echo generateParameterListing($current, $text);
-        echo '</tr></td>';
+        echo '</td></tr>';
     }
 }
 
 // Generate code to display/hide parameters sent with events.
 function generateParameterListing($name, $parameterData) {
     $parameterListing = '
-        <span class="parameters" style="display: none; margin-bottom: 0px;">' . $parameterData['parameters'] . 
+        <span class="parameters ' . $name . '">' . $parameterData['parameters'] . 
         '</span>';
 
     return $parameterListing;

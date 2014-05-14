@@ -150,12 +150,15 @@ function sendwithus_conf_main() {
 		</form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
-            $('.display_info').click(function() {
+            $('.display_info').click(function(event) {
                 $(this).text(function(i, text) {
                     return text === 'Show parameters sent to sendwithus' ? 'Hide parameters' : 'Show parameters sent to sendwithus';
                 });
 
-                $(this).parent().siblings().find('.parameters').slideToggle(150);
+                // Get name of class from button.
+                // Kinda sloppy in how it relies on the position.
+                var className = event.target.classList[3];
+                $('.parameters.'+ className).slideToggle(150);
             });
 
             $('#api_button').click(function() {

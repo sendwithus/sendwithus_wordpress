@@ -24,6 +24,11 @@
     width: 49%;
 }
 
+.parameters {
+    display: none; 
+    margin-bottom: 0px;
+}
+
 h1 {
     font-family: 'Open Sans', sans-serif;
 }
