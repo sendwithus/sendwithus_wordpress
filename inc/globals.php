@@ -114,10 +114,18 @@ $GLOBALS['wp_ms_notifications'] = array(
         'parameters'  => '
             <ul>
                 <li><strong>user_name</strong> - User name.</li>
-                <li><strong>site_url</strong> - WordPress site URL.</li>
-                <li><strong>remote_ip</strong> - What parameter contains.</li>
+                <li><strong>remote_ip</strong> - IP address of new user.</li>
+                <li><strong>control_panel</strong> - WordPress control panel URL.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'        
+            </ul>'  
+        /*
+        default_message:
+
+        New User: testuserforsite
+        Remote IP: 127.0.0.1
+
+        Disable these notifications: http://localhost.com/wp-admin/network/settings.php 
+        */      
     ),
     'ms_new_blog_network_admin'    => array(
         'event'       => 'New Blog Notification - Notify Network Admin',
@@ -125,12 +133,21 @@ $GLOBALS['wp_ms_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_blog_network_admin" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>site_name</strong> - New blog site name.</li>
-                <li><strong>site_url</strong> - New blog site url.</li>
-                <li><strong>remote_ip</strong> - What parameter contains.</li>
-                <li><strong>disable_notifications</strong> - Returns a url to disable this type of notification.</li>
+                <li><strong>site_name</strong> - New blog\'s name.</li>
+                <li><strong>site_url</strong> - New blog\'s URL.</li>
+                <li><strong>remote_ip</strong> - IP of blog registrant (?).</li>
+                <li><strong>control_panel</strong> -  WordPress control panel URL.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'        
+            </ul>'       
+        /*
+        default_message:
+
+        New Site: testuserforsite
+        URL: http://testuserforsite.localhost.com
+        Remote IP: 127.0.0.1
+
+        Disable these notifications: http://localhost.com/wp-admin/network/settings.php         
+        */ 
     ),
     'ms_new_user_success'          => array(
         'event'       => 'New User Success - Notify User',
@@ -138,14 +155,23 @@ $GLOBALS['wp_ms_notifications'] = array(
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_success" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>domain</strong> - What parameter contains.</li>
-                <li><strong>path</strong> - What parameter contains.</li>
+                <li><strong>domain</strong> - Domain name of new site.</li>
+                <li><strong>path</strong> - Path name of new site.</li>
                 <li><strong>user_name</strong> - User\'s login name.</li>
                 <li><strong>user_email</strong> - User\'s email address.</li>
-                <li><strong>key</strong> - What parameter contains.</li>
-                <li><strong>content</strong> - What parameter contains.</li>
+                <li><strong>key</strong> - Unique key to activate new site. Passed as paramter (ex. /wp-activate.php?key=9ef0f34833088971)</li>
+                <li><strong>content</strong> - Unformatted version of default_message, with no domain/path or links.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'        
+        /*
+        default_message: 
+
+        To activate your blog, please click the following link:
+        http://testuserforsite.localhost.com/wp-activate.php?key=9ef0f34833088971
+        After you activate, you will receive *another email* with your login.
+        After you activate, you can visit your site here:
+        http://testuserforsite.localhost.com/ 
+        */
     ),
 //    'ms_new_blog_success'          => array(
 //        'event'       => 'New Blog Success - Notify User',
@@ -167,12 +193,20 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>user_login</strong> - User\'s login name.</li>
                 <li><strong>user_email</strong> - User\'s email address.</li>
                 <li><strong>user_registered_date</strong> - Date user was created.</li>
-                <li><strong>user_activation_key</strong> - URL for the user to activate their account.</li>
-                <li><strong>blog_name</strong> - Name of the blog.</li>
-                <li><strong>blog_url</strong> - URL of the blog.</li>
-                <li><strong>meta</strong> - Returns a blank array</li>
+                <li><strong>user_activation_key</strong> - Complete URL for the user to activate their account.</li>
+                <li><strong>blog_name</strong> - Name of the blog the user signed up for.</li>
+                <li><strong>blog_url</strong> - URL of the blog the user signed up for.</li>
+                <li><strong>meta</strong> - Returns a blank array. Often empty.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'        
+            </ul>'
+
+    /*
+        default_message:
+
+        To activate your user, please click the following link: 
+        http://localhost.com/wp-activate.php?key=538bc64f7637476c 
+        After you activate, you will receive *another email* with your login.
+    */        
     ),
     'ms_welcome_notification'      => array(
         'event'       => 'New Blog Welcome - Notify User',
@@ -182,13 +216,28 @@ $GLOBALS['wp_ms_notifications'] = array(
             <ul>
                 <li><strong>user_email</strong> - User\'s email address.</li>
                 <li><strong>user_password</strong> - User\'s plaintext password.</li>
-                <li><strong>first_name</strong> - User\'s first name.</li>
-                <li><strong>last_name</strong> - User\'s last name.</li>
+                <li><strong>first_name</strong> - User\'s first name. (Often blank)</li>
+                <li><strong>last_name</strong> - User\'s last name. (Often blank)</li>
                 <li><strong>admin_email</strong> - Admin\'s email address.</li>
-                <li><strong>site_name</strong> - New blog\'s site name.</li>
-                <li><strong>site_url</strong> - New blog\'s site URL.</li>
+                <li><strong>site_name</strong> - New blog\'s name.</li>
+                <li><strong>site_url</strong> - New blog\'s URL.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'        
+            </ul>'
+        /*
+        Dear User, 
+
+        Your new WordPress Test Sites site has been successfully set up at: 
+        http://testuserforsite.localhost.com/ 
+
+        You can log in to the administrator account with the following information: 
+        Username: testuserforsite 
+        Password: 8YuSjVhVqj3D 
+        Log in here: http://testuserforsite.localhost.com/wp-login.php 
+
+        We hope you enjoy your new site. Thanks! 
+
+        --The Team @ WordPress Test Sites    
+        */
     )
 );
 

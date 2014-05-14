@@ -102,7 +102,7 @@ function sendwithus_conf_main() {
                                 placeholder="Your sendwithus API key." 
                                 value="<?php echo getAPIKey(); ?>"/>
 
-                            <div id="api_button" class="button">Change API Key</div>
+                            <div id="api_button" class="button">Show API Key</div>
                         </td>
                     </tr>
                 </table>

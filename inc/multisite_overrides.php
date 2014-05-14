@@ -29,7 +29,7 @@ function swu_newblog_notify_siteadmin($msg) {
                 'site_name' => $site_name[1],
                 'site_url' => $site_url[1],
                 'remote_ip' => $remote_ip[1],
-                'disable_notifications' => $disable_notifications[1],
+                'control_panel' => $disable_notifications[1],
                 'default_message' => htmlDefaultMessage($msg)
             )
         )
@@ -157,8 +157,8 @@ function swu_newuser_notify_siteadmin($msg, $user) {
         array(
             'email_data' => array(
                 'user_name' => $user->user_login,
-                'site_url' => $options_site_url,
                 'remote_ip' => $remote_ip,
+                'control_panel' => $options_site_url,
                 'default_message' => htmlDefaultMessage($msg)
             )
         )
