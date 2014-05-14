@@ -112,8 +112,7 @@ function sendwithus_conf_main() {
 	        <?php if($GLOBALS['valid_key']) : ?>
 				<table class="wp-list-table widefat sendwithus_table">
 					<thead>
-						<th class="column_width">WordPress Event</th>
-						<th class="column_width">sendwithus Template</th>
+						<th colspan="2">Single-site Events</th>
 					</thead>
 	                    <?php generateTemplateTable($GLOBALS['wp_notifications']); ?>
                 </table>    
@@ -121,7 +120,7 @@ function sendwithus_conf_main() {
                 <?php if (is_multisite()) {
                     echo '<table class="multisite wp-list-table widefat" id="multisite_table">';
                     echo '<thead>';
-                    echo '<th colspan="2" style="text-align: center;"><b>Multisite Events</b></th>';
+                    echo '<th colspan="2">Multi-site Events</th>';
                     echo '</thead>';
                     // Check that an API Key has been etered before displaying these.
                     if ($GLOBALS['valid_key']) {
@@ -158,7 +157,7 @@ function sendwithus_conf_main() {
                 // Get name of class from button.
                 // Kinda sloppy in how it relies on the position.
                 var className = event.target.classList[3];
-                $('.parameters.'+ className).slideToggle(150);
+                $('.parameters.' + className).slideToggle(150);
             });
 
             $('#api_button').click(function() {

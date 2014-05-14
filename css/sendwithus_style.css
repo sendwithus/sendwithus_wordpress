@@ -29,13 +29,31 @@
     margin-bottom: 0px;
 }
 
+p.submit {
+    margin-top: 0px;
+}
+
 h1 {
     font-family: 'Open Sans', sans-serif;
 }
 
+table {
+    margin-bottom: 10px !important;
+}
+
+th {
+    text-align: center !important;
+    font-weight: 900 !important;
+}
+
+td {
+    margin: 0px;
+}
+
 ul {
     list-style-type: circle;
-    padding-left: 30px
+    padding-left: 30px;
+    margin: 0px;
 }
 
 #event_name {
@@ -65,4 +83,9 @@ ul {
     margin-right: auto; 
     display: block; 
     padding: 0px 0px 10px;
+}
+
+#submit {
+    width: 100%;
+    padding-top: 0px;
 }

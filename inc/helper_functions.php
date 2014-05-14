@@ -46,13 +46,13 @@ function generateTemplateSelection($name, $array) {
 // Generate table body from the wp_notification arrays
 function generateTemplateTable($notification_array) {
     foreach ($notification_array as $current => $text) {
-        echo '<tr><td style="width: 49%;"><strong>' . $text['event'] .'</strong>';
+        echo '<tr><td style="width: 49%; padding-bottom: 0px;"><strong>' . $text['event'] .'</strong>';
         echo '<div class="' . $current . '-description"><p class="description">' . $text['description'] . '</p></div>';
-        echo '</td><td style="text-align: right;">';
+        echo '</td><td style="text-align: right; padding-bottom: 0px;">';
         echo generateTemplateSelection($current, $GLOBALS['templates']);
         echo '<div class="button display_info parameters_button ' . $current . '">Show parameters sent to sendwithus</div>';
         echo '</td></tr>';
-        echo '<tr><td colspan="2">';
+        echo '<tr><td colspan="2" style="padding-top: 0px;">';
         echo generateParameterListing($current, $text);
         echo '</td></tr>';
     }
