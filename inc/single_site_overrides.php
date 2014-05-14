@@ -66,12 +66,11 @@ if (!function_exists('wp_notify_postauthor')) {
             array('address' => $author->user_email),
             array(
                 'email_data' => array(
-                    'comment_ID' => $comment->comment_ID,
-                    'comment_post_ID' => $comment->comment_post_ID,
+                    'comment_id' => $comment->comment_ID,
+                    'comment_post_id' => $comment->comment_post_ID,
                     'comment_author' => $comment->comment_author,
                     'comment_author_email' => $comment->comment_author_email,
-                    'comment_author_url' => $comment->comment_author_url,
-                    'comment_author_IP' => $comment->comment_author_IP,
+                    'comment_author_ip_address' => $comment->comment_author_IP,
                     'comment_date' => $comment->comment_date,
                     'comment_date_gmt' => $comment->comment_date_gmt,
                     'comment_content' => $comment->comment_content,
@@ -81,7 +80,7 @@ if (!function_exists('wp_notify_postauthor')) {
                     'comment_type' => $comment->comment_type,
                     'comment_parent' => $comment->comment_parent,
                     'user_id' => $comment->user_id,
-                    'blogname' => get_option('blogname'),
+                    'blog_name' => get_option('blogname'),
                     'default_message'=> htmlDefaultMessage($notify_message)
                 )
             )
@@ -203,12 +202,11 @@ if (!function_exists('wp_notify_moderator')) {
                 array('address' => $email),
                 array(
                     'email_data' => array(
-                        'comment_ID' => $comment->comment_ID,
-                        'comment_post_ID' => $comment->comment_post_ID,
+                        'comment_id' => $comment->comment_ID,
+                        'comment_post_id' => $comment->comment_post_ID,
                         'comment_author' => $comment->comment_author,
                         'comment_author_email' => $comment->comment_author_email,
-                        'comment_author_url' => $comment->comment_author_url,
-                        'comment_author_IP' => $comment->comment_author_IP,
+                        'comment_author_ip_address' => $comment->comment_author_IP,
                         'comment_date' => $comment->comment_date,
                         'comment_date_gmt' => $comment->comment_date_gmt,
                         'comment_content' => $comment->comment_content,
@@ -242,16 +240,12 @@ if (!function_exists('wp_password_change_notification')) {
             array(
                 'email_data' => array(
                     'user_login' => $user->user_login,
+                    'display_name' => $user->display_name,
                     'user_nicename' => $user->user_nicename,
                     'user_email' => $user->user_email,
                     'user_password' => $user->user_pass,
                     'user_url' => $user->user_url,
                     'user_registered' => $user->user_registered,
-                    'user_activation_key' => $user->user_activation_key,
-                    'user_status' => $user->user_status,
-                    'display_name' => $user->display_name,
-                    'spam' => $user->spam,
-                    'deleted' =>$user->deleted,
                     'blog_name' => $blogname,
                     'default_message' => htmlDefaultMessage($message)
                 )
