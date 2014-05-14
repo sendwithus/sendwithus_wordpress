@@ -157,9 +157,9 @@ $GLOBALS['wp_ms_notifications'] = array(
             <ul>
                 <li><strong>domain</strong> - Domain name of new site.</li>
                 <li><strong>path</strong> - Path name of new site.</li>
+                <li><strong>key</strong> - Unique key to activate new site. Passed as paramter (ex. /wp-activate.php?key=9ef0f34833088971)</li>
                 <li><strong>user_name</strong> - User\'s login name.</li>
                 <li><strong>user_email</strong> - User\'s email address.</li>
-                <li><strong>key</strong> - Unique key to activate new site. Passed as paramter (ex. /wp-activate.php?key=9ef0f34833088971)</li>
                 <li><strong>content</strong> - Unformatted version of default_message, with no domain/path or links.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'        
@@ -196,7 +196,6 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>user_activation_key</strong> - Complete URL for the user to activate their account.</li>
                 <li><strong>blog_name</strong> - Name of the blog the user signed up for.</li>
                 <li><strong>blog_url</strong> - URL of the blog the user signed up for.</li>
-                <li><strong>meta</strong> - Returns a blank array. Often empty.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'
 
@@ -216,8 +215,6 @@ $GLOBALS['wp_ms_notifications'] = array(
             <ul>
                 <li><strong>user_email</strong> - User\'s email address.</li>
                 <li><strong>user_password</strong> - User\'s plaintext password.</li>
-                <li><strong>first_name</strong> - User\'s first name. (Often blank)</li>
-                <li><strong>last_name</strong> - User\'s last name. (Often blank)</li>
                 <li><strong>admin_email</strong> - Admin\'s email address.</li>
                 <li><strong>site_name</strong> - New blog\'s name.</li>
                 <li><strong>site_url</strong> - New blog\'s URL.</li>

@@ -128,8 +128,6 @@ We hope you enjoy your new site. Thanks!
             'email_data' => array(
                 'user_email' => $user->user_email,
                 'user_password' => $password,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
                 'site_url' => $url,
@@ -234,7 +232,6 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
                     'user_activation_key' => $url,
                     'blog_name' => $blog_name,
                     'blog_url' => $blog_url,
-                    'meta' => $meta,
                     'default_message' => $content
             )
         )
