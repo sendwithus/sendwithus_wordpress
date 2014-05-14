@@ -29,7 +29,7 @@ function swu_newblog_notify_siteadmin($msg) {
                 'site_name' => $site_name[1],
                 'site_url' => $site_url[1],
                 'remote_ip' => $remote_ip[1],
-                'disable_notifications' => $disable_notifications[1],
+                'control_panel' => $disable_notifications[1],
                 'default_message' => htmlDefaultMessage($msg)
             )
         )
@@ -128,8 +128,6 @@ We hope you enjoy your new site. Thanks!
             'email_data' => array(
                 'user_email' => $user->user_email,
                 'user_password' => $password,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
                 'site_url' => $url,
@@ -157,8 +155,8 @@ function swu_newuser_notify_siteadmin($msg, $user) {
         array(
             'email_data' => array(
                 'user_name' => $user->user_login,
-                'site_url' => $options_site_url,
                 'remote_ip' => $remote_ip,
+                'control_panel' => $options_site_url,
                 'default_message' => htmlDefaultMessage($msg)
             )
         )
@@ -234,7 +232,6 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
                     'user_activation_key' => $url,
                     'blog_name' => $blog_name,
                     'blog_url' => $blog_url,
-                    'meta' => $meta,
                     'default_message' => $content
             )
         )
