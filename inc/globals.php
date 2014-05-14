@@ -12,12 +12,19 @@ $GLOBALS['wp_notifications'] = array(
             <ul>
                 <li><strong>user_login</strong>  - Numeric ID of the user.</li>
                 <li><strong>user_password</strong> - User\'s plaintext password.</li>
-                <li><strong>first_name</strong> - First name of the new user.</li>
-                <li><strong>last_name</strong> - Last name of the new user.</li>
                 <li><strong>caps</strong> - Individual capabilities the user has been given.</li>
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
+        /*
+        default_message:
+
+        New user registration on your site WordPress Test: 
+        Username: atestuser 
+        E-mail: dcqnsht+md1qlo@sharklasers.com 
+        Password: zte2OeyWsl6M 
+        http://localhost/~kyle/wordpress/wp-login.php
+        */
     ),
     'new_comment'                    => array(
         'event'       => 'New Comment Posted',
@@ -35,7 +42,6 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>comment_date_gmt</strong> - GMT date the comment was posted.</li>
                 <li><strong>comment_content</strong> - Content of the comment.</li>
                 <li><strong>comment_karma</strong> - Numerical karma given to the comment.</li>
-                <li><strong>comment_approved</strong> - Returns a 1 for approved, 0 for not approved.</li>
                 <li><strong>comment_agent</strong> - Comment\'s agent information (browser, Operating System, etc.).</li>
                 <li><strong>comment_type</strong> - Commment\'s type if meaningful (pingback|trackback), and empty for normal comments.</li>
                 <li><strong>comment_parent</strong> - Parent comment\'s numerical ID.</li>
@@ -43,6 +49,24 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
+        /*
+        default_message:
+
+        New comment on your post "Hello world!" 
+        Author : 123qwe (IP: 127.0.0.1 , ) 
+        E-mail : ct5ru7h+l4rqho@sharklasers.com 
+        URL : 
+        Whois : http://whois.arin.net/rest/ip/127.0.0.1 
+        Comment: 
+        Another new one. 
+
+        You can see all comments on this post here: 
+        http://localhost.com/2014/05/01/hello-world/#comments 
+
+        Permalink: http://localhost.com/2014/05/01/hello-world/#comment-4 
+        Trash it: http://localhost.com/wp-admin/comment.php?action=trash&c=4 
+        Spam it: http://localhost.com/wp-admin/comment.php?action=spam&c=4 
+        */
     ),
     'awaiting_approval'              => array(
         'event'       => 'User Comment Awaiting Approval',
@@ -59,7 +83,6 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>comment_date_gmt</strong> - GMT date the comment was posted.</li>
                 <li><strong>comment_content</strong> - Content of the comment.</li>
                 <li><strong>comment_karma</strong> - Numerical karma given to the comment.</li>
-                <li><strong>comment_approved</strong> - Returns a 1 for approved, 0 for not approved.</li>
                 <li><strong>comment_agent</strong> - Comment\'s agent information (browser, Operating System, etc.).</li>
                 <li><strong>comment_type</strong> - Comment\'s type if meaningful (pingback|trackback), and empty for normal comments.</li>
                 <li><strong>comment_parent</strong> - Parent comment\'s numerical ID.</li>
@@ -67,26 +90,26 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>blogname</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
+        /*
+        default_message:
+
+        A new comment on the post "Hello world!" is waiting for your approval 
+        http://localhost.com/2014/05/01/hello-world/ 
+
+        Author : 123qwe (IP: 127.0.0.1 , ) 
+        E-mail : ct5ru7h+l4rqho@sharklasers.com 
+        URL : 
+        Whois : http://whois.arin.net/rest/ip/127.0.0.1 
+        Comment: 
+        Another test 
+
+        Approve it: http://localhost.com/wp-admin/comment.php?action=approve&c=3 
+        Trash it: http://localhost.com/wp-admin/comment.php?action=trash&c=3 
+        Spam it: http://localhost.com/wp-admin/comment.php?action=spam&c=3 
+        Currently 0 comments are waiting for approval. Please visit the moderation panel: 
+        http://localhost.com/wp-admin/edit-comments.php?comment_status=moderated 
+        */
     ),
-    /*
-    default_message:
-
-    A new comment on the post "Hello world!" is waiting for your approval 
-    http://localhost.com/2014/05/01/hello-world/ 
-
-    Author : 123qwe (IP: 127.0.0.1 , ) 
-    E-mail : ct5ru7h+l4rqho@sharklasers.com 
-    URL : 
-    Whois : http://whois.arin.net/rest/ip/127.0.0.1 
-    Comment: 
-    Another test 
-
-    Approve it: http://localhost.com/wp-admin/comment.php?action=approve&c=3 
-    Trash it: http://localhost.com/wp-admin/comment.php?action=trash&c=3 
-    Spam it: http://localhost.com/wp-admin/comment.php?action=spam&c=3 
-    Currently 0 comments are waiting for approval. Please visit the moderation panel: 
-    http://localhost.com/wp-admin/edit-comments.php?comment_status=moderated 
-    */
     'password_change_notification'   => array(
         'event'       => 'Password Change Performed (Notify Admin)',
         'description' => 'Activated when a user changes their password via "Lost your password?" - notifies the site admin.',
@@ -103,11 +126,11 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
-    /*
-    default_message:
+        /*
+        default_message:
 
-    Password Lost and Changed for user: kyle 
-    */
+        Password Lost and Changed for user: kyle 
+        */
     ),
     'password_reset'                 => array(
         'event'       => 'Password Reset Requested (Notify User)',
@@ -122,22 +145,22 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
-    /*
-    default_message:
+        /*
+        default_message:
 
-    Someone requested that the password be reset for the following account: 
+        Someone requested that the password be reset for the following account: 
 
-    http://localhost.com/ 
+        http://localhost.com/ 
 
-    Username: kyle 
+        Username: kyle 
 
-    If this was a mistake, just ignore this email and nothing will happen. 
+        If this was a mistake, just ignore this email and nothing will happen. 
 
-    To reset your password, visit the following address: 
+        To reset your password, visit the following address: 
 
 
-    http://localhost.com/wp-login.php?action=rp&key=sDAGd13qVt0lvK8yNBCr&login=kyle
-    */
+        http://localhost.com/wp-login.php?action=rp&key=sDAGd13qVt0lvK8yNBCr&login=kyle
+        */
     )
 );
 
@@ -234,13 +257,13 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
             </ul>'
 
-    /*
+        /*
         default_message:
 
         To activate your user, please click the following link: 
         http://localhost.com/wp-activate.php?key=538bc64f7637476c 
         After you activate, you will receive *another email* with your login.
-    */        
+        */        
     ),
     'ms_welcome_notification'      => array(
         'event'       => 'New Blog Welcome - Notify User',

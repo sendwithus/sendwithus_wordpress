@@ -75,7 +75,6 @@ if (!function_exists('wp_notify_postauthor')) {
                     'comment_date_gmt' => $comment->comment_date_gmt,
                     'comment_content' => $comment->comment_content,
                     'comment_karma' => $comment->comment_karma,
-                    'comment_approved' => $comment->comment_approved,
                     'comment_agent' => $comment->comment_agent,
                     'comment_type' => $comment->comment_type,
                     'comment_parent' => $comment->comment_parent,
@@ -116,8 +115,6 @@ if (!function_exists('wp_new_user_notification')) {
                 'email_data' => array(
                     'user_login' => $user_login,
                     'user_password' => $plaintext_pass,
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
                     'caps' => $user->caps,
                     'blog_name' => get_option('blogname'),
                     'default_message' => htmlDefaultMessage($message)
@@ -211,7 +208,6 @@ if (!function_exists('wp_notify_moderator')) {
                         'comment_date_gmt' => $comment->comment_date_gmt,
                         'comment_content' => $comment->comment_content,
                         'comment_karma' => $comment->comment_karma,
-                        'comment_approved' => $comment->comment_approved,
                         'comment_agent' => $comment->comment_agent,
                         'comment_type' => $comment->comment_type,
                         'comment_parent' => $comment->comment_parent,
