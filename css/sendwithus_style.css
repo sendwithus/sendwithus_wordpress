@@ -15,6 +15,14 @@
     font-size:12px !important;
 }
 
+.table_description {
+    text-align: center;
+    font-weight: 900;
+    font-size: 14pt;
+    color: black;
+    margin: 0px;
+}
+
 .description {
     display: inline-block;
     float: left;
@@ -29,6 +37,15 @@
     margin-bottom: 0px;
 }
 
+a:hover {
+
+}
+
+a:link {
+    text-decoration: none;
+    color: #777;
+}
+
 p.submit {
     margin-top: 0px;
 }
@@ -41,10 +58,6 @@ table {
     margin-bottom: 10px !important;
 }
 
-th {
-    text-align: center !important;
-    font-weight: 900 !important;
-}
 
 td {
     margin: 0px;
@@ -68,6 +81,7 @@ ul {
 #api_box {
     float: right;
     min-width: 40%;
+    width: 300px;
     display: none;
     margin-bottom: 5px;
 }

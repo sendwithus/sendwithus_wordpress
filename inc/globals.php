@@ -166,7 +166,7 @@ $GLOBALS['wp_notifications'] = array(
 $GLOBALS['wp_ms_notifications'] = array(
     'ms_new_user_network_admin'    => array(
         'event'       => 'New User Notification - Notify Network Admin',
-        'description' => 'Activates when a new user signs up for the site, notifies the site admin.',
+        'description' => 'Activated when a new user signs up. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_network_admin" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -186,7 +186,7 @@ $GLOBALS['wp_ms_notifications'] = array(
     ),
     'ms_new_blog_network_admin'    => array(
         'event'       => 'New Blog Notification - Notify Network Admin',
-        'description' => 'Activates when a new blog is created on the site, notifies the site admin.',
+        'description' => 'Activated when a new blog is created. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_blog_network_admin" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -208,7 +208,7 @@ $GLOBALS['wp_ms_notifications'] = array(
     ),
     'ms_new_user_success'          => array(
         'event'       => 'New User Success - Notify User',
-        'description' => 'Activated when a new user signs up for the site, notifies the user.',
+        'description' => 'Activated when a new user signs up. Sent to user.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_success" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -243,7 +243,7 @@ $GLOBALS['wp_ms_notifications'] = array(
 //    ),
     'ms_welcome_user_notification' => array(
         'event'       => 'New User Welcome - Notify User',
-        'description' => 'Activates when a new user creation is successful.',
+        'description' => 'Activated when a new user creation is successful. Sent to user.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_welcome_user_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -266,7 +266,7 @@ $GLOBALS['wp_ms_notifications'] = array(
     ),
     'ms_welcome_notification'      => array(
         'event'       => 'New Blog Welcome - Notify User',
-        'description' => 'Activates when a blog creation is successful.',
+        'description' => 'Activated when a blog creation is successful. Sent to user.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_welcome_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
