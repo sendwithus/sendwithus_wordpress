@@ -29,7 +29,7 @@ function swu_newblog_notify_siteadmin($msg) {
     if(get_option('ms_new_blog_network_admin') == $default_message_id){
             $response = $api->send(
             $default_message_id,
-            array('address' => $author->user_email),
+            array('address' => $email),
             array(
                 'email_data' => array(
                     'email_subject' => 'New blog created '.get_option('blogname'),
@@ -84,7 +84,7 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ){
     if(get_option('ms_welcome_user_notification') == $default_message_id){
             $response = $api->send(
             $default_message_id,
-            array('address' => $author->user_email),
+            array('address' => $user->user_email),
             array(
                 'email_data' => array(
                     'email_subject' => 'Welcome to '.get_option('blogname'),
@@ -157,7 +157,7 @@ We hope you enjoy your new site. Thanks!
     if(get_option('ms_welcome_notification') == $default_message_id){
             $response = $api->send(
             $default_message_id,
-            array('address' => $author->user_email),
+            array('address' => $user->user_email),
             array(
                 'email_data' => array(
                     'email_subject' => 'Welcome to '.get_option('blogname'),
@@ -199,7 +199,7 @@ function swu_newuser_notify_siteadmin($msg, $user) {
     if(get_option('ms_new_user_network_admin') == $default_message_id){
             $response = $api->send(
             $default_message_id,
-            array('address' => $author->user_email),
+            array('address' => $email),
             array(
                 'email_data' => array(
                     'email_subject' => 'New user subscribed to '.get_option('blogname'),
@@ -252,7 +252,7 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
     if(get_option('ms_new_user_success') == $default_message_id){
             $response = $api->send(
             $default_message_id,
-            array('address' => $author->user_email),
+            array('address' => $user_email),
             array(
                 'email_data' => array(
                     'email_subject' => 'You have successfully registered to '.get_option('blogname'),
@@ -301,7 +301,7 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
     if(get_option('ms_welcome_user_notification') == $default_message_id){
         $response = $api->send(
         $default_message_id,
-        array('address' => $author->user_email),
+        array('address' => $user_email),
         array(
             'email_data' => array(
                 'email_subject' => 'Welcome to '.get_option('blogname'),
