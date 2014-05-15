@@ -1,20 +1,6 @@
 <?php
 
-function get_default_email_id(){
-    $api = new \sendwithus\API($GLOBALS['api_key']);;
-    $response = $api->emails();
-
-    foreach ($response as $template) {
-        if($template->name == 'default_message'){
-            $default_message_id = $template->id; 
-        }
-    }
-
-    return $default_message_id;
-}
-
 $default_message_id = get_default_email_id();
-
 /*
  * FUNCTION OVERRIDE BASED OVERRIDES
  */
@@ -25,6 +11,7 @@ if (!function_exists('wp_notify_postauthor')) {
     {
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
+
         $comment = get_comment($comment_id);
         $post    = get_post( $comment->comment_post_ID );
         $author  = get_userdata( $post->post_author );
@@ -32,51 +19,51 @@ if (!function_exists('wp_notify_postauthor')) {
         /* Begin code to generate 'default_message' */
         switch ( $comment->comment_type ) {
             case 'trackback':
-                $notify_message  = sprintf( __( 'New trackback on your post "%s"' ), $post->post_title ) . "\r\n";
+                $default_message  = sprintf( __( 'New trackback on your post "%s"' ), $post->post_title ) . "\r\n";
                 /* translators: 1: website name, 2: author IP, 3: author domain */
-                $notify_message .= sprintf( __('Website: %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
-                $notify_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
-                $notify_message .= __('Excerpt: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
-                $notify_message .= __('You can see all trackbacks on this post here: ') . "\r\n";
+                $default_message .= sprintf( __('Website: %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
+                $default_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
+                $default_message .= __('Excerpt: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
+                $default_message .= __('You can see all trackbacks on this post here: ') . "\r\n";
                 /* translators: 1: blog name, 2: post title */
                 $subject = sprintf( __('[%1$s] Trackback: "%2$s"'), $blogname, $post->post_title );
                 break;
             case 'pingback':
-                $notify_message  = sprintf( __( 'New pingback on your post "%s"' ), $post->post_title ) . "\r\n";
+                $default_message  = sprintf( __( 'New pingback on your post "%s"' ), $post->post_title ) . "\r\n";
                 /* translators: 1: comment author, 2: author IP, 3: author domain */
-                $notify_message .= sprintf( __('Website: %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
-                $notify_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
-                $notify_message .= __('Excerpt: ') . "\r\n" . sprintf('[...] %s [...]', $comment->comment_content ) . "\r\n\r\n";
-                $notify_message .= __('You can see all pingbacks on this post here: ') . "\r\n";
+                $default_message .= sprintf( __('Website: %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
+                $default_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
+                $default_message .= __('Excerpt: ') . "\r\n" . sprintf('[...] %s [...]', $comment->comment_content ) . "\r\n\r\n";
+                $default_message .= __('You can see all pingbacks on this post here: ') . "\r\n";
                 /* translators: 1: blog name, 2: post title */
                 $subject = sprintf( __('[%1$s] Pingback: "%2$s"'), $blogname, $post->post_title );
                 break;
             default: // Comments
-                $notify_message  = sprintf( __( 'New comment on your post "%s"' ), $post->post_title ) . "\r\n";
+                $default_message  = sprintf( __( 'New comment on your post "%s"' ), $post->post_title ) . "\r\n";
                 /* translators: 1: comment author, 2: author IP, 3: author domain */
-                $notify_message .= sprintf( __('Author : %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
-                $notify_message .= sprintf( __('E-mail : %s'), $comment->comment_author_email ) . "\r\n";
-                $notify_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
-                $notify_message .= sprintf( __('Whois  : http://whois.arin.net/rest/ip/%s'), $comment->comment_author_IP ) . "\r\n";
-                $notify_message .= __('Comment: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
-                $notify_message .= __('You can see all comments on this post here: ') . "\r\n";
+                $default_message .= sprintf( __('Author : %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
+                $default_message .= sprintf( __('E-mail : %s'), $comment->comment_author_email ) . "\r\n";
+                $default_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
+                $default_message .= sprintf( __('Whois  : http://whois.arin.net/rest/ip/%s'), $comment->comment_author_IP ) . "\r\n";
+                $default_message .= __('Comment: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
+                $default_message .= __('You can see all comments on this post here: ') . "\r\n";
                 /* translators: 1: blog name, 2: post title */
                 $subject = sprintf( __('[%1$s] Comment: "%2$s"'), $blogname, $post->post_title );
                 break;
         }
-        $notify_message .= get_permalink($comment->comment_post_ID) . "#comments\r\n\r\n";
-        $notify_message .= sprintf( __('Permalink: %s'), get_permalink( $comment->comment_post_ID ) . '#comment-' . $comment_id ) . "\r\n";
+        $default_message .= get_permalink($comment->comment_post_ID) . "#comments\r\n\r\n";
+        $default_message .= sprintf( __('Permalink: %s'), get_permalink( $comment->comment_post_ID ) . '#comment-' . $comment_id ) . "\r\n";
 
         if ( user_can( $post->post_author, 'edit_comment', $comment_id ) ) {
             if ( EMPTY_TRASH_DAYS )
-                $notify_message .= sprintf( __('Trash it: %s'), admin_url("comment.php?action=trash&c=$comment_id") ) . "\r\n";
+                $default_message .= sprintf( __('Trash it: %s'), admin_url("comment.php?action=trash&c=$comment_id") ) . "\r\n";
             else
-                $notify_message .= sprintf( __('Delete it: %s'), admin_url("comment.php?action=delete&c=$comment_id") ) . "\r\n";
-            $notify_message .= sprintf( __('Spam it: %s'), admin_url("comment.php?action=spam&c=$comment_id") ) . "\r\n";
+                $default_message .= sprintf( __('Delete it: %s'), admin_url("comment.php?action=delete&c=$comment_id") ) . "\r\n";
+            $default_message .= sprintf( __('Spam it: %s'), admin_url("comment.php?action=spam&c=$comment_id") ) . "\r\n";
         }
         /* End code to generate 'default_message' */
 
-
+        /* If the selected template is the default_wordpress_template, send the default email */
         if(get_option('new_comment') == $default_message_id){
             $response = $api->send(
             $default_message_id,
@@ -84,7 +71,8 @@ if (!function_exists('wp_notify_postauthor')) {
             array(
                 'email_data' => array(
                     'email_subject' => 'New comment added to '.get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($notify_message))
+                    'default_message' => htmlDefaultMessage($default_message)
+                    )
                 )
             );
         }
@@ -108,7 +96,7 @@ if (!function_exists('wp_notify_postauthor')) {
                         'comment_parent' => $comment->comment_parent,
                         'user_id' => $comment->user_id,
                         'blog_name' => get_option('blogname'),
-                        'default_message'=> htmlDefaultMessage($notify_message)
+                        'default_message'=> htmlDefaultMessage($default_message)
                     )
                 )
             );
@@ -131,13 +119,13 @@ if (!function_exists('wp_new_user_notification')) {
 
         // Below is used to create 'default_message'
         $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
-        $message  = sprintf(__('New user registration on your site %s:'), $blogname) . "\r\n";
-        $message .= sprintf(__('Username: %s'), $user->user_login) . "\r\n";
-        $message .= sprintf(__('E-mail: %s'), $user->user_email) . "\r\n";
-        $message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n";
-        $message .= wp_login_url() . "\r\n";
+        $default_message  = sprintf(__('New user registration on your site %s:'), $blogname) . "\r\n";
+        $default_message .= sprintf(__('Username: %s'), $user->user_login) . "\r\n";
+        $default_message .= sprintf(__('E-mail: %s'), $user->user_email) . "\r\n";
+        $default_message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n";
+        $default_message .= wp_login_url() . "\r\n";
 
-
+        /* If the selected template is the default_wordpress_template, send the default email */
         if(get_option('new_user') == $default_message_id){
             $response = $api->send(
             $default_message_id,
@@ -145,7 +133,7 @@ if (!function_exists('wp_new_user_notification')) {
             array(
                 'email_data' => array(
                     'email_subject' => 'New user at '.get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($message)
+                    'default_message' => htmlDefaultMessage($default_message)
                     )
                 )
             );
@@ -160,7 +148,7 @@ if (!function_exists('wp_new_user_notification')) {
                         'user_password' => $plaintext_pass,
                         'caps' => $user->caps,
                         'blog_name' => get_option('blogname'),
-                        'default_message' => htmlDefaultMessage($message)
+                        'default_message' => htmlDefaultMessage($default_message)
                     )
                 )
             );
@@ -199,46 +187,47 @@ if (!function_exists('wp_notify_moderator')) {
         /* Begin code to generate 'default_message' */
         switch ( $comment->comment_type ) {
             case 'trackback':
-                $notify_message  = sprintf( __('A new trackback on the post "%s" is waiting for your approval'), $post->post_title ) . "\r\n";
-                $notify_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
-                $notify_message .= sprintf( __('Website : %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
-                $notify_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
-                $notify_message .= __('Trackback excerpt: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
+                $default_message  = sprintf( __('A new trackback on the post "%s" is waiting for your approval'), $post->post_title ) . "\r\n";
+                $default_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
+                $default_message .= sprintf( __('Website : %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
+                $default_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
+                $default_message .= __('Trackback excerpt: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
                 break;
             case 'pingback':
-                $notify_message  = sprintf( __('A new pingback on the post "%s" is waiting for your approval'), $post->post_title ) . "\r\n";
-                $notify_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
-                $notify_message .= sprintf( __('Website : %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
-                $notify_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
-                $notify_message .= __('Pingback excerpt: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
+                $default_message  = sprintf( __('A new pingback on the post "%s" is waiting for your approval'), $post->post_title ) . "\r\n";
+                $default_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
+                $default_message .= sprintf( __('Website : %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
+                $default_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
+                $default_message .= __('Pingback excerpt: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
                 break;
             default: // Comments
-                $notify_message  = sprintf( __('A new comment on the post "%s" is waiting for your approval'), $post->post_title ) . "\r\n";
-                $notify_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
-                $notify_message .= sprintf( __('Author : %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
-                $notify_message .= sprintf( __('E-mail : %s'), $comment->comment_author_email ) . "\r\n";
-                $notify_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
-                $notify_message .= sprintf( __('Whois  : http://whois.arin.net/rest/ip/%s'), $comment->comment_author_IP ) . "\r\n";
-                $notify_message .= __('Comment: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
+                $default_message  = sprintf( __('A new comment on the post "%s" is waiting for your approval'), $post->post_title ) . "\r\n";
+                $default_message .= get_permalink($comment->comment_post_ID) . "\r\n\r\n";
+                $default_message .= sprintf( __('Author : %1$s (IP: %2$s , %3$s)'), $comment->comment_author, $comment->comment_author_IP, $comment_author_domain ) . "\r\n";
+                $default_message .= sprintf( __('E-mail : %s'), $comment->comment_author_email ) . "\r\n";
+                $default_message .= sprintf( __('URL    : %s'), $comment->comment_author_url ) . "\r\n";
+                $default_message .= sprintf( __('Whois  : http://whois.arin.net/rest/ip/%s'), $comment->comment_author_IP ) . "\r\n";
+                $default_message .= __('Comment: ') . "\r\n" . $comment->comment_content . "\r\n\r\n";
                 break;
         }
 
-        $notify_message .= sprintf( __('Approve it: %s'),  admin_url("comment.php?action=approve&c=$comment_id") ) . "\r\n";
+        $default_message .= sprintf( __('Approve it: %s'),  admin_url("comment.php?action=approve&c=$comment_id") ) . "\r\n";
         if ( EMPTY_TRASH_DAYS )
-            $notify_message .= sprintf( __('Trash it: %s'), admin_url("comment.php?action=trash&c=$comment_id") ) . "\r\n";
+            $default_message .= sprintf( __('Trash it: %s'), admin_url("comment.php?action=trash&c=$comment_id") ) . "\r\n";
         else
-            $notify_message .= sprintf( __('Delete it: %s'), admin_url("comment.php?action=delete&c=$comment_id") ) . "\r\n";
-        $notify_message .= sprintf( __('Spam it: %s'), admin_url("comment.php?action=spam&c=$comment_id") ) . "\r\n";
+            $default_message .= sprintf( __('Delete it: %s'), admin_url("comment.php?action=delete&c=$comment_id") ) . "\r\n";
+        $default_message .= sprintf( __('Spam it: %s'), admin_url("comment.php?action=spam&c=$comment_id") ) . "\r\n";
 
-        $notify_message .= sprintf( _n('Currently %s comment is waiting for approval. Please visit the moderation panel:',
+        $default_message .= sprintf( _n('Currently %s comment is waiting for approval. Please visit the moderation panel:',
                 'Currently %s comments are waiting for approval. Please visit the moderation panel:', $comments_waiting), number_format_i18n($comments_waiting) ) . "\r\n";
-        $notify_message .= admin_url("edit-comments.php?comment_status=moderated") . "\r\n";
+        $default_message .= admin_url("edit-comments.php?comment_status=moderated") . "\r\n";
         /* End code to generate 'default_message' */
 
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
         foreach ( $emails as $email ) {
 
+            /* If the selected template is the default_wordpress_template, send the default email */
             if(get_option('awaiting_approval') == $default_message_id){
                 $response = $api->send(
                 $default_message_id,
@@ -246,7 +235,7 @@ if (!function_exists('wp_notify_moderator')) {
                 array(
                     'email_data' => array(
                         'email_subject' => 'Comments waiting approval at '.get_option('blogname'),
-                        'default_message' => htmlDefaultMessage($notify_message)
+                        'default_message' => htmlDefaultMessage($default_message)
                         )
                     )
                 );
@@ -271,7 +260,7 @@ if (!function_exists('wp_notify_moderator')) {
                             'comment_parent' => $comment->comment_parent,
                             'user_id' => $comment->user_id,
                             'blog_name' => get_option('blogname'),
-                            'default_message' => htmlDefaultMessage($notify_message)
+                            'default_message' => htmlDefaultMessage($default_message)
                         )
                     )
                 );
@@ -285,18 +274,19 @@ if (!function_exists('wp_notify_moderator')) {
 if (!function_exists('wp_password_change_notification')) {
     function wp_password_change_notification( $user )
     {
-        $message = sprintf(__('Password Lost and Changed for user: %s'), $user->user_login) . "\r\n";
+        $default_message = sprintf(__('Password Lost and Changed for user: %s'), $user->user_login) . "\r\n";
         $blogname = get_bloginfo('name');
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
+        /* If the selected template is the default_wordpress_template, send the default email */
         if(get_option('password_change_notification') == $default_message_id){
             $response = $api->send(
                 $default_message_id,
                 array('address' => get_option('admin_email')),
                 array(
                     'email_data' => array(
-                        'email_subject' => 'Password change at '.get_option('blogname'),
-                        'default_message' => htmlDefaultMessage($message)
+                        'email_subject' => "Password change at ".$blogname,
+                        'default_message' => htmlDefaultMessage($default_message)
                         )
                     )
             );
@@ -315,7 +305,7 @@ if (!function_exists('wp_password_change_notification')) {
                         'user_url' => $user->user_url,
                         'user_registered' => $user->user_registered,
                         'blog_name' => $blogname,
-                        'default_message' => htmlDefaultMessage($message)
+                        'default_message' => htmlDefaultMessage($default_message)
                     )
                 )
             );
@@ -350,14 +340,15 @@ function reset_password_notification($content, $key) {
 
     //Create a new SWU email with the password reset information
     $api = new \sendwithus\API($GLOBALS['api_key']);
-
+    
+    /* If the selected template is the default_wordpress_template, send the default email */
     if(get_option('password_reset') == $default_message_id){
         $response = $api->send(
             $default_message_id,
             array('address' => $user->user_email),
             array(
                 'email_data' => array(
-                    'email_subject' => 'Password reset at '.get_option('blogname'),
+                    'email_subject' => 'Password reset at '.$blogname,
                     'default_message' => htmlDefaultMessage($content)
                 )
             )
