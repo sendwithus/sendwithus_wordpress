@@ -1,6 +1,6 @@
 <?php
 
-
+/*Grab the default_wordpress_email template id for use in comparison*/
 $default_message_id = get_default_email_id();
 
 /*
@@ -306,6 +306,7 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
             'email_data' => array(
                 'email_subject' => 'Welcome to '.get_option('blogname'),
                 'default_message' => htmlDefaultMessage($default_message)
+                )
             )
         );
     }

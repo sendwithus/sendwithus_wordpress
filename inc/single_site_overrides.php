@@ -1,5 +1,6 @@
 <?php
 
+/*Grab the default_wordpress_email template id for use in comparison*/
 $default_message_id = get_default_email_id();
 /*
  * FUNCTION OVERRIDE BASED OVERRIDES
@@ -340,7 +341,7 @@ function reset_password_notification($content, $key) {
 
     //Create a new SWU email with the password reset information
     $api = new \sendwithus\API($GLOBALS['api_key']);
-    
+
     /* If the selected template is the default_wordpress_template, send the default email */
     if(get_option('password_reset') == $default_message_id){
         $response = $api->send(

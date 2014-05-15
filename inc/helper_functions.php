@@ -35,7 +35,7 @@ function getTemplates() {
     /*Check if the default_wordpress_email template exists, if not create it */
    if(!(in_array("default_wordpress_email",$template_names))){
         $response = $api->create_email('default_wordpress_email',
-            '{{email_subject}}',
+            '{{email_subject}} ',
             '<html><head></head><body>{{default_message}}</body></html>');
         $response = $api->emails();
     }
