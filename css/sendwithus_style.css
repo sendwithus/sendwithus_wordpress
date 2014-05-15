@@ -7,22 +7,58 @@
 	width: 100%;
 }
 
-ul {
-    list-style-type: circle;
-    padding-left: 30px
-}
-
-#event_name {
-    float: left;
-    margin-right: 10px;
-}
-
 .welcome-panel li {
     font-size: 12px;
 }
 
 .parameters_button{
     font-size:12px !important;
+}
+
+.description {
+    display: inline-block;
+    float: left;
+}
+
+.column_width {
+    width: 49%;
+}
+
+.parameters {
+    display: none; 
+    margin-bottom: 0px;
+}
+
+p.submit {
+    margin-top: 0px;
+}
+
+h1 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+table {
+    margin-bottom: 10px !important;
+}
+
+th {
+    text-align: center !important;
+    font-weight: 900 !important;
+}
+
+td {
+    margin: 0px;
+}
+
+ul {
+    list-style-type: circle;
+    padding-left: 30px;
+    margin: 0px;
+}
+
+#event_name {
+    float: left;
+    margin-right: 10px;
 }
 
 #change_api_key{
@@ -32,4 +68,24 @@ ul {
 #api_box {
     float: right;
     min-width: 40%;
+    display: none;
+    margin-bottom: 5px;
+}
+
+#api_button {
+    float: right;
+    margin-bottom: 5px;
+}
+
+#submit_button_area {
+    width: 100%; 
+    margin-left: auto; 
+    margin-right: auto; 
+    display: block; 
+    padding: 0px 0px 10px;
+}
+
+#submit {
+    width: 100%;
+    padding-top: 0px;
 }

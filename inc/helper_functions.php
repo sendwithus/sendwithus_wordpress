@@ -46,23 +46,22 @@ function generateTemplateSelection($name, $array) {
 // Generate table body from the wp_notification arrays
 function generateTemplateTable($notification_array) {
     foreach ($notification_array as $current => $text) {
-        echo '<tr><td style="width: 49%;"><strong>' . $text['event'] .'</strong>';
-        echo '<div class="' . $current . '-description">' . $text['description'] . '</div>';
-        echo generateParameterListing($current, $text);
-        echo '</td><td style="text-align: right;">';
+        echo '<tr><td style="width: 49%; padding-bottom: 0px;"><strong>' . $text['event'] .'</strong>';
+        echo '<div class="' . $current . '-description"><p class="description">' . $text['description'] . '</p></div>';
+        echo '</td><td style="text-align: right; padding-bottom: 0px;">';
         echo generateTemplateSelection($current, $GLOBALS['templates']);
-        echo '<div class="button display_info parameters_button">Display Description</div>';
+        echo '<div class="button display_info parameters_button ' . $current . '">Show parameters sent to sendwithus</div>';
         echo '</td></tr>';
-        echo '<tr><td colspan="2">';
+        echo '<tr><td colspan="2" style="padding-top: 0px;">';
         echo generateParameterListing($current, $text);
-        echo '</tr></td>';
+        echo '</td></tr>';
     }
 }
 
 // Generate code to display/hide parameters sent with events.
 function generateParameterListing($name, $parameterData) {
     $parameterListing = '
-        <span class="parameters" style="display: none; margin-bottom: 0px;">' . $parameterData['parameters'] . 
+        <span class="parameters ' . $name . '">' . $parameterData['parameters'] . 
         '</span>';
 
     return $parameterListing;
