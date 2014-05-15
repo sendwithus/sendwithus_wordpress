@@ -76,7 +76,9 @@ function sendwithus_conf_main() {
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
 	<h1>
-		<span style="color: #777">send<span style="color: #f7931d">with</span>us</span>
+        <a href="http://www.sendwithus.com" target="_">    
+		  <span style="color: #777">send<span style="color: #f7931d">with</span>us</span>
+        </a>
 	</h1>
 	<p>Send transactional emails with ease.</p>
 	<div class="welcome-panel">
@@ -113,7 +115,7 @@ function sendwithus_conf_main() {
 				<table class="wp-list-table widefat sendwithus_table">
 					<thead>
 						<th colspan="2">
-                            Single-site Events<br>
+                            <p class="table_description">Single-site Events</p>
                             <p class="description" style="text-align: center;">
                                 Single-site events occur on all WordPress installations. They are primarly concerned with user and comment moderation.
                             </p>
@@ -122,25 +124,22 @@ function sendwithus_conf_main() {
 	                    <?php generateTemplateTable($GLOBALS['wp_notifications']); ?>
                 </table>    
                 <!-- Events that are displayed when multisite events are enabled -->
-                <?php if (is_multisite()) {
-                    echo '<table class="multisite wp-list-table widefat" id="multisite_table">';
-                    echo '<thead>';
-                    echo '<th colspan="2">
-                            Multi-site Events
-                            <p class="description" style="text-align: center">Multi-site events are specific to WordPress instances that host multiple WordPress sites. As such, they feature several unique events specific to administering multiple sites.</p>
-                        </th>';
-                    echo '</thead>';
-                    // Check that an API Key has been etered before displaying these.
-                    if ($GLOBALS['valid_key']) {
-                        generateTemplateTable($GLOBALS['wp_ms_notifications']);
-                    }
-                    echo '</table>';
-                } ?>
+                <?php if (is_multisite()) : ?>
+                    <table class="multisite wp-list-table widefat" id="multisite_table">
+                        <thead>
+                            <th colspan="2">
+                                <p class="table_description">Multi-site Events</p>
+                                <p class="description" style="text-align: center;">Multi-site events are specific to WordPress instances that host multiple WordPress sites. As such, they feature several unique events specific to administering multiple sites.</p>
+                            </th>
+                        </thead>
+                        <?php generateTemplateTable($GLOBALS['wp_ms_notifications']); ?>
+                    </table>
+                <?php endif; ?>
             <!-- Display a notice telling the user to enter their API key & save -->
             <?php else : ?>
             	<table>
 	                <tr>
-	                    <td colspan="2" style="text-align: center;"><h2>In order to proceed, please enter a valid API key and save your changes.</h2></td>
+	                    <td colspan="2" style="text-align: center;"><h2>In order to proceed please enter a valid API key and save your changes.</h2></td>
 	                </tr>
 					<tr>
 						<td><strong>sendwithus API Key</strong></td>
