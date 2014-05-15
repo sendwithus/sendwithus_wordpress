@@ -6,13 +6,13 @@
 $GLOBALS['wp_notifications'] = array(
     'new_user'                       => array(
         'event'       => 'New User Created',
-        'description' => 'Activated when a new user is created by an external user.',
+        'description' => 'Activated when a new user signs up for an account. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="new_user" name="display_parameters" value="Display parameters"',
         'parameters'  => '   
             <ul>
-                <li><strong>user_login</strong>  - Numeric ID of the user.</li>
+                <li><strong>user_login</strong>  - User\'s numeric ID.</li>
                 <li><strong>user_password</strong> - User\'s plaintext password.</li>
-                <li><strong>caps</strong> - Individual capabilities the user has been given.</li>
+                <li><strong>caps</strong> - Capabilities the user has been given.</li>
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
@@ -28,24 +28,23 @@ $GLOBALS['wp_notifications'] = array(
     ),
     'new_comment'                    => array(
         'event'       => 'New Comment Posted',
-        'description' => 'Activated when a new comment is posted by a user. Email is sent to administrator of the blog.',
+        'description' => 'Activated when a user posts a comment. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="new_comment" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>comment_ID</strong> - Numeric ID of the comment.</li>
-                <li><strong>comment_post_ID</strong> - Numeric ID of the post.</li>
+                <li><strong>comment_ID</strong> - Comment\'s numeric ID.</li>
+                <li><strong>comment_post_ID</strong> - Post\'s numeric ID.</li>
                 <li><strong>comment_author</strong> - Comment author\'s name.</li>
                 <li><strong>comment_author_email</strong> - Comment author\'s email.</li>
-                <li><strong>comment_author_url</strong> - Comment author\'s URL if provided.</li>
                 <li><strong>comment_author_IP</strong> - Comment author\'s IP address.</li>
                 <li><strong>comment_date</strong> - Date the comment was posted.</li>
                 <li><strong>comment_date_gmt</strong> - GMT date the comment was posted.</li>
                 <li><strong>comment_content</strong> - Content of the comment.</li>
                 <li><strong>comment_karma</strong> - Numerical karma given to the comment.</li>
-                <li><strong>comment_agent</strong> - Comment\'s agent information (browser, Operating System, etc.).</li>
-                <li><strong>comment_type</strong> - Commment\'s type if meaningful (pingback|trackback), and empty for normal comments.</li>
+                <li><strong>comment_agent</strong> - Comment\'s agent information (Browser, Operating System, etc.).</li>
+                <li><strong>comment_type</strong> - Commment\'s type if meaningful (pingback / trackback) or \'empty\' for normal comments.</li>
                 <li><strong>comment_parent</strong> - Parent comment\'s numerical ID.</li>
-                <li><strong>user_id</strong> - Numerical user ID of the comment poster.</li>
+                <li><strong>user_id</strong> - Numerical user ID of the commenter.</li>
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
@@ -70,24 +69,24 @@ $GLOBALS['wp_notifications'] = array(
     ),
     'awaiting_approval'              => array(
         'event'       => 'User Comment Awaiting Approval',
-        'description' => 'Activated when comment must be manually approved is set and a comment is posted.',
+        'description' => 'Activated when \'comment must be manually approved\' is set in control panel and a comment is posted. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="awaiting_approval" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>comment_id</strong> - Numeric ID of the parent comment.</li>
-                <li><strong>comment_post_id</strong> - Numeric ID of the post itself.</li>
-                <li><strong>comment_author</strong> - Comment author\'s login.</li>
+                <li><strong>comment_ID</strong> - Comment\'s numeric ID.</li>
+                <li><strong>comment_post_ID</strong> - Post\'s numeric ID.</li>
+                <li><strong>comment_author</strong> - Comment author\'s name.</li>
                 <li><strong>comment_author_email</strong> - Comment author\'s email.</li>
-                <li><strong>comment_author_ip_address</strong> - Comment author\'s IP address.</li>
+                <li><strong>comment_author_IP</strong> - Comment author\'s IP address.</li>
                 <li><strong>comment_date</strong> - Date the comment was posted.</li>
                 <li><strong>comment_date_gmt</strong> - GMT date the comment was posted.</li>
                 <li><strong>comment_content</strong> - Content of the comment.</li>
                 <li><strong>comment_karma</strong> - Numerical karma given to the comment.</li>
-                <li><strong>comment_agent</strong> - Comment\'s agent information (browser, Operating System, etc.).</li>
-                <li><strong>comment_type</strong> - Comment\'s type if meaningful (pingback|trackback), and empty for normal comments.</li>
+                <li><strong>comment_agent</strong> - Comment\'s agent information (Browser, Operating System, etc.).</li>
+                <li><strong>comment_type</strong> - Commment\'s type if meaningful (pingback / trackback) or \'empty\' for normal comments.</li>
                 <li><strong>comment_parent</strong> - Parent comment\'s numerical ID.</li>
-                <li><strong>user_id</strong> - Numeric user ID of the commenter.</li>
-                <li><strong>blogname</strong> - Name of the blog.</li>
+                <li><strong>user_id</strong> - Numerical user ID of the commenter.</li>
+                <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
         /*
@@ -112,11 +111,11 @@ $GLOBALS['wp_notifications'] = array(
     ),
     'password_change_notification'   => array(
         'event'       => 'Password Change Performed (Notify Admin)',
-        'description' => 'Activated when a user changes their password via "Lost your password?" - notifies the site admin.',
+        'description' => 'Activated when a user changes their password via a \'Lost your password?\' email. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="password_change_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
-                <li><strong>user_login</strong> - User login name.</li>
+                <li><strong>user_login</strong> - User\'s login name.</li>
                 <li><strong>display_name</strong> - How the user\'s name is displayed on the site.</li>
                 <li><strong>user_nicename</strong> - User\'s nicename.</li>
                 <li><strong>user_email</strong> - User\'s email address.</li>
@@ -134,7 +133,7 @@ $GLOBALS['wp_notifications'] = array(
     ),
     'password_reset'                 => array(
         'event'       => 'Password Reset Requested (Notify User)',
-        'description' => 'Activated when a user attempts to change their password via "Lost your password?", notifies the user.',
+        'description' => 'Activated when a user attempts to change their password via "Lost your password?" Sent to requesting user.',
         'display_parameters' => '<input type="button" class="parameters_button" id="password_reset" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>

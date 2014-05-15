@@ -112,7 +112,12 @@ function sendwithus_conf_main() {
 	        <?php if($GLOBALS['valid_key']) : ?>
 				<table class="wp-list-table widefat sendwithus_table">
 					<thead>
-						<th colspan="2">Single-site Events</th>
+						<th colspan="2">
+                            Single-site Events<br>
+                            <p class="description" style="text-align: center;">
+                                Single-site events occur on all WordPress installations. They are primarly concerned with user and comment moderation.
+                            </p>
+                        </th>
 					</thead>
 	                    <?php generateTemplateTable($GLOBALS['wp_notifications']); ?>
                 </table>    
@@ -120,7 +125,10 @@ function sendwithus_conf_main() {
                 <?php if (is_multisite()) {
                     echo '<table class="multisite wp-list-table widefat" id="multisite_table">';
                     echo '<thead>';
-                    echo '<th colspan="2">Multi-site Events</th>';
+                    echo '<th colspan="2">
+                            Multi-site Events
+                            <p class="description" style="text-align: center">Multi-site events are specific to WordPress instances that host multiple WordPress sites. As such, they feature several unique events specific to administering multiple sites.</p>
+                        </th>';
                     echo '</thead>';
                     // Check that an API Key has been etered before displaying these.
                     if ($GLOBALS['valid_key']) {
