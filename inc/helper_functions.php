@@ -3,6 +3,7 @@
  *  MISCELLANEOUS FUNCTIONS
  */
 
+
 function sendwithus_validate_settings($args) {
     // Used to validate settings passed to the plugin.
     echo("Sanitized!<br/>");
@@ -15,6 +16,16 @@ function getTemplates() {
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
+    foreach ($response as $template) {
+        $template_names[] = $template->name;
+    }
+
+   if(!(in_array("default_message",$template_names))){
+        $response = $api->create_email('default_message',
+            '{{email_subject}}',
+            '<html><head></head><body>{{default_message}}</body></html>');
+        $response = $api->emails();
+    }
     return $response;
 }
 
