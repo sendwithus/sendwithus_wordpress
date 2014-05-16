@@ -6,9 +6,33 @@
 // Problem: These functions aren't pluggable!
 // Solution: Filters!
 
+// Filter for when a new user has been activated - notify the network admin.
+add_filter("newuser_notify_siteadmin", "swu_newuser_notify_siteadmin", 10, 2);
+function swu_newuser_notify_siteadmin($msg, $user) {
+    $api = new \sendwithus\API($GLOBALS['api_key']);    
+
+    $email = get_site_option( 'admin_email' );
+    $options_site_url = esc_url(network_admin_url('settings.php'));
+    $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
+
+    $response = $api->send(
+        get_option('ms_new_user_network_admin'),
+        array('address' => $email),
+        array(
+            'email_data' => array(
+                'user_name' => $user->user_login,
+                'remote_ip' => $remote_ip,
+                'control_panel' => $options_site_url,
+                'default_message' => htmlDefaultMessage($msg)
+            )
+        )
+    );
+
+    return false;
+}
+
 // Filter for when a new blog is created on a multisite site.
 add_filter("newblog_notify_siteadmin", "swu_newblog_notify_siteadmin", 10, 1);
-
 function swu_newblog_notify_siteadmin($msg) {
     $api = new \sendwithus\API($GLOBALS['api_key']);
 
@@ -68,8 +92,6 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ){
             'email_data' => array(
                 'user_email' => $user->user_email,
                 'user_password' => $password,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
                 'default_message' => $default_message
@@ -139,35 +161,8 @@ We hope you enjoy your new site. Thanks!
     return false;
 }
 
-// Filter for when a new user has been activated - notify the network admin.
-add_filter("newuser_notify_siteadmin", "swu_newuser_notify_siteadmin", 10, 2);
-
-function swu_newuser_notify_siteadmin($msg, $user) {
-    $api = new \sendwithus\API($GLOBALS['api_key']);    
-
-    $email = get_site_option( 'admin_email' );
-    $options_site_url = esc_url(network_admin_url('settings.php'));
-    $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
-
-    $response = $api->send(
-        get_option('ms_new_user_network_admin'),
-        array('address' => $email),
-        array(
-            'email_data' => array(
-                'user_name' => $user->user_login,
-                'remote_ip' => $remote_ip,
-                'control_panel' => $options_site_url,
-                'default_message' => htmlDefaultMessage($msg)
-            )
-        )
-    );
-
-    return false;
-}
-
 // Filter for when a new signup has been successful. Used when site registration is enabled.
 add_filter("wpmu_signup_blog_notification_email", "swu_wpmu_signup_blog_notification", 10, 8);
-
 function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $user, $user_email, $key, $meta) {
     $api = new \sendwithus\API($GLOBALS['api_key']); 
 
@@ -188,7 +183,7 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
     $default_message = sprintf($content, $activate_url, esc_url( "http://{$domain}{$path}" ), $key);
 
     $response = $api->send(
-        get_option('ms_new_user_success'),
+        get_option('ms_signup_blog_verification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
@@ -207,9 +202,8 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
 
 }
 
-// Filter for when a new user has signed up for a multiuser site.
+// Filter for when a new user has signed up for a multiuser site, but not requested a new site.
 add_filter( 'wpmu_signup_user_notification_email', 'swu_wpmu_signup_user_notification', 10, 5 );
-
 function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $meta = '') {
     $api = new \sendwithus\API($GLOBALS['api_key']);
 
@@ -222,7 +216,7 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
     $content = str_replace("%s",$url,$content);
     
     $response = $api->send(
-        get_option('ms_welcome_user_notification'),
+        get_option('ms_signup_user_notification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
