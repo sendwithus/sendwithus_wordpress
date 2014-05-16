@@ -24,35 +24,22 @@ function swu_newblog_notify_siteadmin($msg) {
     preg_match("/Disable\sthese\snotifications:\s([^\\n]*)/", $msg, $disable_notifications);
 
     $email = get_site_option( 'admin_email' );
-
-    /* If the selected template is the default_wordpress_template, send the default email */
-    if(get_option('ms_new_blog_network_admin') == $default_message_id){
-            $response = $api->send(
-            $default_message_id,
-            array('address' => $email),
-            array(
-                'email_data' => array(
-                    'email_subject' => 'New blog created '.get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($msg)
-                )
+    //Subject line for default wordpress email
+    $default_email_subject = "New blog ".get_option('blogname')." created at ".$site_name[1];
+    $response = $api->send(
+        get_option('ms_new_blog_network_admin'),
+        array('address' => $email),
+        array(
+            'email_data' => array(
+                'default_email_subject' => $default_email_subject,
+                'site_name' => $site_name[1],
+                'site_url' => $site_url[1],
+                'remote_ip' => $remote_ip[1],
+                'control_panel' => $disable_notifications[1],
+                'default_message' => htmlDefaultMessage($msg)
             )
-        );
-    }
-    else{
-        $response = $api->send(
-            get_option('ms_new_blog_network_admin'),
-            array('address' => $email),
-            array(
-                'email_data' => array(
-                    'site_name' => $site_name[1],
-                    'site_url' => $site_url[1],
-                    'remote_ip' => $remote_ip[1],
-                    'control_panel' => $disable_notifications[1],
-                    'default_message' => htmlDefaultMessage($msg)
-                )
-            )
-        );
-    }
+        )
+    );
 
     return false;
 }
@@ -80,36 +67,25 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ){
     $default_message = str_replace( 'PASSWORD', $password, $default_message );
     $default_message = str_replace( 'LOGINLINK', wp_login_url(), $default_message );
 
-    /* If the selected template is the default_wordpress_template, send the default email */
-    if(get_option('ms_welcome_user_notification') == $default_message_id){
-            $response = $api->send(
-            $default_message_id,
-            array('address' => $user->user_email),
-            array(
-                'email_data' => array(
-                    'email_subject' => 'Welcome to '.get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($default_message)
-                )
+    //Subject line for default wordpress email
+    $default_email_subject = "Welcome to".get_option('blogname');
+
+    $response = $api->send(
+        get_option('ms_welcome_user_notification'),
+        array('address' => $user->user_email),
+        array(
+            'email_data' => array(
+                'default_email_subject' => $default_email_subject,
+                'user_email' => $user->user_email,
+                'user_password' => $password,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'admin_email' => $admin_email,
+                'site_name' => $current_site->site_name,
+                'default_message' => htmlDefaultMessage($default_message)
             )
-        );
-    }
-    else{
-        $response = $api->send(
-            get_option('ms_welcome_user_notification'),
-            array('address' => $user->user_email),
-            array(
-                'email_data' => array(
-                    'user_email' => $user->user_email,
-                    'user_password' => $password,
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'admin_email' => $admin_email,
-                    'site_name' => $current_site->site_name,
-                    'default_message' => htmlDefaultMessage($default_message)
-                )
-            )
-        );
-    }
+        )
+    );
     return false;
 }
 
@@ -153,35 +129,24 @@ We hope you enjoy your new site. Thanks!
     $default_message = str_replace( 'USERNAME', $user->user_login, $default_message );
     $default_message = str_replace( 'PASSWORD', $password, $default_message );
   
-    /* If the selected template is the default_wordpress_template, send the default email */
-    if(get_option('ms_welcome_notification') == $default_message_id){
-            $response = $api->send(
-            $default_message_id,
-            array('address' => $user->user_email),
-            array(
-                'email_data' => array(
-                    'email_subject' => 'Welcome to '.get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($default_message)
-                )
+    //Subject line for default wordpress email
+    $default_email_subject = get_option('blogname'). " has been added to your multisite instance";
+
+    $response = $api->send(
+        get_option('ms_welcome_notification'),
+        array('address' => $user->user_email),
+        array(
+            'email_data' => array(
+                'default_email_subject' => $default_email_subject,
+                'user_email' => $user->user_email,
+                'user_password' => $password,
+                'admin_email' => $admin_email,
+                'site_name' => $current_site->site_name,
+                'site_url' => $url,
+                'default_message' => htmlDefaultMessage($default_message)
             )
-        );
-    }    
-    else{
-        $response = $api->send(
-            get_option('ms_welcome_notification'),
-            array('address' => $user->user_email),
-            array(
-                'email_data' => array(
-                    'user_email' => $user->user_email,
-                    'user_password' => $password,
-                    'admin_email' => $admin_email,
-                    'site_name' => $current_site->site_name,
-                    'site_url' => $url,
-                    'default_message' => htmlDefaultMessage($default_message)
-                )
-            )
-        );
-    }
+        )
+    );
     return false;
 }
 
@@ -195,33 +160,23 @@ function swu_newuser_notify_siteadmin($msg, $user) {
     $options_site_url = esc_url(network_admin_url('settings.php'));
     $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
 
-    /* If the selected template is the default_wordpress_template, send the default email */
-    if(get_option('ms_new_user_network_admin') == $default_message_id){
-            $response = $api->send(
-            $default_message_id,
-            array('address' => $email),
-            array(
-                'email_data' => array(
-                    'email_subject' => 'New user subscribed to '.get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($msg)
-                )
+    //Subject line for default wordpress email
+    $default_email_subject = "A new user has subscribed to ".get_option('blogname');
+
+    $response = $api->send(
+        get_option('ms_new_user_network_admin'),
+        array('address' => $email),
+        array(
+            'email_data' => array(
+                'default_email_subject' => $default_email_subject,
+                'user_name' => $user->user_login,
+                'remote_ip' => $remote_ip,
+                'control_panel' => $options_site_url,
+                'default_message' => htmlDefaultMessage($msg)
             )
-        );
-    }
-    else{
-        $response = $api->send(
-            get_option('ms_new_user_network_admin'),
-            array('address' => $email),
-            array(
-                'email_data' => array(
-                    'user_name' => $user->user_login,
-                    'remote_ip' => $remote_ip,
-                    'control_panel' => $options_site_url,
-                    'default_message' => htmlDefaultMessage($msg)
-                )
-            )
-        );
-    }
+        )
+    );
+
 
     return false;
 }
@@ -247,37 +202,25 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
 
     // Get the message together
     $default_message = sprintf($content, $activate_url, esc_url( "http://{$domain}{$path}" ), $key);
+    //Subject line for default wordpress email
+    $default_email_subject = "You have registered successfully for ".get_option('blogname');
 
-    /* If the selected template is the default_wordpress_template, send the default email */
-    if(get_option('ms_new_user_success') == $default_message_id){
-            $response = $api->send(
-            $default_message_id,
-            array('address' => $user_email),
-            array(
-                'email_data' => array(
-                    'email_subject' => 'You have successfully registered to '.get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($default_message)
-                )
+    $response = $api->send(
+        get_option('ms_new_user_success'),
+        array('address' => $user_email),
+        array(
+            'email_data' => array(
+                'default_email_subject' => $default_email_subject,
+                'domain' => $domain,
+                'path' => $path,
+                'user_name' => $user,
+                'user_email' => $user_email,
+                'key' => $key,
+                'content' => $content,
+                'default_message' => htmlDefaultMessage($default_message)
             )
-        );
-    }
-    else{
-        $response = $api->send(
-            get_option('ms_new_user_success'),
-            array('address' => $user_email),
-            array(
-                'email_data' => array(
-                    'domain' => $domain,
-                    'path' => $path,
-                    'user_name' => $user,
-                    'user_email' => $user_email,
-                    'key' => $key,
-                    'content' => $content,
-                    'default_message' => htmlDefaultMessage($default_message)
-                )
-            )
-        );
-    }
+        )
+    );
  
     return false;
 
@@ -297,36 +240,25 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
 
     $default_message = str_replace("%s",$url,$content);
 
-    /* If the selected template is the default_wordpress_template, send the default email */
-    if(get_option('ms_welcome_user_notification') == $default_message_id){
-        $response = $api->send(
-        $default_message_id,
+    //Subject line for default wordpress email
+    $default_email_subject = "A new user has signed up at ".get_option('blogname');
+
+    $response = $api->send(
+        get_option('ms_welcome_user_notification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
-                'email_subject' => 'Welcome to '.get_option('blogname'),
-                'default_message' => htmlDefaultMessage($default_message)
-                )
+                    'default_email_subject' => $default_email_subject,
+                    'user_login' => $user,
+                    'user_email' => $user_email,
+                    'user_registered_date' => current_time('mysql', true),
+                    'user_activation_key' => $url,
+                    'blog_name' => $blog_name,
+                    'blog_url' => $blog_url,
+                    'default_message' => htmlDefaultMessage($default_message)
             )
-        );
-    }
-    else{
-        $response = $api->send(
-            get_option('ms_welcome_user_notification'),
-            array('address' => $user_email),
-            array(
-                'email_data' => array(
-                        'user_login' => $user,
-                        'user_email' => $user_email,
-                        'user_registered_date' => current_time('mysql', true),
-                        'user_activation_key' => $url,
-                        'blog_name' => $blog_name,
-                        'blog_url' => $blog_url,
-                        'default_message' => htmlDefaultMessage($default_message)
-                )
-            )
-        );
-    }
+        )
+    );
 
     return false;
 }

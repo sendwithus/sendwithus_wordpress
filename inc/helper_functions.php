@@ -9,7 +9,7 @@ function get_default_email_id(){
     $response = $api->emails();
 
     foreach ($response as $template) {
-        if($template->name == 'default_wordpress_email'){
+        if($template->name == 'Default Wordpress email'){
             $default_message_id = $template->id; 
         }
     }
@@ -33,9 +33,9 @@ function getTemplates() {
         $template_names[] = $template->name;
     }
     /*Check if the default_wordpress_email template exists, if not create it */
-   if(!(in_array("default_wordpress_email",$template_names))){
-        $response = $api->create_email('default_wordpress_email',
-            '{{email_subject}} ',
+   if(!(in_array("Default Wordpress email",$template_names))){
+        $response = $api->create_email('Default Wordpress email',
+            '{{default_email_subject}} ',
             '<html><head></head><body>{{default_message}}</body></html>');
         $response = $api->emails();
     }
@@ -59,7 +59,7 @@ function generateTemplateSelection($name, $array) {
             $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
         }
         else {
-            if($name == 'default_wordpress_email'){
+            if($name == 'Default Wordpress email'){
                 $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
             }
             else{

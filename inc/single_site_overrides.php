@@ -64,44 +64,33 @@ if (!function_exists('wp_notify_postauthor')) {
         }
         /* End code to generate 'default_message' */
 
-        /* If the selected template is the default_wordpress_template, send the default email */
-        if(get_option('new_comment') == $default_message_id){
-            $response = $api->send(
-            $default_message_id,
+        //Subject line for default wordpress email
+        $default_email_subject = "New comment posted at ".get_option('blogname');
+
+        $response = $api->send(
+            get_option('new_comment'),
             array('address' => $author->user_email),
             array(
                 'email_data' => array(
-                    'email_subject' => 'New comment added to '.get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($default_message)
-                    )
+                    'default_email_subject' => $default_email_subject,
+                    'comment_id' => $comment->comment_ID,
+                    'comment_post_id' => $comment->comment_post_ID,
+                    'comment_author' => $comment->comment_author,
+                    'comment_author_email' => $comment->comment_author_email,
+                    'comment_author_ip_address' => $comment->comment_author_IP,
+                    'comment_date' => $comment->comment_date,
+                    'comment_date_gmt' => $comment->comment_date_gmt,
+                    'comment_content' => $comment->comment_content,
+                    'comment_karma' => $comment->comment_karma,
+                    'comment_agent' => $comment->comment_agent,
+                    'comment_type' => $comment->comment_type,
+                    'comment_parent' => $comment->comment_parent,
+                    'user_id' => $comment->user_id,
+                    'blog_name' => get_option('blogname'),
+                    'default_message'=> htmlDefaultMessage($default_message)
                 )
-            );
-        }
-        else{
-            $response = $api->send(
-                get_option('new_comment'),
-                array('address' => $author->user_email),
-                array(
-                    'email_data' => array(
-                        'comment_id' => $comment->comment_ID,
-                        'comment_post_id' => $comment->comment_post_ID,
-                        'comment_author' => $comment->comment_author,
-                        'comment_author_email' => $comment->comment_author_email,
-                        'comment_author_ip_address' => $comment->comment_author_IP,
-                        'comment_date' => $comment->comment_date,
-                        'comment_date_gmt' => $comment->comment_date_gmt,
-                        'comment_content' => $comment->comment_content,
-                        'comment_karma' => $comment->comment_karma,
-                        'comment_agent' => $comment->comment_agent,
-                        'comment_type' => $comment->comment_type,
-                        'comment_parent' => $comment->comment_parent,
-                        'user_id' => $comment->user_id,
-                        'blog_name' => get_option('blogname'),
-                        'default_message'=> htmlDefaultMessage($default_message)
-                    )
-                )
-            );
-        }
+            )
+        );
     }
 }
 
@@ -126,34 +115,23 @@ if (!function_exists('wp_new_user_notification')) {
         $default_message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n";
         $default_message .= wp_login_url() . "\r\n";
 
-        /* If the selected template is the default_wordpress_template, send the default email */
-        if(get_option('new_user') == $default_message_id){
-            $response = $api->send(
-            $default_message_id,
+        //Subject line for default wordpress email
+        $default_email_subject = "New user created at ".get_option('blogname');
+
+        $response = $api->send(
+            get_option('new_user'),
             array('address' => $user_email),
             array(
                 'email_data' => array(
-                    'email_subject' => 'New user at '.get_option('blogname'),
+                    'default_email_subject' => $default_email_subject,
+                    'user_login' => $user_login,
+                    'user_password' => $plaintext_pass,
+                    'caps' => $user->caps,
+                    'blog_name' => get_option('blogname'),
                     'default_message' => htmlDefaultMessage($default_message)
-                    )
                 )
-            );
-        }
-        else{
-            $response = $api->send(
-                get_option('new_user'),
-                array('address' => $user_email),
-                array(
-                    'email_data' => array(
-                        'user_login' => $user_login,
-                        'user_password' => $plaintext_pass,
-                        'caps' => $user->caps,
-                        'blog_name' => get_option('blogname'),
-                        'default_message' => htmlDefaultMessage($default_message)
-                    )
-                )
-            );
-        }
+            )
+        );
     }
 }
 
@@ -224,48 +202,36 @@ if (!function_exists('wp_notify_moderator')) {
         $default_message .= admin_url("edit-comments.php?comment_status=moderated") . "\r\n";
         /* End code to generate 'default_message' */
 
+        //Subject line for default wordpress email
+        $default_email_subject = "Comments are waiting approval at ".get_option('blogname');
+
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
         foreach ( $emails as $email ) {
-
-            /* If the selected template is the default_wordpress_template, send the default email */
-            if(get_option('awaiting_approval') == $default_message_id){
-                $response = $api->send(
-                $default_message_id,
+            $response = $api->send(
+                get_option('awaiting_approval'),
                 array('address' => $email),
                 array(
                     'email_data' => array(
-                        'email_subject' => 'Comments waiting approval at '.get_option('blogname'),
+                        'default_email_subject' => $default_email_subject,
+                        'comment_id' => $comment->comment_ID,
+                        'comment_post_id' => $comment->comment_post_ID,
+                        'comment_author' => $comment->comment_author,
+                        'comment_author_email' => $comment->comment_author_email,
+                        'comment_author_ip_address' => $comment->comment_author_IP,
+                        'comment_date' => $comment->comment_date,
+                        'comment_date_gmt' => $comment->comment_date_gmt,
+                        'comment_content' => $comment->comment_content,
+                        'comment_karma' => $comment->comment_karma,
+                        'comment_agent' => $comment->comment_agent,
+                        'comment_type' => $comment->comment_type,
+                        'comment_parent' => $comment->comment_parent,
+                        'user_id' => $comment->user_id,
+                        'blog_name' => get_option('blogname'),
                         'default_message' => htmlDefaultMessage($default_message)
-                        )
                     )
-                );
-            }
-            else{    
-                $response = $api->send(
-                    get_option('awaiting_approval'),
-                    array('address' => $email),
-                    array(
-                        'email_data' => array(
-                            'comment_id' => $comment->comment_ID,
-                            'comment_post_id' => $comment->comment_post_ID,
-                            'comment_author' => $comment->comment_author,
-                            'comment_author_email' => $comment->comment_author_email,
-                            'comment_author_ip_address' => $comment->comment_author_IP,
-                            'comment_date' => $comment->comment_date,
-                            'comment_date_gmt' => $comment->comment_date_gmt,
-                            'comment_content' => $comment->comment_content,
-                            'comment_karma' => $comment->comment_karma,
-                            'comment_agent' => $comment->comment_agent,
-                            'comment_type' => $comment->comment_type,
-                            'comment_parent' => $comment->comment_parent,
-                            'user_id' => $comment->user_id,
-                            'blog_name' => get_option('blogname'),
-                            'default_message' => htmlDefaultMessage($default_message)
-                        )
-                    )
-                );
-            }
+                )
+            );
         }
 
         return true;
@@ -279,38 +245,26 @@ if (!function_exists('wp_password_change_notification')) {
         $blogname = get_bloginfo('name');
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
-        /* If the selected template is the default_wordpress_template, send the default email */
-        if(get_option('password_change_notification') == $default_message_id){
-            $response = $api->send(
-                $default_message_id,
-                array('address' => get_option('admin_email')),
-                array(
-                    'email_data' => array(
-                        'email_subject' => "Password change at ".$blogname,
-                        'default_message' => htmlDefaultMessage($default_message)
-                        )
-                    )
-            );
-        }
-        else{
-            $response = $api->send(
-                get_option('password_change_notification'),
-                array('address' => get_option('admin_email')),
-                array(
-                    'email_data' => array(
-                        'user_login' => $user->user_login,
-                        'display_name' => $user->display_name,
-                        'user_nicename' => $user->user_nicename,
-                        'user_email' => $user->user_email,
-                        'user_password' => $user->user_pass,
-                        'user_url' => $user->user_url,
-                        'user_registered' => $user->user_registered,
-                        'blog_name' => $blogname,
-                        'default_message' => htmlDefaultMessage($default_message)
-                    )
+        //Subject line for default wordpress email
+        $default_email_subject = "Password reset request at ".$blogname;
+        $response = $api->send(
+            get_option('password_change_notification'),
+            array('address' => get_option('admin_email')),
+            array(
+                'email_data' => array(
+                    'default_email_subject' => $default_email_subject,
+                    'user_login' => $user->user_login,
+                    'display_name' => $user->display_name,
+                    'user_nicename' => $user->user_nicename,
+                    'user_email' => $user->user_email,
+                    'user_password' => $user->user_pass,
+                    'user_url' => $user->user_url,
+                    'user_registered' => $user->user_registered,
+                    'blog_name' => $blogname,
+                    'default_message' => htmlDefaultMessage($default_message)
                 )
-            );
-        }
+            )
+        );
     }
 }
 
@@ -339,38 +293,27 @@ function reset_password_notification($content, $key) {
     // Modify the message content to include the URL
     $content .= $url;
 
+    //Subject line for the default wordpress email
+    $default_email_subject = get_option('blogname').' Password Reset';
+
     //Create a new SWU email with the password reset information
     $api = new \sendwithus\API($GLOBALS['api_key']);
 
-    /* If the selected template is the default_wordpress_template, send the default email */
-    if(get_option('password_reset') == $default_message_id){
-        $response = $api->send(
-            $default_message_id,
-            array('address' => $user->user_email),
-            array(
-                'email_data' => array(
-                    'email_subject' => 'Password reset at '.$blogname,
-                    'default_message' => htmlDefaultMessage($content)
-                )
+    $response = $api->send(
+        get_option('password_reset'),
+        array('address' => $user->user_email),
+        array(
+            'email_data' => array(
+                'default_email_subject' => $default_email_subject,
+                'user_login' => $user->user_login,
+                'user_nicename' => $user->user_nicename,
+                'user_email' => $user->user_email,
+                'reset_url' => $url,
+                'blog_name' => $blogname,
+                'default_message' => htmlDefaultMessage($content)
             )
-        );
-    }
-    else{
-        $response = $api->send(
-            get_option('password_reset'),
-            array('address' => $user->user_email),
-            array(
-                'email_data' => array(
-                    'user_login' => $user->user_login,
-                    'user_nicename' => $user->user_nicename,
-                    'user_email' => $user->user_email,
-                    'reset_url' => $url,
-                    'blog_name' => $blogname,
-                    'default_message' => htmlDefaultMessage($content)
-                )
-            )
-        );
-    }
+        )
+    );
 
     return false;
 }
