@@ -6,7 +6,7 @@
 $GLOBALS['wp_notifications'] = array(
     'new_user'                       => array(
         'event'       => 'New User Created',
-        'description' => 'Activated when a new user signs up for an account. Sent to administrator.',
+        'description' => 'Triggered when a new user signs up for an account. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="new_user" name="display_parameters" value="Display parameters"',
         'parameters'  => '   
             <ul>
@@ -28,7 +28,7 @@ $GLOBALS['wp_notifications'] = array(
     ),
     'new_comment'                    => array(
         'event'       => 'New Comment Posted',
-        'description' => 'Activated when a user posts a comment. Sent to administrator.',
+        'description' => 'Triggered when a user posts a comment. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="new_comment" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -69,7 +69,7 @@ $GLOBALS['wp_notifications'] = array(
     ),
     'awaiting_approval'              => array(
         'event'       => 'User Comment Awaiting Approval',
-        'description' => 'Activated when \'comment must be manually approved\' is set in control panel and a comment is posted. Sent to administrator.',
+        'description' => 'Triggered when \'comment must be manually approved\' is set in control panel and a comment is posted. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="awaiting_approval" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -110,8 +110,8 @@ $GLOBALS['wp_notifications'] = array(
         */
     ),
     'password_change_notification'   => array(
-        'event'       => 'Password Change Performed (Notify Admin)',
-        'description' => 'Activated when a user changes their password via a \'Lost your password?\' email. Sent to administrator.',
+        'event'       => 'Password Change Performed',
+        'description' => 'Triggered when a user changes their password via a \'Lost your password?\' email. Sent to administrator.',
         'display_parameters' => '<input type="button" class="parameters_button" id="password_change_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -132,8 +132,8 @@ $GLOBALS['wp_notifications'] = array(
         */
     ),
     'password_reset'                 => array(
-        'event'       => 'Password Reset Requested (Notify User)',
-        'description' => 'Activated when a user attempts to change their password via "Lost your password?" Sent to requesting user.',
+        'event'       => 'Password Reset Requested',
+        'description' => 'Triggered when a user attempts to change their password via "Lost your password?" Sent to requesting user.',
         'display_parameters' => '<input type="button" class="parameters_button" id="password_reset" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -165,8 +165,8 @@ $GLOBALS['wp_notifications'] = array(
 
 $GLOBALS['wp_ms_notifications'] = array(
     'ms_new_user_network_admin'    => array(
-        'event'       => 'New User Notification - Notify Network Admin',
-        'description' => 'Activated when a new user signs up. Sent to administrator.',
+        'event'       => 'New User Activation - Sent to Administrator',
+        'description' => 'Triggered when a new user signs up.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_network_admin" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -185,8 +185,8 @@ $GLOBALS['wp_ms_notifications'] = array(
         */      
     ),
     'ms_new_blog_network_admin'    => array(
-        'event'       => 'New Blog Notification - Notify Network Admin',
-        'description' => 'Activated when a new blog is created. Sent to administrator.',
+        'event'       => 'New Blog Activated - Sent to Administrator',
+        'description' => 'Triggered when a new blog is created.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_blog_network_admin" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -206,10 +206,68 @@ $GLOBALS['wp_ms_notifications'] = array(
         Disable these notifications: http://localhost.com/wp-admin/network/settings.php         
         */ 
     ),
-    'ms_new_user_success'          => array(
-        'event'       => 'New User Success - Notify User',
-        'description' => 'Activated when a new user signs up. Sent to user.',
-        'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_success" name="display_parameters" value="Display parameters"',
+    'ms_welcome_user_notification'          => array(
+       'event'       => 'New User Activated - Sent to User',
+        'description' => 'Triggered when the creation of a new user is successful.',
+        'display_parameters' => '<input type="button" class="parameters_button" id="ms_welcome_user_notification" name="display_parameters" value="Display parameters"',
+        'parameters'  => '
+            <ul>
+                <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>user_password</strong> - User\'s password.</li>
+                <li><strong>admin_email</strong> - Administrator\'s email.</li>
+                <li><strong>site_name</strong> - Blog\'s name.
+                <li><strong>default_message</strong> - The default WordPress email content.</li>
+            </ul>'        
+        /*
+        default_message:
+
+        Your new account is set up.
+
+        You can log in with the following information:
+        Username: superthrowaway
+        Password: ABhAGOwNhly3
+        http://localhost.com/wp-login.php
+
+        Thanks!
+
+        --The Team @ WordPress Test Sites
+        */
+    ),
+    'ms_welcome_notification'      => array(
+        'event'       => 'New Blog Activated - Sent to User',
+        'description' => 'Triggered when a blog\'s creation is successful.',
+        'display_parameters' => '<input type="button" class="parameters_button" id="ms_welcome_notification" name="display_parameters" value="Display parameters"',
+        'parameters'  => '
+            <ul>
+                <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>user_password</strong> - User\'s plaintext password.</li>
+                <li><strong>admin_email</strong> - Admin\'s email address.</li>
+                <li><strong>site_name</strong> - New blog\'s name.</li>
+                <li><strong>site_url</strong> - New blog\'s URL.</li>
+                <li><strong>default_message</strong> - The default WordPress email content.</li>
+            </ul>'
+        /*
+        default_message:
+
+        Dear User, 
+
+        Your new WordPress Test Sites site has been successfully set up at: 
+        http://testuserforsite.localhost.com/ 
+
+        You can log in to the administrator account with the following information: 
+        Username: testuserforsite 
+        Password: 8YuSjVhVqj3D 
+        Log in here: http://testuserforsite.localhost.com/wp-login.php 
+
+        We hope you enjoy your new site. Thanks! 
+
+        --The Team @ WordPress Test Sites    
+        */
+    ),
+    'ms_signup_blog_verification'          => array(
+        'event'       => 'New Blog Verification Needed - Notify User',
+        'description' => 'Triggered when a new blog requires verification. Sent to user.',
+        'display_parameters' => '<input type="button" class="parameters_button" id="ms_signup_blog_verification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
                 <li><strong>domain</strong> - Domain name of new site.</li>
@@ -230,21 +288,10 @@ $GLOBALS['wp_ms_notifications'] = array(
         http://testuserforsite.localhost.com/ 
         */
     ),
-//    'ms_new_blog_success'          => array(
-//        'event'       => 'New Blog Success - Notify User',
-//        'description' => 'Placeholder description.',
-//        'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_blog_success" name="display_parameters" value="Display parameters"'.
-//         
-//        .'/>',
-//        'parameters'  => '
-//            <ul>
-//                We dont have this function
-//            </ul>'
-//    ),
-    'ms_welcome_user_notification' => array(
-        'event'       => 'New User Welcome - Notify User',
-        'description' => 'Activated when a new user creation is successful. Sent to user.',
-        'display_parameters' => '<input type="button" class="parameters_button" id="ms_welcome_user_notification" name="display_parameters" value="Display parameters"',
+    'ms_signup_user_notification' => array(
+        'event'       => 'New User Verification Needed - Notify User',
+        'description' => 'Triggered when a new user creation is requested, but new user doesn\'t request a new site. Sent to user.',
+        'display_parameters' => '<input type="button" class="parameters_button" id="ms_signup_user_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
                 <li><strong>user_login</strong> - User\'s login name.</li>
@@ -263,35 +310,6 @@ $GLOBALS['wp_ms_notifications'] = array(
         http://localhost.com/wp-activate.php?key=538bc64f7637476c 
         After you activate, you will receive *another email* with your login.
         */        
-    ),
-    'ms_welcome_notification'      => array(
-        'event'       => 'New Blog Welcome - Notify User',
-        'description' => 'Activated when a blog creation is successful. Sent to user.',
-        'display_parameters' => '<input type="button" class="parameters_button" id="ms_welcome_notification" name="display_parameters" value="Display parameters"',
-        'parameters'  => '
-            <ul>
-                <li><strong>user_email</strong> - User\'s email address.</li>
-                <li><strong>user_password</strong> - User\'s plaintext password.</li>
-                <li><strong>admin_email</strong> - Admin\'s email address.</li>
-                <li><strong>site_name</strong> - New blog\'s name.</li>
-                <li><strong>site_url</strong> - New blog\'s URL.</li>
-                <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'
-        /*
-        Dear User, 
-
-        Your new WordPress Test Sites site has been successfully set up at: 
-        http://testuserforsite.localhost.com/ 
-
-        You can log in to the administrator account with the following information: 
-        Username: testuserforsite 
-        Password: 8YuSjVhVqj3D 
-        Log in here: http://testuserforsite.localhost.com/wp-login.php 
-
-        We hope you enjoy your new site. Thanks! 
-
-        --The Team @ WordPress Test Sites    
-        */
     )
 );
 

@@ -44,7 +44,6 @@ function sendwithus_register_settings() {
     // Whether user is using multisite functionality or not.
     register_setting('sendwithus_settings', 'multisite_enabled');
 
-
     foreach($GLOBALS['wp_notifications'] as $key => $value) {
         register_setting('sendwithus_settings', $key);
     }
@@ -129,7 +128,7 @@ function sendwithus_conf_main() {
                         <thead>
                             <th colspan="2">
                                 <p class="table_description">Multi-site Events</p>
-                                <p class="description" style="text-align: center;">Multi-site events are specific to WordPress instances that host multiple WordPress sites. As such, they feature several unique events specific to administering multiple sites.</p>
+                                <p class="description" style="text-align: center;">Multi-site events are specific to WordPress instances that host multiple WordPress sites. As such, they feature several events specific to administering multiple sites.</p>
                             </th>
                         </thead>
                         <?php generateTemplateTable($GLOBALS['wp_ms_notifications']); ?>
