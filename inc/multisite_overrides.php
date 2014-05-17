@@ -1,4 +1,8 @@
 <?php
+
+/*Grab the default_wordpress_email template id for use in comparison*/
+$default_message_id = get_default_email_id();
+
 /*
  * MULTISITE BASED OVERRIDES
  */
@@ -20,6 +24,7 @@ function swu_newuser_notify_siteadmin($msg, $user) {
         array('address' => $email),
         array(
             'email_data' => array(
+                'default_email_subject' => $default_email_subject,
                 'user_name' => $user->user_login,
                 'remote_ip' => $remote_ip,
                 'control_panel' => $options_site_url,
@@ -44,12 +49,14 @@ function swu_newblog_notify_siteadmin($msg) {
     preg_match("/Disable\sthese\snotifications:\s([^\\n]*)/", $msg, $disable_notifications);
 
     $email = get_site_option( 'admin_email' );
-
+    //Subject line for default wordpress email
+    $default_email_subject = "New blog ".get_option('blogname')." created at ".$site_name[1];
     $response = $api->send(
         get_option('ms_new_blog_network_admin'),
         array('address' => $email),
         array(
             'email_data' => array(
+                'default_email_subject' => $default_email_subject,
                 'site_name' => $site_name[1],
                 'site_url' => $site_url[1],
                 'remote_ip' => $remote_ip[1],
@@ -85,20 +92,23 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ){
     $default_message = str_replace( 'PASSWORD', $password, $default_message );
     $default_message = str_replace( 'LOGINLINK', wp_login_url(), $default_message );
 
+    //Subject line for default wordpress email
+    $default_email_subject = "Welcome to".get_option('blogname');
+
     $response = $api->send(
         get_option('ms_welcome_user_notification'),
         array('address' => $user->user_email),
         array(
             'email_data' => array(
+                'default_email_subject' => $default_email_subject,
                 'user_email' => $user->user_email,
                 'user_password' => $password,
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
-                'default_message' => $default_message
+                'default_message' => htmlDefaultMessage($default_message)
             )
         )
     );
-
     return false;
 }
 
@@ -141,13 +151,16 @@ We hope you enjoy your new site. Thanks!
     $default_message = str_replace( 'BLOG_URL', $url, $default_message );
     $default_message = str_replace( 'USERNAME', $user->user_login, $default_message );
     $default_message = str_replace( 'PASSWORD', $password, $default_message );
-
+  
+    //Subject line for default wordpress email
+    $default_email_subject = get_option('blogname'). " has been added to your multisite instance";
 
     $response = $api->send(
         get_option('ms_welcome_notification'),
         array('address' => $user->user_email),
         array(
             'email_data' => array(
+                'default_email_subject' => $default_email_subject,
                 'user_email' => $user->user_email,
                 'user_password' => $password,
                 'admin_email' => $admin_email,
@@ -157,7 +170,6 @@ We hope you enjoy your new site. Thanks!
             )
         )
     );
-
     return false;
 }
 
@@ -181,12 +193,15 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
 
     // Get the message together
     $default_message = sprintf($content, $activate_url, esc_url( "http://{$domain}{$path}" ), $key);
+    //Subject line for default wordpress email
+    $default_email_subject = "You have registered successfully for ".get_option('blogname');
 
     $response = $api->send(
         get_option('ms_signup_blog_verification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
+                'default_email_subject' => $default_email_subject,
                 'domain' => $domain,
                 'path' => $path,
                 'user_name' => $user,
@@ -194,9 +209,9 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
                 'key' => $key,
                 'content' => $content,
                 'default_message' => htmlDefaultMessage($default_message)
-                )
             )
-        );
+        )
+    );
  
     return false;
 
@@ -213,20 +228,24 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
     $message = '/wp-activate.php?key='. $key;  
     $url = network_site_url($message);
 
-    $content = str_replace("%s",$url,$content);
-    
+    $default_message = str_replace("%s",$url,$content);
+
+    //Subject line for default wordpress email
+    $default_email_subject = "A new user has signed up at ".get_option('blogname');
+
     $response = $api->send(
         get_option('ms_signup_user_notification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
+                    'default_email_subject' => $default_email_subject,
                     'user_login' => $user,
                     'user_email' => $user_email,
                     'user_registered_date' => current_time('mysql', true),
                     'user_activation_key' => $url,
                     'blog_name' => $blog_name,
                     'blog_url' => $blog_url,
-                    'default_message' => $content
+                    'default_message' => htmlDefaultMessage($default_message)
             )
         )
     );
