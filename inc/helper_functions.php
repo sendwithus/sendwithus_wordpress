@@ -3,6 +3,20 @@
  *  MISCELLANEOUS FUNCTIONS
  */
 
+/* Grabs the ID of the default_wordpress_email template for use in comparison */
+function get_default_email_id(){
+    $api = new \sendwithus\API($GLOBALS['api_key']);
+    $response = $api->emails();
+
+    foreach ($response as $template) {
+        if($template->name == 'Default Wordpress email'){
+            $default_message_id = $template->id; 
+        }
+    }
+
+    return $default_message_id;
+}
+
 function sendwithus_validate_settings($args) {
     // Used to validate settings passed to the plugin.
     echo("Sanitized!<br/>");
@@ -15,6 +29,16 @@ function getTemplates() {
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
+    foreach ($response as $template) {
+        $template_names[] = $template->name;
+    }
+    /*Check if the default_wordpress_email template exists, if not create it */
+   if(!(in_array("Default Wordpress email",$template_names))){
+        $response = $api->create_email('Default Wordpress email',
+            '{{default_email_subject}} ',
+            '<html><head></head><body>{{default_message}}</body></html>');
+        $response = $api->emails();
+    }
     return $response;
 }
 
@@ -35,7 +59,12 @@ function generateTemplateSelection($name, $array) {
             $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
         }
         else {
-            $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
+            if($name == 'Default Wordpress email'){
+                $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
+            }
+            else{
+                $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
+            }
         }
     }
 
