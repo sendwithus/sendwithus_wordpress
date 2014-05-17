@@ -249,3 +249,4 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
 
     return false;
 }
+?>
