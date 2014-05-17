@@ -3,20 +3,6 @@
  *  MISCELLANEOUS FUNCTIONS
  */
 
-/* Grabs the ID of the default_wordpress_email template for use in comparison */
-function get_default_email_id(){
-    $api = new \sendwithus\API($GLOBALS['api_key']);
-    $response = $api->emails();
-
-    foreach ($response as $template) {
-        if($template->name == 'Default Wordpress email'){
-            $default_message_id = $template->id; 
-        }
-    }
-
-    return $default_message_id;
-}
-
 function sendwithus_validate_settings($args) {
     // Used to validate settings passed to the plugin.
     echo("Sanitized!<br/>");

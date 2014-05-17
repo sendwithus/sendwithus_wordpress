@@ -1,15 +1,11 @@
 <?php
-
-/*Grab the default_wordpress_email template id for use in comparison*/
-$default_message_id = get_default_email_id();
 /*
  * FUNCTION OVERRIDE BASED OVERRIDES
  */
 
 // Replace new comment alert with sendwithus
 if (!function_exists('wp_notify_postauthor')) {
-    function wp_notify_postauthor($comment_id)
-    {
+    function wp_notify_postauthor($comment_id) {
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
 
@@ -96,8 +92,7 @@ if (!function_exists('wp_notify_postauthor')) {
 
 // Replace new user email
 if (!function_exists('wp_new_user_notification')) {
-    function wp_new_user_notification($user_id, $plaintext_pass = "")
-    {
+    function wp_new_user_notification($user_id, $plaintext_pass = "") {
         $user = new WP_User($user_id);
 
         $user_login = stripslashes($user->user_login);
@@ -317,5 +312,4 @@ function reset_password_notification($content, $key) {
 
     return false;
 }
-
-?>  
+?>

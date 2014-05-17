@@ -1,8 +1,5 @@
 <?php
 
-/*Grab the default_wordpress_email template id for use in comparison*/
-$default_message_id = get_default_email_id();
-
 /*
  * MULTISITE BASED OVERRIDES
  */
@@ -252,3 +249,4 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
 
     return false;
 }
+?>
