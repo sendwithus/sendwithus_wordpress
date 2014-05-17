@@ -9,7 +9,7 @@
 
 // Filter for when a new user has been activated - notify the network admin.
 add_filter("newuser_notify_siteadmin", "swu_newuser_notify_siteadmin", 10, 2);
-function swu_newuser_notify_siteadmin($msg, $user) {
+function swu_newuser_notify_siteadmin($default_message, $user) {
     $api = new \sendwithus\API($GLOBALS['api_key']);    
 
     $email = get_site_option( 'admin_email' );
@@ -25,7 +25,7 @@ function swu_newuser_notify_siteadmin($msg, $user) {
                 'user_name' => $user->user_login,
                 'remote_ip' => $remote_ip,
                 'control_panel' => $options_site_url,
-                'default_message' => htmlDefaultMessage($msg)
+                'default_message' => htmlDefaultMessage($default_message)
             )
         )
     );
@@ -35,15 +35,15 @@ function swu_newuser_notify_siteadmin($msg, $user) {
 
 // Filter for when a new blog is created on a multisite site.
 add_filter("newblog_notify_siteadmin", "swu_newblog_notify_siteadmin", 10, 1);
-function swu_newblog_notify_siteadmin($msg) {
+function swu_newblog_notify_siteadmin($default_message) {
     $api = new \sendwithus\API($GLOBALS['api_key']);
 
     // Extract pertinent information from the message.
     // Maybe a better way to do this? Filter is called after message is assembled...
-    preg_match("/New\sSite:\s([^\\n]*)/", $msg, $site_name);
-    preg_match("/URL:\s([^\\n]*)/", $msg, $site_url);
-    preg_match("/Remote\sIP:\s([^\\n]*)/", $msg, $remote_ip);
-    preg_match("/Disable\sthese\snotifications:\s([^\\n]*)/", $msg, $disable_notifications);
+    preg_match("/New\sSite:\s([^\\n]*)/", $default_message, $site_name);
+    preg_match("/URL:\s([^\\n]*)/", $default_message, $site_url);
+    preg_match("/Remote\sIP:\s([^\\n]*)/", $default_message, $remote_ip);
+    preg_match("/Disable\sthese\snotifications:\s([^\\n]*)/", $default_message, $disable_notifications);
 
     $email = get_site_option( 'admin_email' );
     //Subject line for default wordpress email
@@ -58,7 +58,7 @@ function swu_newblog_notify_siteadmin($msg) {
                 'site_url' => $site_url[1],
                 'remote_ip' => $remote_ip[1],
                 'control_panel' => $disable_notifications[1],
-                'default_message' => htmlDefaultMessage($msg)
+                'default_message' => htmlDefaultMessage($default_message)
             )
         )
     );
