@@ -67,11 +67,10 @@ function swu_newblog_notify_siteadmin($default_message) {
 }
 
 add_filter("wpmu_welcome_user_notification", "swu_wpmu_welcome_user_notification", 10, 3);
-function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ){
+function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
     $api = new \sendwithus\API($GLOBALS['api_key']);
 
     $user  = get_userdata( $user_id );
-
     $admin_email = get_site_option( 'admin_email' );
 
     if ( $admin_email == '' )
@@ -106,6 +105,7 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ){
             )
         )
     );
+    
     return false;
 }
 
@@ -167,6 +167,7 @@ We hope you enjoy your new site. Thanks!
             )
         )
     );
+
     return false;
 }
 

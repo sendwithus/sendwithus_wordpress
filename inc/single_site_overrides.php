@@ -8,7 +8,6 @@ if (!function_exists('wp_notify_postauthor')) {
     function wp_notify_postauthor($comment_id) {
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
-
         $comment = get_comment($comment_id);
         $post    = get_post( $comment->comment_post_ID );
         $author  = get_userdata( $post->post_author );
@@ -132,8 +131,7 @@ if (!function_exists('wp_new_user_notification')) {
 
 // Use swu to send comments awaiting moderation to all moderators
 if (!function_exists('wp_notify_moderator')) {
-    function wp_notify_moderator($comment_id)
-    {
+    function wp_notify_moderator($comment_id) {
         if ( 0 == get_option( 'moderation_notify' ) )
             return true;
 
@@ -234,8 +232,7 @@ if (!function_exists('wp_notify_moderator')) {
 }
 
 if (!function_exists('wp_password_change_notification')) {
-    function wp_password_change_notification( $user )
-    {
+    function wp_password_change_notification( $user ) {
         $default_message = sprintf(__('Password Lost and Changed for user: %s'), $user->user_login) . "\r\n";
         $blogname = get_bloginfo('name');
         $api = new \sendwithus\API($GLOBALS['api_key']);
@@ -265,7 +262,6 @@ if (!function_exists('wp_password_change_notification')) {
 
 // Adds a function to occur when the filter retrieve_password_message is called
 add_filter ("retrieve_password_message", "reset_password_notification", 10, 2 );
-
 function reset_password_notification($content, $key) {
     //Grabs the information about the user attempting to reset their password
     $input = filter_input( INPUT_POST, 'user_login', FILTER_SANITIZE_STRING );
