@@ -1,7 +1,4 @@
 <?php
-
-/*Grab the default_wordpress_email template id for use in comparison*/
-$default_message_id = get_default_email_id();
 /*
  * FUNCTION OVERRIDE BASED OVERRIDES
  */
