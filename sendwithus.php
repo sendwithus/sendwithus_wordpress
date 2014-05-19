@@ -74,12 +74,17 @@ function sendwithus_conf_main() {
 	<!-- Font for sendwithus' logo -->
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
-	<h1>
-        <a href="http://www.sendwithus.com" target="_">    
-		  <span style="color: #777">send<span style="color: #f7931d">with</span>us</span>
-        </a>
-	</h1>
-	<p>Enable transactional emails within WordPress with ease.</p>
+    <div id="header">
+    	<h1>
+            <a href="http://www.sendwithus.com" target="_blank">    
+    		  <span style="color: #777">send<span style="color: #f7931d">with</span>us</span>
+            </a>
+    	</h1>
+        <form action="http://www.sendwithus.com/docs" target="_blank">
+            <button id="help_button" class="button" style="float: right">Help</button>
+        </form>
+        <p>Enable transactional emails within WordPress with ease.</p>
+    </div>
 	<div class="welcome-panel">
 		<!-- A check should be performed before loading the table to ensure that the user
 			 has entered an API key - otherwise only an entry for API key should be displayed. -->
@@ -121,7 +126,7 @@ function sendwithus_conf_main() {
                         </th>
 					</thead>
 	                    <?php generateTemplateTable($GLOBALS['wp_notifications']); ?>
-                </table>    
+                </table>
                 <!-- Events that are displayed when multisite events are enabled -->
                 <?php if (is_multisite()) : ?>
                     <table class="multisite wp-list-table widefat" id="multisite_table">
