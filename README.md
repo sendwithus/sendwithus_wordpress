@@ -17,17 +17,21 @@ The following instructions are for installing the plugin directly from github. U
 The following install steps assume that you have a fully functional WordPress install.
 
 <b>Using git to install via terminal</b>
-1. Navigate to ./wp-content/plugins/ within your WordPress instance.
-2. Run 'git clone https://github.com/sendwithus/sendwithus_wordpress.git'
-3. Access your WordPress control panel.
-4. Go to the 'Plugins' menu.
-5. Activate 'sendwithus Transactional Email'
-6. Access 'sendwithus' on the menu sidebar.
+<ol>
+	<li>Navigate to ./wp-content/plugins/ within your WordPress instance.</li>
+	<li>Run 'git clone https://github.com/sendwithus/sendwithus_wordpress.git'</li>
+	<li>Access your WordPress control panel.</li>
+	<li>Go to the 'Plugins' menu.</li>
+	<li>Activate 'sendwithus Transactional Email'.</li>
+	<li>Access 'sendwithus' on the menu sidebar.</li>
+</ol>
 
 <b>From .zip file</b>
-1. Download https://github.com/sendwithus/sendwithus_wordpress/archive/master.zip
-2. Extract zip file to ./wp-content/plugins/ of WordPress instance.
-3. Access your WordPress control panel.
-4. Go to the 'Plugins' menu.
-5. Activate 'sendwithus Transactional Email'
-6. Access 'sendwithus' on the menu sidebar.
+<ol>
+	<li>Download https://github.com/sendwithus/sendwithus_wordpress/archive/master.zip </li>
+	<li>Extract zip file to ./wp-content/plugins/ of WordPress instance.</li>
+	<li>Access your WordPress control panel.</li>
+	<li>Go to the 'Plugins' menu.</li>
+	<li>Activate 'sendwithus Transactional Email'.</li>
+	<li>Access 'sendwithus' on the menu sidebar.</li>
+</ol>
