@@ -79,7 +79,7 @@ function sendwithus_conf_main() {
 		  <span style="color: #777">send<span style="color: #f7931d">with</span>us</span>
         </a>
 	</h1>
-	<p>Send transactional emails with ease.</p>
+	<p>Enable transactional emails within WordPress with ease.</p>
 	<div class="welcome-panel">
 		<!-- A check should be performed before loading the table to ensure that the user
 			 has entered an API key - otherwise only an entry for API key should be displayed. -->
