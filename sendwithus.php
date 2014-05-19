@@ -138,7 +138,10 @@ function sendwithus_conf_main() {
             <?php else : ?>
             	<table>
 	                <tr>
-	                    <td colspan="2" style="text-align: center;"><h2>In order to proceed please enter a valid API key and save your changes.</h2></td>
+	                    <td colspan="2" style="text-align: center;">
+                            <h2>In order to proceed please enter a valid API key and save your changes.</h2>
+                            <p>Don't know what that is? Log in to your <a href="http://www.sendwithus.com">sendwithus control panel</a> and check under 'API Settings.'</p>
+                        </td>
 	                </tr>
 					<tr>
 						<td><strong>sendwithus API Key</strong></td>
