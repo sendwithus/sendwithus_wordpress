@@ -37,8 +37,9 @@
     margin-bottom: 0px;
 }
 
-a:hover {
-
+.help {
+    text-align: center;
+    font-size: 150%;
 }
 
 a:link {
@@ -67,6 +68,16 @@ ul {
     list-style-type: circle;
     padding-left: 30px;
     margin: 0px;
+}
+
+#header {
+    width: 100%;
+    overflow: auto;
+}
+
+#help_button {
+    margin-right: 12px;
+    margin-top: -10px;
 }
 
 #event_name {
