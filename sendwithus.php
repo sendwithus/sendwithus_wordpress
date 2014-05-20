@@ -53,11 +53,8 @@ function sendwithus_register_settings() {
     }
 }
 
-/**
- * Adds a simple WordPress pointer to Settings menu
- */
+// Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
 function thsp_enqueue_pointer_script_style( $hook_suffix ) {
-    
     // Assume pointer shouldn't be shown
     $enqueue_pointer_script_style = false;
 
@@ -82,9 +79,8 @@ function thsp_enqueue_pointer_script_style( $hook_suffix ) {
 add_action( 'admin_enqueue_scripts', 'thsp_enqueue_pointer_script_style' );
 
 function thsp_pointer_print_scripts() {
-
     $pointer_content  = "<h3>sendwithus activated!</h3>";
-    $pointer_content .= "<p>The sendwithus WordPress plugin can be accessed here!</p><p>Continue your installation by clicking on the menu item.</p>";
+    $pointer_content .= "<p>The sendwithus WordPress plugin can be accessed here!</p><p>Continue your installation by clicking on the menu.</p>";
     ?>
     
     <script type="text/javascript">
@@ -107,8 +103,29 @@ function thsp_pointer_print_scripts() {
     });
     //]]>
     </script>
-
 <?php
+}
+
+// Display a help message to new users of the plugin.
+function display_getting_started_message() {
+    global $current_user;
+    $userid = $current_user->ID;
+
+    // Only show message if user hasn't dismissed it.
+    if (!get_user_meta($userid, 'hide_getting_started_message')) {
+        echo '<div class="updated">New to sendwithus? <a href="http://www.sendwithus.com" target="_blank">Read the docs!</a><br><a href="?dismiss_me=yes">Dismiss this message.</a></div>';
+    }
+}
+
+// Activated when the user dismisses the help message for new users.
+add_action('admin_init', 'has_user_dismiss_getting_started_message');
+function has_user_dismiss_getting_started_message() {
+    global $current_user;
+    $user_id = $current_user->ID;
+
+    if (isset($_GET['dismiss_me']) && 'yes' == $_GET['dismiss_me']) {
+        add_user_meta($userid, 'hide_getting_started_message', 'yes', true);
+    }
 }
 
 $GLOBALS['templates'] = getTemplates();
@@ -143,6 +160,9 @@ function sendwithus_conf_main() {
         </form>
         <p>Enable transactional emails within WordPress with ease.</p>
     </div>
+    <?php
+        display_getting_started_message();
+    ?>
 	<div class="welcome-panel">
 		<!-- A check should be performed before loading the table to ensure that the user
 			 has entered an API key - otherwise only an entry for API key should be displayed. -->
