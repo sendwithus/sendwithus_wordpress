@@ -54,7 +54,7 @@ function sendwithus_register_settings() {
 }
 
 // Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
-function thsp_enqueue_pointer_script_style( $hook_suffix ) {
+function display_pointer( $hook_suffix ) {
     // Assume pointer shouldn't be shown
     $enqueue_pointer_script_style = false;
 
@@ -66,7 +66,7 @@ function thsp_enqueue_pointer_script_style( $hook_suffix ) {
         $enqueue_pointer_script_style = true;
         
         // Add footer scripts using callback function
-        add_action( 'admin_print_footer_scripts', 'thsp_pointer_print_scripts' );
+        add_action( 'admin_print_footer_scripts', 'populate_pointer' );
     }
 
     // Enqueue pointer CSS and JS files, if needed
@@ -78,8 +78,8 @@ function thsp_enqueue_pointer_script_style( $hook_suffix ) {
 }
 
 // Used to display the pointer and control what happens when the user closes it.
-add_action( 'admin_enqueue_scripts', 'thsp_enqueue_pointer_script_style' );
-function thsp_pointer_print_scripts() {
+add_action( 'admin_enqueue_scripts', 'display_pointer' );
+function populate_pointer() {
     $pointer_content  = "<h3>sendwithus activated!</h3>";
     $pointer_content .= "<p>The sendwithus WordPress plugin can be accessed here!</p><p>Continue your installation by clicking on the menu.</p>";
     ?>
