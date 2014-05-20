@@ -62,7 +62,7 @@ function thsp_enqueue_pointer_script_style( $hook_suffix ) {
     $dismissed_pointers = explode( ',', get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
 
     // Check if our pointer is not among dismissed ones
-    if( !in_array( 'thsp_sendwithusfs_pointer', $dismissed_pointers ) ) {
+    if( !in_array( 'thsp_sendwithus_pointer', $dismissed_pointers ) ) {
         $enqueue_pointer_script_style = true;
         
         // Add footer scripts using callback function
@@ -76,8 +76,9 @@ function thsp_enqueue_pointer_script_style( $hook_suffix ) {
     }
     
 }
-add_action( 'admin_enqueue_scripts', 'thsp_enqueue_pointer_script_style' );
 
+// Used to display the pointer and control what happens when the user closes it.
+add_action( 'admin_enqueue_scripts', 'thsp_enqueue_pointer_script_style' );
 function thsp_pointer_print_scripts() {
     $pointer_content  = "<h3>sendwithus activated!</h3>";
     $pointer_content .= "<p>The sendwithus WordPress plugin can be accessed here!</p><p>Continue your installation by clicking on the menu.</p>";
@@ -95,7 +96,7 @@ function thsp_pointer_print_scripts() {
             pointerWidth: 350,
             close: function() {
                 $.post(ajaxurl, {
-                    pointer: 'thsp_settings_pointer', // pointer ID
+                    pointer: 'thsp_sendwithus_pointer', // pointer ID
                     action: 'dismiss-wp-pointer'
                 });
             }
@@ -111,22 +112,23 @@ function display_getting_started_message() {
     global $current_user;
     $userid = $current_user->ID;
 
+    //delete_user_meta($userid, 'hide_getting_started_message');
+
     // Only show message if user hasn't dismissed it.
     if (!get_user_meta($userid, 'hide_getting_started_message')) {
-        echo '<div class="updated">New to sendwithus? <a href="http://www.sendwithus.com" target="_blank">Read the docs!</a><br><a href="?dismiss_me=yes">Dismiss this message.</a></div>';
+        echo '<div class="getting_started updated"><h2 style="margin-bottom: 5px;">New to sendwithus? <a href="http://www.sendwithus.com" target="_blank">Read the docs!</a></h2><a id="dismiss_message">Dismiss this message.</a></div>';
     }
 }
 
-// Activated when the user dismisses the help message for new users.
-add_action('admin_init', 'has_user_dismiss_getting_started_message');
-function has_user_dismiss_getting_started_message() {
+// AJAX function to disable the getting started message.
+add_action( 'wp_ajax_turn_off_help', 'turn_off_help_callback' );
+function turn_off_help_callback() {
     global $current_user;
-    $user_id = $current_user->ID;
-
-    if (isset($_GET['dismiss_me']) && 'yes' == $_GET['dismiss_me']) {
-        add_user_meta($userid, 'hide_getting_started_message', 'yes', true);
-    }
+    $userid = $current_user->ID;
+    add_user_meta( $userid, 'hide_getting_started_message', 'yes', true );
+    die();
 }
+
 
 $GLOBALS['templates'] = getTemplates();
 $GLOBALS['api_key'] = getAPIKey();
@@ -255,6 +257,12 @@ function sendwithus_conf_main() {
             $('#api_button').click(function() {
                 $(this).hide();
                 $('#api_box').show(300, 'linear', { direction: 'left' });
+            });
+
+            $('#dismiss_message').click(function() {
+                $('.getting_started').css('display', 'none');
+
+                $.post(ajaxurl, { action: 'turn_off_help' });
             });
         </script>
 	</div>
