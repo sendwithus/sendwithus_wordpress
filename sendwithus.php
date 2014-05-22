@@ -35,6 +35,19 @@ function activate_sidebar_shortcut() {
     add_action('admin_init', 'sendwithus_register_settings');
 }
 
+// Warn the use if their api key is invalid
+function sendwithus_no_api_key_warning(){
+    $site_url = get_site_url();
+    if($GLOBALS['api_key'] == false){
+        echo "<br />
+              <div id='invalid_key_warning'>
+                You are using an invalid sendwithus API key. Please <a href='".$site_url."/wordpress/wp-admin/admin.php?page=sendwithus.php'> update it </a> now!
+              </div>";
+    }
+}
+
+add_action( 'admin_notices', 'sendwithus_no_api_key_warning' );
+
 // Used to create an area to save plugin settings.
 function sendwithus_register_settings() {
 	// Save settings within wp_options table as 'sendwithus_settings'
