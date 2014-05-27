@@ -109,28 +109,6 @@ $GLOBALS['wp_notifications'] = array(
         http://localhost.com/wp-admin/edit-comments.php?comment_status=moderated 
         */
     ),
-    'password_change_notification'   => array(
-        'event'       => 'Password Change Performed',
-        'description' => 'Triggered when a user changes their password via a \'Lost your password?\' email. Sent to administrator.',
-        'display_parameters' => '<input type="button" class="parameters_button" id="password_change_notification" name="display_parameters" value="Display parameters"',
-        'parameters'  => '
-            <ul>
-                <li><strong>user_login</strong> - User\'s login name.</li>
-                <li><strong>display_name</strong> - How the user\'s name is displayed on the site.</li>
-                <li><strong>user_nicename</strong> - User\'s nicename.</li>
-                <li><strong>user_email</strong> - User\'s email address.</li>
-                <li><strong>user_password</strong> - User\'s hashed password.</li>
-                <li><strong>user_url</strong> - User\'s URL, if provided.</li>
-                <li><strong>user_registered</strong> - Date the user registered.</li>
-                <li><strong>blog_name</strong> - Name of the blog.</li>
-                <li><strong>default_message</strong> - Default WordPress email content.</li>
-            </ul>'
-        /*
-        default_message:
-
-        Password Lost and Changed for user: kyle 
-        */
-    ),
     'password_reset'                 => array(
         'event'       => 'Password Reset Requested',
         'description' => 'Triggered when a user attempts to change their password via "Lost your password?" Sent to requesting user.',
@@ -147,20 +125,42 @@ $GLOBALS['wp_notifications'] = array(
         /*
         default_message:
 
-        Someone requested that the password be reset for the following account: 
+        Someone requested that the password be reset for the following account:
 
-        http://localhost.com/ 
+        http://localhost.com/
 
-        Username: kyle 
+        Username: kyle
 
-        If this was a mistake, just ignore this email and nothing will happen. 
+        If this was a mistake, just ignore this email and nothing will happen.
 
-        To reset your password, visit the following address: 
+        To reset your password, visit the following address:
 
 
         http://localhost.com/wp-login.php?action=rp&key=sDAGd13qVt0lvK8yNBCr&login=kyle
         */
-    )
+    ),
+	'password_change_notification'   => array(
+	'event'       => 'Password Change Performed',
+	'description' => 'Triggered when a user changes their password via a \'Lost your password?\' email. Sent to administrator.',
+	'display_parameters' => '<input type="button" class="parameters_button" id="password_change_notification" name="display_parameters" value="Display parameters"',
+	'parameters'  => '
+            <ul>
+                <li><strong>user_login</strong> - User\'s login name.</li>
+                <li><strong>display_name</strong> - How the user\'s name is displayed on the site.</li>
+                <li><strong>user_nicename</strong> - User\'s nicename.</li>
+                <li><strong>user_email</strong> - User\'s email address.</li>
+                <li><strong>user_password</strong> - User\'s hashed password.</li>
+                <li><strong>user_url</strong> - User\'s URL, if provided.</li>
+                <li><strong>user_registered</strong> - Date the user registered.</li>
+                <li><strong>blog_name</strong> - Name of the blog.</li>
+                <li><strong>default_message</strong> - Default WordPress email content.</li>
+            </ul>'
+	/*
+	default_message:
+
+	Password Lost and Changed for user: kyle
+	*/
+)
 );
 
 $GLOBALS['wp_ms_notifications'] = array(
