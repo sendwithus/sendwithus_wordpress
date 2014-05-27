@@ -37,11 +37,11 @@ function activate_sidebar_shortcut() {
 
 // Warn the use if their api key is invalid
 function sendwithus_no_api_key_warning() {
-    $site_url = get_site_url();
+    $site_url = get_site_url(null, '/wp-admin/admin.php?page=sendwithus.php');
     if ( $GLOBALS['api_key'] == false ) {
-        echo "<br />
-              <div id='invalid_key_warning'>
-                You are using an invalid sendwithus API key. Please <a href='" . $site_url . "/wordpress/wp-admin/admin.php?page=sendwithus.php'> update it </a> now!
+        echo "<div id='invalid_key_warning'>
+                You are using an invalid sendwithus API key. This means that no site-related emails will be sent!<br/>
+                Please <a href='" . $site_url . "''> update it </a> now!
               </div>";
     }
 }
@@ -240,7 +240,7 @@ function sendwithus_conf_main() {
                 <?php endif; ?>
                 <!-- Display a notice telling the user to enter their API key & save -->
             <?php else : ?>
-                <table>
+                <table class="wp-list-table widefat">
                     <tr>
                         <td colspan="2" style="text-align: center;">
                             <h2>In order to proceed please enter a valid API key and save your changes.</h2>
