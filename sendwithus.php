@@ -25,125 +25,6 @@ function register_style_sheet() {
     wp_enqueue_style( 'sendwithus_style' );
 }
 
-add_action( 'admin_menu', 'activate_sidebar_shortcut' );
-// Creates link to plugin settings in WordPress control panel.
-function activate_sidebar_shortcut() {
-    // Add the shortcut for the plugin settings underneath the 'plugins' sidebar menu.
-    add_menu_page( 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus.php', 'sendwithus_conf_main', 'dashicons-email-alt' );
-
-    // Create an area in WordPress to store the settings saved by the user.
-    add_action( 'admin_init', 'sendwithus_register_settings' );
-}
-
-// Warn the use if their api key is invalid
-function sendwithus_no_api_key_warning() {
-    $site_url = get_site_url(null, '/wp-admin/admin.php?page=sendwithus.php');
-    if ( $GLOBALS['api_key'] == false ) {
-        echo "<div id='invalid_key_warning'>
-                You are using an invalid sendwithus API key. This means that no site-related emails will be sent!<br/>
-                Please <a href='" . $site_url . "''> update it </a> now!
-              </div>";
-    }
-}
-
-add_action( 'admin_notices', 'sendwithus_no_api_key_warning' );
-
-// Used to create an area to save plugin settings.
-function sendwithus_register_settings() {
-    // Save settings within wp_options table as 'sendwithus_settings'
-    register_setting( 'sendwithus_settings', 'api_key' );
-    register_setting( 'sendwithus_settings', 'display_parameters' );
-
-    // Whether user is using multisite functionality or not.
-    register_setting( 'sendwithus_settings', 'multisite_enabled' );
-
-    foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
-        register_setting( 'sendwithus_settings', $key );
-    }
-
-    foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
-        register_setting( 'sendwithus_settings', $key );
-    }
-}
-
-// Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
-
-function display_pointer( $hook_suffix ) {
-    // Assume pointer shouldn't be shown
-    $enqueue_pointer_script_style = false;
-
-    // Get array list of dismissed pointers for current user and convert it to array
-    $dismissed_pointers = explode( ',', get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
-
-    // Check if our pointer is not among dismissed ones
-    if( !in_array( 'thsp_sendwithus_pointer', $dismissed_pointers ) ) {
-        $enqueue_pointer_script_style = true;
-        
-        // Add footer scripts using callback function
-        add_action( 'admin_print_footer_scripts', 'populate_pointer' );
-    }
-
-    // Enqueue pointer CSS and JS files, if needed
-    if( $enqueue_pointer_script_style ) {
-        wp_enqueue_style( 'wp-pointer' );
-        wp_enqueue_script( 'wp-pointer' );
-    }
-    
-}
-
-// Used to display the pointer and control what happens when the user closes it.
-add_action( 'admin_enqueue_scripts', 'display_pointer' );
-function populate_pointer() {
-    $pointer_content  = "<h3>sendwithus activated!</h3>";
-    $pointer_content .= "<p>The sendwithus WordPress plugin can be accessed here!</p><p>Continue your installation by clicking on the menu.</p>";
-    ?>
-    
-    <script type="text/javascript">
-    //<![CDATA[
-    jQuery(document).ready(function($) {
-        $('#toplevel_page_sendwithus').pointer({
-            content: '<?php echo $pointer_content; ?>',
-            position: {
-                edge: 'left', // arrow direction
-                align: 'center' // vertical alignment
-            },
-            pointerWidth: 350,
-            close: function() {
-                $.post(ajaxurl, {
-                    pointer: 'thsp_sendwithus_pointer', // pointer ID
-                    action: 'dismiss-wp-pointer'
-                });
-            }
-        }).pointer('open');
-    });
-    //]]>
-    </script>
-<?php
-}
-
-// Display a help message to new users of the plugin.
-function display_getting_started_message() {
-    global $current_user;
-    $userid = $current_user->ID;
-
-    //delete_user_meta($userid, 'hide_getting_started_message');
-
-    // Only show message if user hasn't dismissed it.
-    if ( ! get_user_meta( $userid, 'hide_getting_started_message' ) ) {
-        echo '<div class="getting_started updated"><h2 style="margin-bottom: 5px;">New to sendwithus? <a href="http://www.sendwithus.com/docs" target="_blank">Read the docs!</a></h2><a id="dismiss_message">Dismiss this message.</a></div>';
-    }
-}
-
-// AJAX function to disable the getting started message.
-add_action( 'wp_ajax_turn_off_help', 'turn_off_help_callback' );
-function turn_off_help_callback() {
-    global $current_user;
-    $userid = $current_user->ID;
-    add_user_meta( $userid, 'hide_getting_started_message', 'yes', true );
-    die();
-}
-
-
 $GLOBALS['templates'] = getTemplates();
 $GLOBALS['api_key'] = getAPIKey();
 
@@ -264,6 +145,7 @@ function sendwithus_conf_main() {
         </form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
+            // Triggered when user chooses to see parameters passed to sendwithus.
             $('.display_info').click(function(event) {
                 $(this).text(function(i, text) {
                     return text === 'Show parameters sent to sendwithus' ? 'Hide parameters' : 'Show parameters sent to sendwithus';
@@ -275,11 +157,13 @@ function sendwithus_conf_main() {
                 $('.parameters.' + className).slideToggle(150);
             });
 
+            // Used to hide/display API entry/viewing area in main screen.
             $('#api_button').click(function() {
                 $(this).hide();
                 $('#api_box').show(300, 'linear', { direction: 'left' });
             });
 
+            // Used to get rid of the 'welcome' message that pops up.
             $('#dismiss_message').click(function() {
                 $('.getting_started').css('display', 'none');
 

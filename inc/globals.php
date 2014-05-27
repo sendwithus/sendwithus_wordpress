@@ -5,8 +5,8 @@
 
 $GLOBALS['wp_notifications'] = array(
     'new_user'                       => array(
-        'event'       => 'New User Created',
-        'description' => 'Triggered when a new user signs up for an account. Sent to administrator.',
+        'event'       => 'New User Created - Sent to Administrator',
+        'description' => 'Triggered when a new user signs up for an account.',
         'display_parameters' => '<input type="button" class="parameters_button" id="new_user" name="display_parameters" value="Display parameters"',
         'parameters'  => '   
             <ul>
@@ -27,8 +27,8 @@ $GLOBALS['wp_notifications'] = array(
         */
     ),
     'new_comment'                    => array(
-        'event'       => 'New Comment Posted',
-        'description' => 'Triggered when a user posts a comment. Sent to administrator.',
+        'event'       => 'New Comment Posted - Sent to Administrator',
+        'description' => 'Triggered when a user posts a comment.',
         'display_parameters' => '<input type="button" class="parameters_button" id="new_comment" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -68,8 +68,8 @@ $GLOBALS['wp_notifications'] = array(
         */
     ),
     'awaiting_approval'              => array(
-        'event'       => 'User Comment Awaiting Approval',
-        'description' => 'Triggered when \'comment must be manually approved\' is set in control panel and a comment is posted. Sent to administrator.',
+        'event'       => 'User Comment Awaiting Approval - Sent to Administrator',
+        'description' => 'Triggered when \'comment must be manually approved\' is set in control panel and a comment is posted.',
         'display_parameters' => '<input type="button" class="parameters_button" id="awaiting_approval" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -110,8 +110,8 @@ $GLOBALS['wp_notifications'] = array(
         */
     ),
     'password_reset'                 => array(
-        'event'       => 'Password Reset Requested',
-        'description' => 'Triggered when a user attempts to change their password via "Lost your password?" Sent to requesting user.',
+        'event'       => 'Password Reset Requested - Sent to Requesting User',
+        'description' => 'Triggered when a user attempts to change their password via "Lost your password?"',
         'display_parameters' => '<input type="button" class="parameters_button" id="password_reset" name="display_parameters" value="Display parameters"',
         'parameters'  => '
             <ul>
@@ -140,8 +140,8 @@ $GLOBALS['wp_notifications'] = array(
         */
     ),
 	'password_change_notification'   => array(
-	'event'       => 'Password Change Performed',
-	'description' => 'Triggered when a user changes their password via a \'Lost your password?\' email. Sent to administrator.',
+	'event'       => 'Password Change Performed - Sent to Administrator',
+	'description' => 'Triggered when a user changes their password via a \'Lost your password?\' email.',
 	'display_parameters' => '<input type="button" class="parameters_button" id="password_change_notification" name="display_parameters" value="Display parameters"',
 	'parameters'  => '
             <ul>
@@ -265,7 +265,7 @@ $GLOBALS['wp_ms_notifications'] = array(
         */
     ),
     'ms_signup_blog_verification'          => array(
-        'event'       => 'New Blog Verification Needed - Notify User',
+        'event'       => 'New Blog Verification Needed - Sent to User',
         'description' => 'Triggered when a new blog requires verification. Sent to user.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_signup_blog_verification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
@@ -289,7 +289,7 @@ $GLOBALS['wp_ms_notifications'] = array(
         */
     ),
     'ms_signup_user_notification' => array(
-        'event'       => 'New User Verification Needed - Notify User',
+        'event'       => 'New User Verification Needed - Sent to User',
         'description' => 'Triggered when a new user creation is requested, but new user doesn\'t request a new site. Sent to user.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_signup_user_notification" name="display_parameters" value="Display parameters"',
         'parameters'  => '
