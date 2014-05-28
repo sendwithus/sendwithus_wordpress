@@ -25,7 +25,7 @@ function swu_newuser_notify_siteadmin($default_message, $user) {
                 'user_name' => $user->user_login,
                 'remote_ip' => $remote_ip,
                 'control_panel' => $options_site_url,
-                'default_message' => htmlDefaultMessage($default_message)
+                'default_message' => html_default_message($default_message)
             )
         )
     );
@@ -58,7 +58,7 @@ function swu_newblog_notify_siteadmin($default_message) {
                 'site_url' => $site_url[1],
                 'remote_ip' => $remote_ip[1],
                 'control_panel' => $disable_notifications[1],
-                'default_message' => htmlDefaultMessage($default_message)
+                'default_message' => html_default_message($default_message)
             )
         )
     );
@@ -101,7 +101,7 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
                 'user_password' => $password,
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
-                'default_message' => htmlDefaultMessage($default_message)
+                'default_message' => html_default_message($default_message)
             )
         )
     );
@@ -163,7 +163,7 @@ We hope you enjoy your new site. Thanks!
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
                 'site_url' => $url,
-                'default_message' => htmlDefaultMessage($default_message)
+                'default_message' => html_default_message($default_message)
             )
         )
     );
@@ -206,7 +206,7 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
                 'user_email' => $user_email,
                 'key' => $key,
                 'content' => $content,
-                'default_message' => htmlDefaultMessage($default_message)
+                'default_message' => html_default_message($default_message)
             )
         )
     );
@@ -243,7 +243,7 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
                     'user_activation_key' => $url,
                     'blog_name' => $blog_name,
                     'blog_url' => $blog_url,
-                    'default_message' => htmlDefaultMessage($default_message)
+                    'default_message' => html_default_message($default_message)
             )
         )
     );
