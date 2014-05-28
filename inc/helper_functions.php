@@ -83,7 +83,7 @@ function generate_parameter_listing($name, $parameterData) {
 }
 
 // Make 'default_message' HTML friendly.
-function htmlDefaultMessage($default_message) {
+function html_default_message($default_message) {
     // Convert newline into line breaks.
     return preg_replace('/\\n/', '<br>', $default_message);
 }
