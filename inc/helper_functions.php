@@ -10,7 +10,7 @@ function sendwithus_validate_settings($args) {
 }
 
 // Wrapper for the emails() function in the API
-function getTemplates() {
+function get_templates() {
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
@@ -29,14 +29,14 @@ function getTemplates() {
 }
 
 // Get the API key for use as a global variable.
-function getAPIKey() {
+function get_api_key() {
     return get_option('api_key');
 }
 
 // Generate a template selection drop down list;
 // value = template id
 // text = template name
-function generateTemplateSelection($name, $array) {
+function generate_template_selection($name, $array) {
     $input_code = '<select name="' . $name . '" style="width: 100%">';
     $current_template = get_option($name);
 
@@ -59,22 +59,22 @@ function generateTemplateSelection($name, $array) {
 }
 
 // Generate table body from the wp_notification arrays
-function generateTemplateTable($notification_array) {
+function generate_template_table($notification_array) {
     foreach ($notification_array as $current => $text) {
         echo '<tr><td style="width: 49%; padding-bottom: 0px;"><strong>' . $text['event'] .'</strong>';
         echo '<div class="' . $current . '-description"><p class="description">' . $text['description'] . '</p></div>';
         echo '</td><td style="text-align: right; padding-bottom: 0px;">';
-        echo generateTemplateSelection($current, $GLOBALS['templates']);
+        echo generate_template_selection($current, $GLOBALS['templates']);
         echo '<div class="button display_info parameters_button ' . $current . '">Show parameters sent to sendwithus</div>';
         echo '</td></tr>';
         echo '<tr><td colspan="2" style="padding-top: 0px;">';
-        echo generateParameterListing($current, $text);
+        echo generate_parameter_listing($current, $text);
         echo '</td></tr>';
     }
 }
 
 // Generate code to display/hide parameters sent with events.
-function generateParameterListing($name, $parameterData) {
+function generate_parameter_listing($name, $parameterData) {
     $parameterListing = '
         <span class="parameters ' . $name . '">' . $parameterData['parameters'] . 
         '</span>';

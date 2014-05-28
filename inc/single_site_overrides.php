@@ -82,7 +82,7 @@ if (!function_exists('wp_notify_postauthor')) {
                     'comment_parent' => $comment->comment_parent,
                     'user_id' => $comment->user_id,
                     'blog_name' => get_option('blogname'),
-                    'default_message'=> htmlDefaultMessage($default_message)
+                    'default_message'=> html_default_message($default_message)
                 )
             )
         );
@@ -122,7 +122,7 @@ if (!function_exists('wp_new_user_notification')) {
                     'user_password' => $plaintext_pass,
                     'caps' => $user->caps,
                     'blog_name' => get_option('blogname'),
-                    'default_message' => htmlDefaultMessage($default_message)
+                    'default_message' => html_default_message($default_message)
                 )
             )
         );
@@ -221,7 +221,7 @@ if (!function_exists('wp_notify_moderator')) {
                         'comment_parent' => $comment->comment_parent,
                         'user_id' => $comment->user_id,
                         'blog_name' => get_option('blogname'),
-                        'default_message' => htmlDefaultMessage($default_message)
+                        'default_message' => html_default_message($default_message)
                     )
                 )
             );
@@ -253,7 +253,7 @@ if (!function_exists('wp_password_change_notification')) {
                     'user_url' => $user->user_url,
                     'user_registered' => $user->user_registered,
                     'blog_name' => $blogname,
-                    'default_message' => htmlDefaultMessage($default_message)
+                    'default_message' => html_default_message($default_message)
                 )
             )
         );
@@ -301,7 +301,7 @@ function reset_password_notification($content, $key) {
                 'user_email' => $user->user_email,
                 'reset_url' => $url,
                 'blog_name' => $blogname,
-                'default_message' => htmlDefaultMessage($content)
+                'default_message' => html_default_message($content)
             )
         )
     );

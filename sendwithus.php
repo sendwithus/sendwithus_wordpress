@@ -25,8 +25,8 @@ function register_style_sheet() {
     wp_enqueue_style( 'sendwithus_style' );
 }
 
-$GLOBALS['templates'] = getTemplates();
-$GLOBALS['api_key'] = getAPIKey();
+$GLOBALS['templates'] = get_templates();
+$GLOBALS['api_key'] = get_api_key();
 
 // Establish whether an API key has been entered and that it is valid.
 $GLOBALS['valid_key'] = true;
@@ -82,7 +82,7 @@ function sendwithus_conf_main() {
                         <td>
                             <input id="api_box" type="text" name="api_key"
                                    placeholder="Your sendwithus API key."
-                                   value="<?php echo getAPIKey(); ?>"/>
+                                   value="<?php echo get_api_key(); ?>"/>
 
                             <div id="api_button" class="button">Show API Key</div>
                         </td>
@@ -103,7 +103,7 @@ function sendwithus_conf_main() {
                         </th>
                         </thead>
                     <?php endif; ?>
-                    <?php generateTemplateTable( $GLOBALS['wp_notifications'] ); ?>
+                    <?php generate_template_table( $GLOBALS['wp_notifications'] ); ?>
                 </table>
                 <!-- Events that are displayed when multisite events are enabled -->
                 <?php if ( is_multisite() ) : ?>
@@ -116,7 +116,7 @@ function sendwithus_conf_main() {
                                style="text-align: center;">Multi-site events are specific to WordPress instances that host multiple WordPress sites. As such, they feature several events specific to administering multiple sites.</p>
                         </th>
                         </thead>
-                        <?php generateTemplateTable( $GLOBALS['wp_ms_notifications'] ); ?>
+                        <?php generate_template_table( $GLOBALS['wp_ms_notifications'] ); ?>
                     </table>
                 <?php endif; ?>
                 <!-- Display a notice telling the user to enter their API key & save -->
@@ -134,7 +134,7 @@ function sendwithus_conf_main() {
                         <td><strong>sendwithus API Key</strong></td>
                         <td>
                             <input type="text" name="api_key" placeholder="Your sendwithus API key." style="width: 100%"
-                                   value="<?php echo getAPIKey(); ?>"/>
+                                   value="<?php echo get_api_key(); ?>"/>
                         </td>
                     </tr>
                 </table>
