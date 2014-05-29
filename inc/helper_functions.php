@@ -3,12 +3,6 @@
  *  MISCELLANEOUS FUNCTIONS
  */
 
-function sendwithus_validate_settings($args) {
-    // Used to validate settings passed to the plugin.
-    echo("Sanitized!<br/>");
-    return $args;
-}
-
 // Wrapper for the emails() function in the API
 function get_templates() {
     $api_key = get_option('api_key');
@@ -41,16 +35,12 @@ function generate_template_selection($name, $array) {
     $current_template = get_option($name);
 
     foreach ($array as $template) {
-        if($template->id == $current_template){
+        if ($template->id == $current_template) {
             $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
-        }
-        else {
-            if($name == 'Default Wordpress email'){
-                $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
-            }
-            else{
-                $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
-            }
+        } else if ($current_template == '' && $template->name == 'Default Wordpress email') {
+            $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
+        } else {
+            $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
         }
     }
 
