@@ -12,13 +12,15 @@ function get_templates() {
     foreach ($response as $template) {
         $template_names[] = $template->name;
     }
+
     /*Check if the default_wordpress_email template exists, if not create it */
-   if(!(in_array("Default Wordpress email",$template_names))){
+    if (!(in_array("Default Wordpress email",$template_names))) {
         $response = $api->create_email('Default Wordpress email',
             '{{default_email_subject}} ',
             '<html><head></head><body>{{default_message}}</body></html>');
         $response = $api->emails();
     }
+
     return $response;
 }
 
@@ -27,17 +29,13 @@ function get_api_key() {
     return get_option('api_key');
 }
 
-// Generate a template selection drop down list;
-// value = template id
-// text = template name
+// Generate a template selection drop down list
 function generate_template_selection($name, $array) {
     $input_code = '<select name="' . $name . '" style="width: 100%">';
     $current_template = get_option($name);
 
     foreach ($array as $template) {
         if ($template->id == $current_template) {
-            $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
-        } else if ($current_template == '' && $template->name == 'Default Wordpress email') {
             $input_code .= '<option value=' . $template->id . ' selected>' . $template->name . '</option>';
         } else {
             $input_code .= '<option value=' . $template->id . '>' . $template->name . '</option>';
@@ -87,12 +85,26 @@ function sendwithus_register_settings() {
     // Whether user is using multisite functionality or not.
     register_setting( 'sendwithus_settings', 'multisite_enabled' );
 
+    // The default WordPress email ID.
+    $templates = get_templates();
+    foreach( $templates as $key => $value ) {
+        if ( $value->name == 'Default Wordpress email' ) {
+            $default_template = $value->id;
+        }
+    }
+
     foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
         register_setting( 'sendwithus_settings', $key );
+
+        // Assign default template.
+        update_option($key, $default_template);
     }
 
     foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
         register_setting( 'sendwithus_settings', $key );
+
+        // Assign default template.
+        update_option($key, $default_template);
     }
 }
 
@@ -182,7 +194,7 @@ function activate_sidebar_shortcut() {
     add_action( 'admin_init', 'sendwithus_register_settings' );
 }
 
-// Warn the use if their api key is invalid
+// Warn the user if their api key is invalid
 add_action( 'admin_notices', 'sendwithus_no_api_key_warning' );
 function sendwithus_no_api_key_warning() {
     $site_url = get_site_url(null, '/wp-admin/admin.php?page=sendwithus.php');
