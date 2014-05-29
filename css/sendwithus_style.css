@@ -89,11 +89,14 @@ ul {
     padding-top: 10px;
 }
 
+#api_entry {
+    display: none;
+}
+
 #api_box {
     float: right;
     min-width: 40%;
-    width: 300px;
-    display: none;
+    width: 100%;
     margin-bottom: 5px;
 }
 
@@ -113,6 +116,10 @@ ul {
 #submit {
     width: 100%;
     padding-top: 0px;
+}
+
+p.submit {
+    padding-bottom: 0px;
 }
 
 #invalid_key_warning{

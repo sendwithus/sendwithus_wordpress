@@ -76,13 +76,16 @@ function sendwithus_conf_main() {
                 <h3>Events</h3>
                 <table style="width: 100%">
                     <tr>
-                        <td>
+                        <td style="vertical-align: top;">
                             <p class="description">Events that trigger the sending of transactional emails are listed below.</p>
                         </td>
                         <td>
-                            <input id="api_box" type="text" name="api_key"
-                                   placeholder="Your sendwithus API key."
-                                   value="<?php echo get_api_key(); ?>"/>
+                            <div id="api_entry" style="display: none;">
+                                <input id="api_box" type="text" name="api_key"
+                                       placeholder="Your sendwithus API key."
+                                       value="<?php echo get_api_key(); ?>"/>
+                                <?php submit_button() ?>
+                            </div>
 
                             <div id="api_button" class="button">Show API Key</div>
                         </td>
@@ -160,7 +163,7 @@ function sendwithus_conf_main() {
             // Used to hide/display API entry/viewing area in main screen.
             $('#api_button').click(function() {
                 $(this).hide();
-                $('#api_box').show(300, 'linear', { direction: 'left' });
+                $('#api_entry').show();
             });
 
             // Used to get rid of the 'welcome' message that pops up.
