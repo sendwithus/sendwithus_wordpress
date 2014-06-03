@@ -4,7 +4,7 @@
 }
 
 .swu_select {
-	width: 100%;
+    width: 100%;
 }
 
 .welcome-panel li {
@@ -48,7 +48,7 @@
 }
 
 .dashboard_button {
-    background-color: black !important;
+    background-color: #777 !important;
     color: white !important;
     box-shadow: none !important;
 }
