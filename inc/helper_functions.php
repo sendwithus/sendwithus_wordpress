@@ -87,7 +87,7 @@ function sendwithus_register_settings() {
 
     // The default WordPress email ID.
     $templates = get_templates();
-    foreach( $templates as $key => $value ) {
+    foreach ( $templates as $key => $value ) {
         if ( $value->name == 'Default Wordpress email' ) {
             $default_template = $value->id;
         }
@@ -96,15 +96,19 @@ function sendwithus_register_settings() {
     foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
         register_setting( 'sendwithus_settings', $key );
 
-        // Assign default template.
-        update_option($key, $default_template);
+        if ( get_option($key) == "" ) { 
+            // Assign default template.
+            update_option($key, $default_template);
+        }
     }
 
     foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
         register_setting( 'sendwithus_settings', $key );
 
-        // Assign default template.
-        update_option($key, $default_template);
+        if ( get_option($key) == "" ) {
+            // Assign default template.
+            update_option($key, $default_template);     
+        }
     }
 }
 
