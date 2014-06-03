@@ -3,25 +3,53 @@
  *  MISCELLANEOUS FUNCTIONS
  */
 
+
+
 // Wrapper for the emails() function in the API
 function get_templates() {
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
-    foreach ($response as $template) {
-        $template_names[] = $template->name;
-    }
-
-    /*Check if the default_wordpress_email template exists, if not create it */
-    if (!(in_array("Default Wordpress email",$template_names))) {
-        $response = $api->create_email('Default Wordpress email',
-            '{{default_email_subject}} ',
-            '<html><head></head><body>{{default_message}}</body></html>');
-        $response = $api->emails();
-    }
-
     return $response;
+}
+
+function create_default_template(){
+    $current_user = wp_get_current_user();
+    $api_key = get_option('api_key');
+    $api = new \sendwithus\API($api_key);
+    $response = $api->emails();
+
+    $template_kvp_array = Array();
+    $template_id_array = Array();
+
+    //Get the default wordpress email template ID
+    $default_id = get_user_option('default_wordpress_email_id', $current_user->ID);
+    echo $default_id." = Default";
+
+    //Create an array of template id's
+    foreach($response as $template){
+        array_push($template_id_array, $template->id);
+    }
+
+    //If the default wordpress template id isn't in the array
+    if(!in_array($default_id, $template_id_array)){
+
+        //Create a new template for default wordpress emails
+        $response = $api->create_email('Default Wordpress email',
+                    '{{default_email_subject}} ',
+                    '<html><head></head><body>{{default_message}}</body></html>');
+        $response = $api->emails();
+        //Create a KVP array of the template name => id
+        foreach($response as $template){
+            $template_kvp_array[$template->name] = $template->id;
+        }
+
+        $default_wordpress_id = $template_kvp_array['Default Wordpress email'];
+        $success = update_option($current_user->ID, 'default_wordpress_email_id',$default_wordpress_id);
+        echo $success." = SUCCESS";
+    }
+    
 }
 
 // Get the API key for use as a global variable.
@@ -81,17 +109,14 @@ function sendwithus_register_settings() {
     // Save settings within wp_options table as 'sendwithus_settings'
     register_setting( 'sendwithus_settings', 'api_key' );
     register_setting( 'sendwithus_settings', 'display_parameters' );
+    register_setting( 'sendwithus_settings', 'default_wordpress_email_id' );
 
     // Whether user is using multisite functionality or not.
     register_setting( 'sendwithus_settings', 'multisite_enabled' );
 
     // The default WordPress email ID.
     $templates = get_templates();
-    foreach ( $templates as $key => $value ) {
-        if ( $value->name == 'Default Wordpress email' ) {
-            $default_template = $value->id;
-        }
-    }
+    $default_template = get_option('default_wordpress_email_id');
 
     foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
         register_setting( 'sendwithus_settings', $key );
