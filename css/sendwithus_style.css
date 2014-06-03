@@ -42,6 +42,17 @@
     font-size: 150%;
 }
 
+.site_button {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.dashboard_button {
+    background-color: black !important;
+    color: white !important;
+    box-shadow: none !important;
+}
+
 a:link {
     text-decoration: none;
     color: #777;
@@ -77,15 +88,13 @@ ul {
 
 #help_button {
     margin-right: 12px;
-    margin-top: -10px;
 }
 
 #dashboard_button {
     margin-right: 12px;
-    margin-top: -10px;
     background-color: #f7931d;
     box-shadow: none;
-    color: black;
+    color: white;
 }
 
 #event_name {
