@@ -67,13 +67,13 @@ function sendwithus_conf_main() {
         <form action="https://www.sendwithus.com/#/emails" target="_blank" class="site_button">
             <button id="help_button" class="dashboard_button button">Templates</button>
         </form>
-        <form action="https://www.sendwithus.com/#/emails" target="_blank" class="site_button">
+        <form action="https://www.sendwithus.com/?#/analytics" target="_blank" class="site_button">
             <button id="help_button" class="dashboard_button button">Analytics</button>
         </form>
-        <form action="https://www.sendwithus.com/#/emails" target="_blank" class="site_button">
+        <form action="https://www.sendwithus.com/?#/logs" target="_blank" class="site_button">
             <button id="help_button" class="dashboard_button button">Email Logs</button>
         </form>
-        <form action="https://www.sendwithus.com/#/emails" target="_blank" class="site_button">
+        <form action="https://www.sendwithus.com/?#/api_settings" target="_blank" class="site_button">
             <button id="help_button" class="dashboard_button button">API Settings</button>
         </form>
     </div>
