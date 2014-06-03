@@ -53,20 +53,37 @@ function sendwithus_conf_main() {
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <div id="header">
-        <h1>
+        <h1 style="float: left; margin-top: 10px; margin-bottom: 0px;">
             <a href="http://www.sendwithus.com" target="_blank">
                 <span style="color: #777">send<span style="color: #f7931d">with</span>us</span>
             </a>
         </h1>
-
-        <form action="http://www.sendwithus.com/docs" target="_blank">
-            <button id="help_button" class="button" style="float: right">Docs</button>
-        </form>
-        <p>Enable transactional emails within WordPress with ease.</p>
+        <p style="float: right; margin-right: 20px; margin-bottom: 0px;">Enable transactional emails within WordPress with ease.</p>
     </div>
     <?php
     display_getting_started_message();
     ?>
+    <div style="margin-top: 0px; text-align: center;">
+        <form action="http://www.sendwithus.com/login" target="_blank" class="site_button">
+            <button id="dashboard_button" class="button">Dashboard</button>
+        </form>
+        <form action="http://www.sendwithus.com/docs" target="_blank" class="site_button">
+            <button id="help_button" class="button">Docs</button>
+        </form>
+        <form action="https://www.sendwithus.com/#/emails" target="_blank" class="site_button">
+            <button id="help_button" class="dashboard_button button">Templates</button>
+        </form>
+        <form action="https://www.sendwithus.com/?#/analytics" target="_blank" class="site_button">
+            <button id="help_button" class="dashboard_button button">Analytics</button>
+        </form>
+        <form action="https://www.sendwithus.com/?#/logs" target="_blank" class="site_button">
+            <button id="help_button" class="dashboard_button button">Email Logs</button>
+        </form>
+        <form action="https://www.sendwithus.com/?#/api_settings" target="_blank" class="site_button">
+            <button id="help_button" class="dashboard_button button">API Settings</button>
+        </form>
+    </div>
+
     <div class="welcome-panel">
         <!-- A check should be performed before loading the table to ensure that the user
              has entered an API key - otherwise only an entry for API key should be displayed. -->
@@ -175,12 +192,11 @@ function sendwithus_conf_main() {
             // Used to get rid of the 'welcome' message that pops up.
             $('#dismiss_message').click(function() {
                 $('.getting_started').css('display', 'none');
-
                 $.post(ajaxurl, { action: 'turn_off_help' });
             });
         </script>
     </div>
-<?
+<?php
 }
 
 ?>

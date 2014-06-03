@@ -155,11 +155,11 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
             </ul>'
-	/*
-	default_message:
+    	/*
+    	default_message:
 
-	Password Lost and Changed for user: kyle
-	*/
+    	Password Lost and Changed for user: kyle
+    	*/
 )
 );
 
