@@ -190,7 +190,7 @@ function sendwithus_conf_main() {
             });
         </script>
     </div>
-<?
+<?php
 }
 
 ?>
