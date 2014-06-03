@@ -52,7 +52,9 @@ function sendwithus_conf_main() {
                 <span style="color: #777">send<span style="color: #f7931d">with</span>us</span>
             </a>
         </h1>
-
+        <form action="http://www.sendwithus.com/login" target="_blank">
+            <button id="dashboard_button" class="button" style="float: right">Dashboard</button>
+        </form>
         <form action="http://www.sendwithus.com/docs" target="_blank">
             <button id="help_button" class="button" style="float: right">Docs</button>
         </form>

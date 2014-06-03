@@ -80,6 +80,14 @@ ul {
     margin-top: -10px;
 }
 
+#dashboard_button {
+    margin-right: 12px;
+    margin-top: -10px;
+    background-color: #f7931d;
+    box-shadow: none;
+    color: black;
+}
+
 #event_name {
     float: left;
     margin-right: 10px;
