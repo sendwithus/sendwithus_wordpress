@@ -1,5 +1,5 @@
 === sendwithus ===
-Contributors: freshcelery, dylanemoore
+Contributors: yokelpole, freshcelery, dylanemoore
 Tags: email, transactional, sendwithus
 Requires at least: 3.9.0
 Tested up to: 3.9.0

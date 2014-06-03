@@ -5,6 +5,7 @@
 
 // Wrapper for the emails() function in the API
 function get_templates() {
+	$template_names = [];
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
