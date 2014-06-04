@@ -2,7 +2,7 @@
 /*
  *  MISCELLANEOUS FUNCTIONS
  */
-
+global $default_wp_template_id;
 
 // Wrapper for the emails() function in the API
 function get_templates() {
@@ -15,30 +15,10 @@ function get_templates() {
 }
 
 function set_template_global(){
-    // The default WordPress email ID.
-    $templates = get_templates();
-    $default_template = get_user_option('default_wordpress_email_id');
-
-    foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
-        //register_setting( 'sendwithus_settings', $key );
-
-        if ( get_option($key) == "" ) { 
-            // Assign default template.
-            update_option($key, $default_template);
-        }
-    }
-
-    foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
-        //register_setting( 'sendwithus_settings', $key );
-
-        if ( get_option($key) == "" ) {
-            // Assign default template.
-            update_option($key, $default_template);     
-        }
-    }
-
     $GLOBALS['templates'] = get_templates();
 }
+
+
 
 function create_default_template(){
     $current_user = wp_get_current_user();
@@ -74,6 +54,8 @@ function create_default_template(){
         $default_wordpress_id = $template_kvp_array['Default Wordpress email'];
         $success = update_user_option($current_user->ID, 'default_wordpress_email_id',$default_wordpress_id);
     }
+
+    $default_wp_template_id = get_user_option('default_wordpress_email_id', $current_user->ID);
     
 }
 
@@ -137,6 +119,30 @@ function sendwithus_register_settings() {
 
     // Whether user is using multisite functionality or not.
     register_setting( 'sendwithus_settings', 'multisite_enabled' );
+
+    // The default WordPress email ID.
+    if(isset($default_wp_template_id)){
+        $default_template = $default_wp_template_id;
+    }
+    foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
+        register_setting( 'sendwithus_settings', $key );
+
+        if ( get_option($key) == "" ) { 
+            // Assign default template.
+            update_option($key, $default_template);
+        }
+    }
+
+    foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
+        register_setting( 'sendwithus_settings', $key );
+
+        if ( get_option($key) == "" ) {
+            // Assign default template.
+            update_option($key, $default_template);     
+        }
+    }
+
+    $GLOBALS['templates'] = get_templates();
 
 }
 
