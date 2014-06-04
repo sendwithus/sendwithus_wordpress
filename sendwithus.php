@@ -27,7 +27,6 @@ function register_style_sheet() {
 
 $GLOBALS['api_key'] = get_api_key();
 
-
 if ( $GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error' ) {
     $GLOBALS['valid_key'] = false;
 }
