@@ -25,13 +25,17 @@ function register_style_sheet() {
     wp_enqueue_style( 'sendwithus_style' );
 }
 
-$GLOBALS['templates'] = get_templates();
 $GLOBALS['api_key'] = get_api_key();
 
-// Establish whether an API key has been entered and that it is valid.
-$GLOBALS['valid_key'] = true;
+
 if ( $GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error' ) {
     $GLOBALS['valid_key'] = false;
+}
+else{
+    // Establish whether an API key has been entered and that it is valid.
+    $GLOBALS['valid_key'] = true;
+    add_action( 'plugins_loaded', 'create_default_template');
+    add_action( 'plugins_loaded', 'set_template_global');
 }
 
 // Used for displaying the main menu page.

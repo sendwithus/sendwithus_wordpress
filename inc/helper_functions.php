@@ -3,6 +3,7 @@
  *  MISCELLANEOUS FUNCTIONS
  */
 
+
 // Wrapper for the emails() function in the API
 function get_templates() {
 	$template_names = [];
@@ -10,19 +11,70 @@ function get_templates() {
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
-    foreach ($response as $template) {
-        $template_names[] = $template->name;
-    }
-
-    /*Check if the default_wordpress_email template exists, if not create it */
-    if (!(in_array("Default Wordpress email",$template_names))) {
-        $response = $api->create_email('Default Wordpress email',
-            '{{default_email_subject}} ',
-            '<html><head></head><body>{{default_message}}</body></html>');
-        $response = $api->emails();
-    }
-
     return $response;
+}
+
+function set_template_global(){
+    // The default WordPress email ID.
+    $templates = get_templates();
+    $default_template = get_user_option('default_wordpress_email_id');
+
+    foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
+        //register_setting( 'sendwithus_settings', $key );
+
+        if ( get_option($key) == "" ) { 
+            // Assign default template.
+            update_option($key, $default_template);
+        }
+    }
+
+    foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
+        //register_setting( 'sendwithus_settings', $key );
+
+        if ( get_option($key) == "" ) {
+            // Assign default template.
+            update_option($key, $default_template);     
+        }
+    }
+
+    $GLOBALS['templates'] = get_templates();
+}
+
+function create_default_template(){
+    $current_user = wp_get_current_user();
+
+    $api_key = get_option('api_key');
+    $api = new \sendwithus\API($api_key);
+    $response = $api->emails();
+
+    $template_kvp_array = Array();
+    $template_id_array = Array();
+
+    //Get the default wordpress email template ID
+    $default_id = get_user_option('default_wordpress_email_id', $current_user->ID);
+
+    //Create an array of template id's
+    foreach($response as $template){
+        array_push($template_id_array, $template->id);
+    }
+
+    //If the default wordpress template id isn't in the array
+    if(!in_array($default_id, $template_id_array)){
+
+        //Create a new template for default wordpress emails
+        $response = $api->create_email('Default Wordpress email',
+                    '{{default_email_subject}} ',
+                    '<html><head></head><body>{{default_message}}</body></html>');
+        $response = $api->emails();
+        //Create a KVP array of the template name => id
+        foreach($response as $template){
+            $template_kvp_array[$template->name] = $template->id;
+        }
+
+        $default_wordpress_id = $template_kvp_array['Default Wordpress email'];
+        $success = update_user_option($current_user->ID, 'default_wordpress_email_id',$default_wordpress_id);
+    }
+    
 }
 
 // Get the API key for use as a global variable.
@@ -86,31 +138,6 @@ function sendwithus_register_settings() {
     // Whether user is using multisite functionality or not.
     register_setting( 'sendwithus_settings', 'multisite_enabled' );
 
-    // The default WordPress email ID.
-    $templates = get_templates();
-    foreach ( $templates as $key => $value ) {
-        if ( $value->name == 'Default Wordpress email' ) {
-            $default_template = $value->id;
-        }
-    }
-
-    foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
-        register_setting( 'sendwithus_settings', $key );
-
-        if ( get_option($key) == "" ) { 
-            // Assign default template.
-            update_option($key, $default_template);
-        }
-    }
-
-    foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
-        register_setting( 'sendwithus_settings', $key );
-
-        if ( get_option($key) == "" ) {
-            // Assign default template.
-            update_option($key, $default_template);     
-        }
-    }
 }
 
 // Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
