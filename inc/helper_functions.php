@@ -18,8 +18,6 @@ function set_template_global(){
     $GLOBALS['templates'] = get_templates();
 }
 
-
-
 function create_default_template(){
     $current_user = wp_get_current_user();
 
@@ -68,6 +66,11 @@ function get_api_key() {
 function generate_template_selection($name, $array) {
     $input_code = '<select name="' . $name . '" style="width: 100%">';
     $current_template = get_option($name);
+
+    // Assign it to the default if no template is returned.
+    if($current_template == "") {
+        $current_template = get_user_option('default_wordpress_email_id', $current_user->ID);
+    }
 
     foreach ($array as $template) {
         if ($template->id == $current_template) {
@@ -120,10 +123,8 @@ function sendwithus_register_settings() {
     // Whether user is using multisite functionality or not.
     register_setting( 'sendwithus_settings', 'multisite_enabled' );
 
-    // The default WordPress email ID.
-    if(isset($default_wp_template_id)){
-        $default_template = $default_wp_template_id;
-    }
+    $default_template = get_user_option('default_wordpress_email_id', $current_user->ID);
+
     foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
         register_setting( 'sendwithus_settings', $key );
 
