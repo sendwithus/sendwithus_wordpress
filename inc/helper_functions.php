@@ -14,6 +14,32 @@ function get_templates() {
     return $response;
 }
 
+function set_template_global(){
+    // The default WordPress email ID.
+    $templates = get_templates();
+    $default_template = get_user_option('default_wordpress_email_id');
+
+    foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
+        //register_setting( 'sendwithus_settings', $key );
+
+        if ( get_option($key) == "" ) { 
+            // Assign default template.
+            update_option($key, $default_template);
+        }
+    }
+
+    foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
+        //register_setting( 'sendwithus_settings', $key );
+
+        if ( get_option($key) == "" ) {
+            // Assign default template.
+            update_option($key, $default_template);     
+        }
+    }
+
+    $GLOBALS['templates'] = get_templates();
+}
+
 function create_default_template(){
     $current_user = wp_get_current_user();
 
@@ -108,32 +134,10 @@ function sendwithus_register_settings() {
     // Save settings within wp_options table as 'sendwithus_settings'
     register_setting( 'sendwithus_settings', 'api_key' );
     register_setting( 'sendwithus_settings', 'display_parameters' );
-    register_setting( 'sendwithus_settings', 'default_wordpress_email_id' );
 
     // Whether user is using multisite functionality or not.
     register_setting( 'sendwithus_settings', 'multisite_enabled' );
 
-    // The default WordPress email ID.
-    $templates = get_templates();
-    $default_template = get_option('default_wordpress_email_id');
-
-    foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
-        register_setting( 'sendwithus_settings', $key );
-
-        if ( get_option($key) == "" ) { 
-            // Assign default template.
-            update_option($key, $default_template);
-        }
-    }
-
-    foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
-        register_setting( 'sendwithus_settings', $key );
-
-        if ( get_option($key) == "" ) {
-            // Assign default template.
-            update_option($key, $default_template);     
-        }
-    }
 }
 
 // Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
