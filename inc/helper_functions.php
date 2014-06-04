@@ -4,7 +4,6 @@
  */
 
 
-
 // Wrapper for the emails() function in the API
 function get_templates() {
 	$template_names = [];
@@ -17,6 +16,7 @@ function get_templates() {
 
 function create_default_template(){
     $current_user = wp_get_current_user();
+
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
@@ -26,7 +26,6 @@ function create_default_template(){
 
     //Get the default wordpress email template ID
     $default_id = get_user_option('default_wordpress_email_id', $current_user->ID);
-    echo $default_id." = Default";
 
     //Create an array of template id's
     foreach($response as $template){
@@ -47,8 +46,7 @@ function create_default_template(){
         }
 
         $default_wordpress_id = $template_kvp_array['Default Wordpress email'];
-        $success = update_option($current_user->ID, 'default_wordpress_email_id',$default_wordpress_id);
-        echo $success." = SUCCESS";
+        $success = update_user_option($current_user->ID, 'default_wordpress_email_id',$default_wordpress_id);
     }
     
 }

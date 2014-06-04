@@ -36,7 +36,7 @@ if ( $GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error' ) {
 else{
     // Establish whether an API key has been entered and that it is valid.
     $GLOBALS['valid_key'] = true;
-    create_default_template();
+    add_action( 'plugins_loaded', 'create_default_template');
     $GLOBALS['templates'] = get_templates();
 }
 
