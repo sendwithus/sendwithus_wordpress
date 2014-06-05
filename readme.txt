@@ -9,11 +9,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-# Transactional Email Made Easy - Now on WordPress! #
+### Transactional Email Made Easy - Now on WordPress! ###
 The sendwithus WordPress plugin allows the replacement of WordPress' default emails with templates from your sendwithus account. Now you can utilize sendwithus' templating engine and powerful analytics in a WordPress blog!
 
 
-## More information ##
+### More information ###
 Not sure who sendwithus is? Find out more at: https://www.sendwithus.com/
 
 == Installation ==
