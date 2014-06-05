@@ -10,10 +10,14 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 == Description ==
 
 # Transactional Email Made Easy - Now on WordPress! #
-*The sendwithus WordPress plugin* allows the replacement of WordPress' default emails with custom templates from your sendwithus account. Now you can combine the power of WordPress with the analytics of sendwithus.
+The sendwithus WordPress plugin allows the replacement of WordPress' default emails with templates from your sendwithus account. Now you can utilize sendwithus' templating engine and powerful analytics in a WordPress blog!
 
-Check out: https://www.sendwithus.com/
+
+## More information ##
+Not sure who sendwithus is? Find out more at: https://www.sendwithus.com/
+
 == Installation ==
+
 The install process of this plugin is the same as other WordPress plugins:
 
 1. Go to *Plugins* -> *Add New* in your WordPress dashboard
@@ -21,6 +25,7 @@ The install process of this plugin is the same as other WordPress plugins:
 3. Click on *"Install Now"*  under the entry for sendwithus
 
 Alternatively:
+
 1. Download the plugin ZIP file
 2. Go to *Plugins* -> *Add New* and click the *Upload* tab
 3. Find the plugin zip, upload, and click on *"Install Now"*
@@ -39,7 +44,7 @@ The sendwithus plugin requires:
 This plugin fully implements all single site and multi site WordPress emails.
 
 ### I'm lazy and don't want to make lots of snazzy templates, what are my options? ###
-Good news! This plugin creates a default template that looks just like the original WordPress emails.
+Good news! This plugin creates a default template that looks just like the original WordPress emails *and* let's you run it through sendwithus.
 
 == Screenshots ==
 I'll put screenshots here when the plugin goes through
