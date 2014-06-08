@@ -20,7 +20,7 @@ class API {
     private $API_CLIENT_VERSION = "2.0.0";
     private $API_CLIENT_STUB = "php-%s";
 
-    private $DEBUG = true;
+    private $DEBUG = false;
 
     public function __construct($api_key, $options = array()) {
         $this->API_KEY = $api_key;
