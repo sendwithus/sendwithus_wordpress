@@ -15,6 +15,7 @@ function get_templates() {
 
 function set_globals(){
     $GLOBALS['templates'] = get_templates();
+    $GLOBALS['api_key'] = get_api_key();
 }
 
 function create_default_template(){
@@ -31,7 +32,7 @@ function create_default_template(){
     $default_deleted = true;
 
     // Ensure that the default template hasn't been deleted.
-    foreach($active_templates as $current) {
+    foreach ( $active_templates as $current ) {
         if ( $current->id == $default_id && $default_id != "" ) {
             $default_deleted = false;
         }
@@ -43,15 +44,19 @@ function create_default_template(){
         $response = $api->create_email('Default Wordpress email',
                     '{{default_email_subject}} ',
                     '<html><head></head><body>{{default_message}}</body></html>');
-        $updated_templates = get_templates();
 
-        //Create a KVP array of the template name => id
-        foreach($updated_templates as $current_template){
-            $template_kvp_array[$current_template->name] = $current_template->id;
+        // Only save if the response is good.
+        if ( is_object($response) ) {
+            $updated_templates = get_templates();
+
+            //Create a KVP array of the template name => id
+            foreach($updated_templates as $current_template){
+                $template_kvp_array[$current_template->name] = $current_template->id;
+            }
+
+            $default_id = $template_kvp_array['Default Wordpress email'];
+            update_option('default_wordpress_email_id', $default_id);
         }
-
-        $default_id = $template_kvp_array['Default Wordpress email'];
-        update_option('default_wordpress_email_id', $default_id);
     }
 }
 
