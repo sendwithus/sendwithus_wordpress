@@ -135,7 +135,7 @@ function sendwithus_register_settings() {
 
         if ( get_option($key) == "" ) { 
             // Assign default template.
-            update_option($key, $default_template);
+            update_option($key, $default_id);
         }
     }
 
@@ -144,7 +144,7 @@ function sendwithus_register_settings() {
 
         if ( get_option($key) == "" ) {
             // Assign default template.
-            update_option($key, $default_template);     
+            update_option($key, $default_id);     
         }
     }
 }
