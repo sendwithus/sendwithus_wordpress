@@ -20,6 +20,7 @@ function set_template_global(){
 
 function create_default_template(){
     $current_user = wp_get_current_user();
+    $active_templates = get_templates();
 
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
@@ -30,20 +31,24 @@ function create_default_template(){
 
     //Get the default wordpress email template ID
     $default_id = get_user_option('default_wordpress_email_id', $current_user->ID);
+    $default_deleted = true;
 
-    //Create an array of template id's
-    foreach($response as $template){
-        array_push($template_id_array, $template->id);
+    // Ensure that the default template hasn't been deleted.
+    foreach($active_templates as $current) {
+        if ( $current->id == $default_id ) {
+            $default_deleted = false;
+        }
     }
 
     //If the default wordpress template id isn't in the array
-    if(!in_array($default_id, $template_id_array)){
-
+    if( $default_id == "" || $default_deleted ) {
+        echo("making new");
         //Create a new template for default wordpress emails
         $response = $api->create_email('Default Wordpress email',
                     '{{default_email_subject}} ',
                     '<html><head></head><body>{{default_message}}</body></html>');
         $response = $api->emails();
+
         //Create a KVP array of the template name => id
         foreach($response as $template){
             $template_kvp_array[$template->name] = $template->id;
@@ -54,7 +59,6 @@ function create_default_template(){
     }
 
     $default_wp_template_id = get_user_option('default_wordpress_email_id', $current_user->ID);
-    
 }
 
 // Get the API key for use as a global variable.
@@ -144,7 +148,6 @@ function sendwithus_register_settings() {
     }
 
     $GLOBALS['templates'] = get_templates();
-
 }
 
 // Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
