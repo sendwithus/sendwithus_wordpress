@@ -2,7 +2,6 @@
 /*
  *  MISCELLANEOUS FUNCTIONS
  */
-global $default_wp_template_id;
 
 // Wrapper for the emails() function in the API
 function get_templates() {
@@ -14,15 +13,24 @@ function get_templates() {
     return $response;
 }
 
-function set_template_global(){
+function set_globals(){
     $GLOBALS['templates'] = get_templates();
 }
 
 function create_default_template(){
-    $current_user = wp_get_current_user();
     $active_templates = get_templates();
-
     $api_key = get_option('api_key');
+
+    /*
+    print_r($api_key);
+    print_r($active_templates);
+
+    // Drop out if no API key is set.
+    if ( $api_key == "" || $active_templates == "" ) {
+        return;
+    }
+    */
+
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
@@ -30,35 +38,32 @@ function create_default_template(){
     $template_id_array = Array();
 
     //Get the default wordpress email template ID
-    $default_id = get_user_option('default_wordpress_email_id', $current_user->ID);
+    $default_id = get_option('default_wordpress_email_id');
     $default_deleted = true;
 
     // Ensure that the default template hasn't been deleted.
     foreach($active_templates as $current) {
-        if ( $current->id == $default_id ) {
+        if ( $current->id == $default_id && $default_id != "" ) {
             $default_deleted = false;
         }
     }
 
     //If the default wordpress template id isn't in the array
     if( $default_id == "" || $default_deleted ) {
-        echo("making new");
         //Create a new template for default wordpress emails
         $response = $api->create_email('Default Wordpress email',
                     '{{default_email_subject}} ',
                     '<html><head></head><body>{{default_message}}</body></html>');
-        $response = $api->emails();
+        $updated_templates = get_templates();
 
         //Create a KVP array of the template name => id
-        foreach($response as $template){
-            $template_kvp_array[$template->name] = $template->id;
+        foreach($updated_templates as $current_template){
+            $template_kvp_array[$current_template->name] = $current_template->id;
         }
 
-        $default_wordpress_id = $template_kvp_array['Default Wordpress email'];
-        $success = update_user_option($current_user->ID, 'default_wordpress_email_id',$default_wordpress_id);
+        $default_id = $template_kvp_array['Default Wordpress email'];
+        update_option('default_wordpress_email_id', $default_id);
     }
-
-    $default_wp_template_id = get_user_option('default_wordpress_email_id', $current_user->ID);
 }
 
 // Get the API key for use as a global variable.
@@ -73,7 +78,7 @@ function generate_template_selection($name, $array) {
 
     // Assign it to the default if no template is returned.
     if($current_template == "") {
-        $current_template = get_user_option('default_wordpress_email_id', $current_user->ID);
+        $current_template = get_option('default_wordpress_email_id');
     }
 
     foreach ($array as $template) {
@@ -120,14 +125,16 @@ function html_default_message($default_message) {
 
 // Used to create an area to save plugin settings.
 function sendwithus_register_settings() {
+    // Make sure the default template ID doesn't get overwritten!
+    $default_id = get_option('default_wordpress_email_id');
+    register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
+    update_option('default_wordpress_email_id', $default_id);
+
     // Save settings within wp_options table as 'sendwithus_settings'
     register_setting( 'sendwithus_settings', 'api_key' );
-    register_setting( 'sendwithus_settings', 'display_parameters' );
 
     // Whether user is using multisite functionality or not.
     register_setting( 'sendwithus_settings', 'multisite_enabled' );
-
-    $default_template = get_user_option('default_wordpress_email_id', $current_user->ID);
 
     foreach ( $GLOBALS['wp_notifications'] as $key => $value ) {
         register_setting( 'sendwithus_settings', $key );
@@ -146,8 +153,6 @@ function sendwithus_register_settings() {
             update_option($key, $default_template);     
         }
     }
-
-    $GLOBALS['templates'] = get_templates();
 }
 
 // Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
