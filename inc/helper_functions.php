@@ -19,23 +19,12 @@ function set_globals(){
 
 function create_default_template(){
     $active_templates = get_templates();
+    
     $api_key = get_option('api_key');
-
-    /*
-    print_r($api_key);
-    print_r($active_templates);
-
-    // Drop out if no API key is set.
-    if ( $api_key == "" || $active_templates == "" ) {
-        return;
-    }
-    */
-
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
     $template_kvp_array = Array();
-    $template_id_array = Array();
 
     //Get the default wordpress email template ID
     $default_id = get_option('default_wordpress_email_id');
