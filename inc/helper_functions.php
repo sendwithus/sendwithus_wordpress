@@ -25,8 +25,6 @@ function create_default_template(){
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
-    $template_kvp_array = Array();
-
     //Get the default wordpress email template ID
     $default_id = get_option('default_wordpress_email_id');
     $default_deleted = true;
@@ -47,15 +45,7 @@ function create_default_template(){
 
         // Only save if the response is good.
         if ( is_object($response) ) {
-            $updated_templates = get_templates();
-
-            //Create a KVP array of the template name => id
-            foreach($updated_templates as $current_template){
-                $template_kvp_array[$current_template->name] = $current_template->id;
-            }
-
-            $default_id = $template_kvp_array['Default Wordpress email'];
-            update_option('default_wordpress_email_id', $default_id);
+            update_option('default_wordpress_email_id', $response->id);
         }
     }
 }
