@@ -33,7 +33,7 @@ if ( $GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error' ) {
     // Establish whether an API key has been entered and that it is valid.
     $GLOBALS['valid_key'] = true;
     add_action( 'plugins_loaded', 'set_globals');
-    add_action( 'muplugins_loaded', 'create_default_template');
+    add_action( 'plugins_loaded', 'create_default_template');
 }
 
 // Used for displaying the main menu page.
