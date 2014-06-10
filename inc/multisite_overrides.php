@@ -15,7 +15,7 @@ function swu_newuser_notify_siteadmin($default_message, $user) {
     $email = get_site_option( 'admin_email' );
     $options_site_url = esc_url(network_admin_url('settings.php'));
     $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
-
+    $default_email_subject = "New user ".$user->user_login." created at ".$site_name[1];
     $response = $api->send(
         get_option('ms_new_user_network_admin'),
         array('address' => $email),
@@ -89,7 +89,7 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
     $default_message = str_replace( 'LOGINLINK', wp_login_url(), $default_message );
 
     //Subject line for default wordpress email
-    $default_email_subject = "Welcome to".get_option('blogname');
+    $default_email_subject = "Welcome to ".get_option('blogname');
 
     $response = $api->send(
         get_option('ms_welcome_user_notification'),
