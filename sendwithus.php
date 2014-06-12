@@ -36,7 +36,7 @@ if ( $GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error' ) {
 } else {
     // Establish whether an API key has been entered and that it is valid.
     $GLOBALS['valid_key'] = true;
-    if(is_multisite()){
+    if(is_network_admin()){
         add_action( 'init', 'ms_create_default_template');
         // Some sites don't work with muplugins_loaded for some reason.
         // This will make default be created.

@@ -167,7 +167,7 @@ function sendwithus_register_settings() {
     //Use site_option if we are using a multisite instance
     if(is_multisite()) {
 	    // Make sure the default template ID doesn't get overwritten!
-	    $default_id = get_option( 'ms_default_wordpress_email_id' );
+	    $default_id = get_site_option( 'ms_default_wordpress_email_id' );
 	    register_setting( 'sendwithus_settings', 'default_wordpress_email_id' );
 	    update_option( 'ms_default_wordpress_email_id', $default_id );
 
