@@ -103,10 +103,6 @@ function sendwithus_conf_main() {
         <!-- A check should be performed before loading the table to ensure that the user
              has entered an API key - otherwise only an entry for API key should be displayed. -->
 	    <?php if ( is_network_admin() ) : ?>
-<!--	    <pre>-->
-<?php //var_dump($_POST);
-//	  var_dump($GLOBALS);?>
-<!--</pre>-->
 	    <form action="edit.php?action=reg_settings" method="post">
 
 	    <? else : ?>

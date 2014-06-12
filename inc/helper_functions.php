@@ -75,7 +75,6 @@ function ms_create_default_template(){
             $default_deleted = false;
         }
         if($current->name == 'Default Wordpress email'){
-            echo $current->name;
             update_site_option('ms_default_wordpress_email_id', $current->id);
             return;
         }
@@ -214,12 +213,12 @@ function register_network_admin_settings(){
 	update_site_option('api_key', $_POST['api_key']);
 
 	// Multisite Options
-	update_site_option('ms_new_user_network_admin', $_POST['ms_new_user_network_admin']);
-	update_site_option('ms_new_blog_network_admin', $_POST['ms_new_blog_network_admin']);
+	update_site_option('ms_new_user_network_admin',    $_POST['ms_new_user_network_admin']);
+	update_site_option('ms_new_blog_network_admin',    $_POST['ms_new_blog_network_admin']);
 	update_site_option('ms_welcome_user_notification', $_POST['ms_welcome_user_notification']);
-	update_site_option('ms_welcome_notification', $_POST['ms_welcome_notification']);
-	update_site_option('ms_signup_blog_verification', $_POST['ms_signup_blog_verification']);
-	update_site_option('ms_signup_user_notification', $_POST['ms_signup_user_notification']);
+	update_site_option('ms_welcome_notification',      $_POST['ms_welcome_notification']);
+	update_site_option('ms_signup_blog_verification',  $_POST['ms_signup_blog_verification']);
+	update_site_option('ms_signup_user_notification',  $_POST['ms_signup_user_notification']);
 
 	wp_redirect(network_admin_url("admin.php?page=sendwithus.php&updated=true"));
 

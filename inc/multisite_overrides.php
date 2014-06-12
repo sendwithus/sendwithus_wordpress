@@ -10,14 +10,15 @@
 // Filter for when a new user has been activated - notify the network admin.
 add_filter("newuser_notify_siteadmin", "swu_newuser_notify_siteadmin", 10, 2);
 function swu_newuser_notify_siteadmin($default_message, $user) {
-    $api = new \sendwithus\API($GLOBALS['api_key']);    
+    $api_key = get_site_option('api_key');
+	$api = new \sendwithus\API($api_key);
 
     $email = get_site_option( 'admin_email' );
     $options_site_url = esc_url(network_admin_url('settings.php'));
     $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
-    $default_email_subject = "New user ".$user->user_login." created at ".$site_name[1];
+    $default_email_subject = "New user ".$user->user_login." created at ". $site_name[1];
     $response = $api->send(
-        get_option('ms_new_user_network_admin'),
+        get_site_option('ms_new_user_network_admin'),
         array('address' => $email),
         array(
             'email_data' => array(
@@ -36,7 +37,8 @@ function swu_newuser_notify_siteadmin($default_message, $user) {
 // Filter for when a new blog is created on a multisite site.
 add_filter("newblog_notify_siteadmin", "swu_newblog_notify_siteadmin", 10, 1);
 function swu_newblog_notify_siteadmin($default_message) {
-    $api = new \sendwithus\API($GLOBALS['api_key']);
+	$api_key = get_site_option('api_key');
+	$api = new \sendwithus\API($api_key);
 
     // Extract pertinent information from the message.
     // Maybe a better way to do this? Filter is called after message is assembled...
@@ -49,7 +51,7 @@ function swu_newblog_notify_siteadmin($default_message) {
     //Subject line for default wordpress email
     $default_email_subject = "New blog ".get_option('blogname')." created at ".$site_name[1];
     $response = $api->send(
-        get_option('ms_new_blog_network_admin'),
+        get_site_option('ms_new_blog_network_admin'),
         array('address' => $email),
         array(
             'email_data' => array(
@@ -68,7 +70,8 @@ function swu_newblog_notify_siteadmin($default_message) {
 
 add_filter("wpmu_welcome_user_notification", "swu_wpmu_welcome_user_notification", 10, 3);
 function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
-    $api = new \sendwithus\API($GLOBALS['api_key']);
+	$api_key = get_site_option('api_key');
+	$api = new \sendwithus\API($api_key);
 
     $user  = get_userdata( $user_id );
     $admin_email = get_site_option( 'admin_email' );
@@ -92,7 +95,7 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
     $default_email_subject = "Welcome to ".get_option('blogname');
 
     $response = $api->send(
-        get_option('ms_welcome_user_notification'),
+        get_site_option('ms_welcome_user_notification'),
         array('address' => $user->user_email),
         array(
             'email_data' => array(
@@ -111,7 +114,9 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
 
 add_filter("wpmu_welcome_notification", "swu_wpmu_welcome_notification", 10, 5);
 function swu_wpmu_welcome_notification($blog_id, $user_id, $password, $title, $meta ) {
-    $api = new \sendwithus\API($GLOBALS['api_key']);
+	$api_key = get_site_option('api_key');
+	$api = new \sendwithus\API($api_key);
+
     $current_site = get_current_site();
     $url = get_blogaddress_by_id($blog_id);
     $user = get_userdata( $user_id );
@@ -153,7 +158,7 @@ We hope you enjoy your new site. Thanks!
     $default_email_subject = get_option('blogname'). " has been added to your multisite instance";
 
     $response = $api->send(
-        get_option('ms_welcome_notification'),
+        get_site_option('ms_welcome_notification'),
         array('address' => $user->user_email),
         array(
             'email_data' => array(
@@ -172,9 +177,10 @@ We hope you enjoy your new site. Thanks!
 }
 
 // Filter for when a new signup has been successful. Used when site registration is enabled.
-add_filter("wpmu_signup_blog_notification_email", "swu_wpmu_signup_blog_notification", 10, 8);
+add_filter("wpmu_signup_blog_notification_email", "swu_wpmu_signup_blog_notification", 10, 1);
 function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $user, $user_email, $key, $meta) {
-    $api = new \sendwithus\API($GLOBALS['api_key']); 
+	$api_key = get_site_option('api_key');
+	$api = new \sendwithus\API($api_key);
 
     // Generate the activation link.
     if ( !is_subdomain_install() || get_current_site()->id != 1 )
@@ -195,7 +201,7 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
     $default_email_subject = "You have registered successfully for ".get_option('blogname');
 
     $response = $api->send(
-        get_option('ms_signup_blog_verification'),
+        get_site_option('ms_signup_blog_verification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
@@ -216,14 +222,15 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
 }
 
 // Filter for when a new user has signed up for a multiuser site, but not requested a new site.
-add_filter( 'wpmu_signup_user_notification_email', 'swu_wpmu_signup_user_notification', 10, 5 );
+add_filter( 'wpmu_signup_user_notification_email', 'swu_wpmu_signup_user_notification', 10, 1 );
 function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $meta = '') {
-    $api = new \sendwithus\API($GLOBALS['api_key']);
+	$api_key = get_site_option('api_key');
+	$api = new \sendwithus\API($api_key);
 
     $blog_name = get_bloginfo('name');
     $blog_url = network_site_url();
 
-    $message = '/wp-activate.php?key='. $key;  
+    $message = '/wp-activate.php?key='. $key;
     $url = network_site_url($message);
 
     $default_message = str_replace("%s",$url,$content);
@@ -232,7 +239,7 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
     $default_email_subject = "A new user has signed up at ".get_option('blogname');
 
     $response = $api->send(
-        get_option('ms_signup_user_notification'),
+        get_site_option('ms_signup_user_notification'),
         array('address' => $user_email),
         array(
             'email_data' => array(
