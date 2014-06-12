@@ -5,8 +5,11 @@
 
 // Wrapper for the emails() function in the API
 function get_templates() {
-	$template_names = [];
-    $api_key = get_option('api_key');
+	if(is_network_admin()) {
+		$api_key = get_site_option( 'api_key' );
+	} else {
+		$api_key = get_option( 'api_key' );
+	}
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
@@ -21,7 +24,7 @@ function set_globals(){
 // Function for creating a default template if there isn't one already (Single Site Instance)
 function create_default_template(){
     $active_templates = get_templates();
-    
+
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
@@ -53,7 +56,7 @@ function create_default_template(){
 // Function for creating a default template if there isn't one already (Multi Site Instance)
 function ms_create_default_template(){
     $active_templates = get_templates();
-    
+
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
@@ -85,17 +88,28 @@ function ms_create_default_template(){
 
 // Get the API key for use as a global variable.
 function get_api_key() {
+	if(is_network_admin()){
+		return get_site_option('api_key');
+	}
     return get_option('api_key');
 }
 
 // Generate a template selection drop down list
 function generate_template_selection($name, $array) {
     $input_code = '<select name="' . $name . '" style="width: 100%">';
-    $current_template = get_option($name);
+	if(is_network_admin()) {
+		$current_template = get_site_option( $name );
+	} else {
+		$current_template = get_option( $name );
+	}
 
     // Assign it to the default if no template is returned.
     if($current_template == "") {
-        $current_template = get_option('default_wordpress_email_id');
+	    if(is_network_admin()){
+		    $current_template = get_site_option('default_wordpress_email_id');
+	    } else {
+            $current_template = get_option('default_wordpress_email_id');
+	    }
     }
 
     foreach ($array as $template) {
@@ -143,7 +157,7 @@ function html_default_message($default_message) {
 // Used to create an area to save plugin settings.
 function sendwithus_register_settings() {
     //Use site_option if we are using a multisite instance
-    if(is_multisite()){
+    if(is_network_admin()){
         // Make sure the default template ID doesn't get overwritten!
         $default_id = get_site_option('ms_default_wordpress_email_id');
         register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
@@ -172,13 +186,30 @@ function sendwithus_register_settings() {
     }
 
     foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
-        register_setting( 'sendwithus_settings', $key );
+	    register_setting( 'sendwithus_settings', $key );
 
-        if ( get_option($key) == "" ) {
+        if ( get_site_option($key) == "" ) {
             // Assign default template.
-            update_option($key, $default_id);     
+            update_site_option($key, $default_id);
         }
     }
+}
+
+add_action('network_admin_edit_reg_settings','register_network_admin_settings');
+function register_network_admin_settings(){
+	update_site_option('api_key', $_POST['api_key']);
+
+	// Multisite Options
+	update_site_option('ms_new_user_network_admin', $_POST['ms_new_user_network_admin']);
+	update_site_option('ms_new_blog_network_admin', $_POST['ms_new_blog_network_admin']);
+	update_site_option('ms_welcome_user_notification', $_POST['ms_welcome_user_notification']);
+	update_site_option('ms_welcome_notification', $_POST['ms_welcome_notification']);
+	update_site_option('ms_signup_blog_verification', $_POST['ms_signup_blog_verification']);
+	update_site_option('ms_signup_user_notification', $_POST['ms_signup_user_notification']);
+
+	wp_redirect(network_admin_url("admin.php?page=sendwithus.php&updated=true"));
+
+	exit;
 }
 
 // Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
@@ -265,6 +296,16 @@ function activate_sidebar_shortcut() {
 
     // Create an area in WordPress to store the settings saved by the user.
     add_action( 'admin_init', 'sendwithus_register_settings' );
+}
+
+// Creates link to plugin settings in Network Administrator Control Panel
+add_action('network_admin_menu', 'activate_network_sidebar_shortcut');
+function activate_network_sidebar_shortcut() {
+	// Add the shortcut for the plugin settings underneath the 'plugins' sidebar menu.
+	add_menu_page( 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus.php', 'sendwithus_conf_main', 'dashicons-email-alt' );
+
+	// Create an area in WordPress to store the settings saved by the user.
+	add_action( 'admin_init', 'sendwithus_register_settings' );
 }
 
 /*

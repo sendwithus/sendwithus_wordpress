@@ -27,6 +27,10 @@ function register_style_sheet() {
 
 set_globals();
 
+if(is_network_admin()){
+	$GLOBALS['api_key'] = get_site_option('api_key');
+}
+
 if ( $GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error' ) {
     $GLOBALS['valid_key'] = false;
 } else {
@@ -98,7 +102,16 @@ function sendwithus_conf_main() {
     <div class="welcome-panel">
         <!-- A check should be performed before loading the table to ensure that the user
              has entered an API key - otherwise only an entry for API key should be displayed. -->
+	    <?php if ( is_network_admin() ) : ?>
+<!--	    <pre>-->
+<?php //var_dump($_POST);
+//	  var_dump($GLOBALS);?>
+<!--</pre>-->
+	    <form action="edit.php?action=reg_settings" method="post">
+
+	    <? else : ?>
         <form action="options.php" method="post">
+	    <? endif ?>
             <?php
             // Load up the previously saved settings.
             settings_fields( 'sendwithus_settings' );
@@ -106,8 +119,14 @@ function sendwithus_conf_main() {
             ?>
 
             <!-- Hidden input containing default template ID -->
+			<?php if ( is_network_admin() ) : ?><!-- Just for the network admin-->
+				<input id="default_wordpress_email_id" name="default_wordpress_email_id"
+				       style="display: none;" value="<?php echo get_site_option('default_wordpress_email_id'); ?>" />
+
+			<?php else : ?>
             <input id="default_wordpress_email_id" name="default_wordpress_email_id"
                 style="display: none;" value="<?php echo get_option('default_wordpress_email_id'); ?>" />
+			<?php endif ?>
 
             <!-- Only display if API key is populated -->
             <?php if ( $GLOBALS['valid_key'] ) : ?>
@@ -132,22 +151,14 @@ function sendwithus_conf_main() {
             <?php endif; ?>
 
             <!-- Only display if API key is populated -->
-            <?php if ( $GLOBALS['valid_key'] ) : ?>
+            <?php if ( $GLOBALS['valid_key']) : ?>
+	            <?php if(!is_network_admin()) : ?>
                 <table class="wp-list-table widefat sendwithus_table">
-                    <?php if ( is_multisite() ) : ?>
-                        <thead>
-                        <th colspan="2">
-                            <p class="table_description">Single-site Events</p>
-                            <p class="description" style="text-align: center;">
-                                Single-site events occur on all WordPress installations. They are primarly concerned with user and comment moderation.
-                            </p>
-                        </th>
-                        </thead>
-                    <?php endif; ?>
                     <?php generate_template_table( $GLOBALS['wp_notifications'] ); ?>
                 </table>
+	            <?php endif ?>
                 <!-- Events that are displayed when multisite events are enabled -->
-                <?php if ( is_multisite() ) : ?>
+                <?php if ( is_network_admin() ) : ?>
                     <table class="multisite wp-list-table widefat" id="multisite_table">
                         <thead>
                         <th colspan="2">
