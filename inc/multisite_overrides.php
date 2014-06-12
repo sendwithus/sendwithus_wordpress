@@ -49,7 +49,7 @@ function swu_newblog_notify_siteadmin($default_message) {
 
     $email = get_site_option( 'admin_email' );
     //Subject line for default wordpress email
-    $default_email_subject = "New blog ".get_option('blogname')." created at ".$site_name[1];
+    $default_email_subject = "New blog ".$site_name[1]." created at ".get_option('blogname');
     $response = $api->send(
         get_site_option('ms_new_blog_network_admin'),
         array('address' => $email),
@@ -111,7 +111,7 @@ function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
     
     return false;
 }
-
+//Sent to user when a blog is created for them on multisite
 add_filter("wpmu_welcome_notification", "swu_wpmu_welcome_notification", 10, 5);
 function swu_wpmu_welcome_notification($blog_id, $user_id, $password, $title, $meta ) {
 	$api_key = get_site_option('api_key');
@@ -155,7 +155,7 @@ We hope you enjoy your new site. Thanks!
     $default_message = str_replace( 'PASSWORD', $password, $default_message );
   
     //Subject line for default wordpress email
-    $default_email_subject = get_option('blogname'). " has been added to your multisite instance";
+    $default_email_subject = "Your site ".$title." has been added to ".get_option('blogname');
 
     $response = $api->send(
         get_site_option('ms_welcome_notification'),
@@ -177,7 +177,7 @@ We hope you enjoy your new site. Thanks!
 }
 
 // Filter for when a new signup has been successful. Used when site registration is enabled.
-add_filter("wpmu_signup_blog_notification_email", "swu_wpmu_signup_blog_notification", 10, 1);
+add_filter("wpmu_signup_blog_notification_email", "swu_wpmu_signup_blog_notification", 10, 8);
 function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $user, $user_email, $key, $meta) {
 	$api_key = get_site_option('api_key');
 	$api = new \sendwithus\API($api_key);
@@ -222,7 +222,7 @@ function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $us
 }
 
 // Filter for when a new user has signed up for a multiuser site, but not requested a new site.
-add_filter( 'wpmu_signup_user_notification_email', 'swu_wpmu_signup_user_notification', 10, 1 );
+add_filter( 'wpmu_signup_user_notification_email', 'swu_wpmu_signup_user_notification', 10, 5 );
 function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $meta = '') {
 	$api_key = get_site_option('api_key');
 	$api = new \sendwithus\API($api_key);

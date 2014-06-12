@@ -61,7 +61,7 @@ function create_default_template(){
 function ms_create_default_template(){
     $active_templates = get_templates();
 
-    $api_key = get_option('api_key');
+    $api_key = get_site_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
@@ -114,7 +114,7 @@ function generate_template_selection($name, $array) {
     // Assign it to the default if no template is returned.
     if($current_template == "") {
 	    if(is_network_admin()){
-		    $current_template = get_site_option('default_wordpress_email_id');
+		    $current_template = get_site_option('ms_default_wordpress_email_id');
 	    } else {
             $current_template = get_option('default_wordpress_email_id');
 	    }
@@ -165,16 +165,9 @@ function html_default_message($default_message) {
 // Used to create an area to save plugin settings.
 function sendwithus_register_settings() {
     //Use site_option if we are using a multisite instance
-    if(is_multisite()) {
-	    // Make sure the default template ID doesn't get overwritten!
+	if ( is_network_admin() ) { // Only change site options if network admin
 	    $default_id = get_site_option( 'ms_default_wordpress_email_id' );
-	    register_setting( 'sendwithus_settings', 'default_wordpress_email_id' );
-	    update_option( 'ms_default_wordpress_email_id', $default_id );
-
-	    if ( is_network_admin() ) { // Only change site options if network admin
-	        $default_id = get_site_option( 'ms_default_wordpress_email_id' );
-	        update_site_option( 'ms_default_wordpress_email_id', $default_id );
-        }
+	    update_site_option( 'ms_default_wordpress_email_id', $default_id );
     }
     else{
         // Make sure the default template ID doesn't get overwritten!
