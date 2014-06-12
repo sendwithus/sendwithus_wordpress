@@ -166,11 +166,16 @@ function html_default_message($default_message) {
 // Used to create an area to save plugin settings.
 function sendwithus_register_settings() {
     //Use site_option if we are using a multisite instance
-    if(is_multisite()){
-        // Make sure the default template ID doesn't get overwritten!
-        $default_id = get_site_option('ms_default_wordpress_email_id');
-        register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
-        update_site_option('ms_default_wordpress_email_id', $default_id);
+    if(is_multisite()) {
+	    // Make sure the default template ID doesn't get overwritten!
+	    $default_id = get_option( 'ms_default_wordpress_email_id' );
+	    register_setting( 'sendwithus_settings', 'default_wordpress_email_id' );
+	    update_option( 'ms_default_wordpress_email_id', $default_id );
+
+	    if ( is_network_admin() ) { // Only change site options if network admin
+	        $default_id = get_site_option( 'ms_default_wordpress_email_id' );
+	        update_site_option( 'ms_default_wordpress_email_id', $default_id );
+        }
     }
     else{
         // Make sure the default template ID doesn't get overwritten!
