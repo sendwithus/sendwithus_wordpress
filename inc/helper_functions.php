@@ -38,6 +38,10 @@ function create_default_template(){
         if ( $current->id == $default_id && $default_id != "" ) {
             $default_deleted = false;
         }
+        if($current->name == 'Default Wordpress email'){
+            update_option('default_wordpress_email_id', $current->id);
+            return;
+        }
     }
 
     //If the default wordpress template id isn't in the array
@@ -69,6 +73,11 @@ function ms_create_default_template(){
     foreach ( $active_templates as $current ) {
         if ( $current->id == $default_id && $default_id != "" ) {
             $default_deleted = false;
+        }
+        if($current->name == 'Default Wordpress email'){
+            echo $current->name;
+            update_site_option('ms_default_wordpress_email_id', $current->id);
+            return;
         }
     }
 
@@ -157,7 +166,7 @@ function html_default_message($default_message) {
 // Used to create an area to save plugin settings.
 function sendwithus_register_settings() {
     //Use site_option if we are using a multisite instance
-    if(is_network_admin()){
+    if(is_multisite()){
         // Make sure the default template ID doesn't get overwritten!
         $default_id = get_site_option('ms_default_wordpress_email_id');
         register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
