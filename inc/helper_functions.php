@@ -32,11 +32,15 @@ function create_default_template(){
     //Get the default wordpress email template ID
     $default_id = get_option('default_wordpress_email_id');
     $default_deleted = true;
-
     // Ensure that the default template hasn't been deleted.
-    foreach ( $active_templates as $current ) {
+    foreach ( $active_templates as $current) {
         if ( $current->id == $default_id && $default_id != "" ) {
             $default_deleted = false;
+        }
+
+        //Check if the 'Default Wordpress email' template exists, if it does break out of the function
+        if($current->name == 'Default Wordpress email'){
+            return;
         }
     }
 
@@ -69,6 +73,11 @@ function ms_create_default_template(){
     foreach ( $active_templates as $current ) {
         if ( $current->id == $default_id && $default_id != "" ) {
             $default_deleted = false;
+        }
+        
+        //Check if the 'Default Wordpress email' template exists, if it does break out of the function
+        if($current->name == 'Default Wordpress email'){
+            return;
         }
     }
 
@@ -308,12 +317,7 @@ function activate_network_sidebar_shortcut() {
 	add_action( 'admin_init', 'sendwithus_register_settings' );
 }
 
-/*
-add_action('network_admin_menu', 'activate_sidebar_shortcut_network_admin');
-function activate_sidebar_shortcut_network_admin(){
-    add_menu_page( 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus.php', 'sendwithus_conf_main', 'dashicons-email-alt' );
-}
-*/
+
 // Warn the user if their api key is invalid
 add_action( 'admin_notices', 'sendwithus_no_api_key_warning' );
 function sendwithus_no_api_key_warning() {
