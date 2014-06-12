@@ -18,6 +18,7 @@ function set_globals(){
     $GLOBALS['api_key'] = get_api_key();
 }
 
+// Function for creating a default template if there isn't one already (Single Site Instance)
 function create_default_template(){
     $active_templates = get_templates();
     
@@ -37,7 +38,7 @@ function create_default_template(){
     }
 
     //If the default wordpress template id isn't in the array
-    if( $default_id == "" || $default_deleted ) {
+    if($default_id == "" || $default_deleted){
         //Create a new template for default wordpress emails
         $response = $api->create_email('Default Wordpress email',
                     '{{default_email_subject}} ',
@@ -46,6 +47,38 @@ function create_default_template(){
         // Only save if the response is good.
         if ( is_object($response) ) {
             update_option('default_wordpress_email_id', $response->id);
+        }
+    }
+}
+// Function for creating a default template if there isn't one already (Multi Site Instance)
+function ms_create_default_template(){
+    $active_templates = get_templates();
+    
+    $api_key = get_option('api_key');
+    $api = new \sendwithus\API($api_key);
+    $response = $api->emails();
+
+    //Get the default wordpress email template ID
+    $default_id = get_site_option('ms_default_wordpress_email_id');
+    $default_deleted = true;
+
+    // Ensure that the default template hasn't been deleted.
+    foreach ( $active_templates as $current ) {
+        if ( $current->id == $default_id && $default_id != "" ) {
+            $default_deleted = false;
+        }
+    }
+
+    //If the default wordpress template id isn't in the array
+    if($default_id == "" || $default_deleted){
+        //Create a new template for default wordpress emails
+        $response = $api->create_email('Default Wordpress email',
+                    '{{default_email_subject}} ',
+                    '<html><head></head><body>{{default_message}}</body></html>');
+
+        // Only save if the response is good.
+        if ( is_object($response) ) {
+            update_site_option('ms_default_wordpress_email_id', $response->id);
         }
     }
 }
@@ -109,10 +142,19 @@ function html_default_message($default_message) {
 
 // Used to create an area to save plugin settings.
 function sendwithus_register_settings() {
-    // Make sure the default template ID doesn't get overwritten!
-    $default_id = get_option('default_wordpress_email_id');
-    register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
-    update_option('default_wordpress_email_id', $default_id);
+    //Use site_option if we are using a multisite instance
+    if(is_multisite()){
+        // Make sure the default template ID doesn't get overwritten!
+        $default_id = get_site_option('ms_default_wordpress_email_id');
+        register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
+        update_site_option('ms_default_wordpress_email_id', $default_id);
+    }
+    else{
+        // Make sure the default template ID doesn't get overwritten!
+        $default_id = get_option('default_wordpress_email_id');
+        register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
+        update_option('default_wordpress_email_id', $default_id);
+    }
 
     // Save settings within wp_options table as 'sendwithus_settings'
     register_setting( 'sendwithus_settings', 'api_key' );
@@ -225,6 +267,12 @@ function activate_sidebar_shortcut() {
     add_action( 'admin_init', 'sendwithus_register_settings' );
 }
 
+/*
+add_action('network_admin_menu', 'activate_sidebar_shortcut_network_admin');
+function activate_sidebar_shortcut_network_admin(){
+    add_menu_page( 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus.php', 'sendwithus_conf_main', 'dashicons-email-alt' );
+}
+*/
 // Warn the user if their api key is invalid
 add_action( 'admin_notices', 'sendwithus_no_api_key_warning' );
 function sendwithus_no_api_key_warning() {
