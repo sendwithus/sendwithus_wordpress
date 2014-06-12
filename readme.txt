@@ -51,5 +51,9 @@ Good news! This plugin creates a default template that looks just like the origi
 
 == Changelog ==
 
+= 1.01 =
+* Some bugfixes
+* Multisite configuration is now saner
+
 = 1.0 =
 * Initial release
