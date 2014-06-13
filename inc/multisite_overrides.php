@@ -16,7 +16,12 @@ function swu_newuser_notify_siteadmin($default_message, $user) {
     $email = get_site_option( 'admin_email' );
     $options_site_url = esc_url(network_admin_url('settings.php'));
     $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
-    $default_email_subject = "New user " . $user-> user_login . " created at ". $site_name[1];
+    if(isset($site_name[1])){
+        $default_email_subject = "New user " . $user->user_login . " created at ". $site_name[1];
+    }
+    else{
+        $default_email_subject = "New user " . $user->user_login . " created.";
+    }
     $response = $api->send(
         get_site_option('ms_new_user_network_admin'),
         array('address' => $email),
@@ -69,7 +74,7 @@ function swu_newblog_notify_siteadmin($default_message) {
 }
 
 add_filter("wpmu_welcome_user_notification", "swu_wpmu_welcome_user_notification", 10, 3);
-function swu_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
+function swu_wpmu_welcome_user_notification( $user_id, $password, $meta = '' ) {
 	$api_key = get_site_option('api_key');
 	$api = new \sendwithus\API($api_key);
 
@@ -176,7 +181,7 @@ We hope you enjoy your new site. Thanks!
 
 // Filter for when a new signup has been successful. Used when site registration is enabled.
 add_filter("wpmu_signup_blog_notification_email", "swu_wpmu_signup_blog_notification", 10, 8);
-function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $user, $user_email, $key, $meta) {
+function swu_wpmu_signup_blog_notification($content, $domain, $path, $title, $user, $user_email, $key, $meta = '') {
 	$api_key = get_site_option('api_key');
 	$api = new \sendwithus\API($api_key);
 
