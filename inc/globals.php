@@ -165,7 +165,7 @@ $GLOBALS['wp_notifications'] = array(
 
 $GLOBALS['wp_ms_notifications'] = array(
     'ms_new_user_network_admin'    => array(
-        'event'       => 'New User Activation - Sent to User',
+        'event'       => 'New User Activation - Sent to Administrator',
         'description' => 'Triggered when a new user signs up.',
         'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_network_admin" name="display_parameters" value="Display parameters">',
         'parameters'  => '
