@@ -92,6 +92,10 @@ if (!function_exists('wp_notify_postauthor')) {
 // Replace new user email
 if (!function_exists('wp_new_user_notification')) {
     function wp_new_user_notification($user_id, $plaintext_pass = "") {
+	    // Stops the user from receiving a redundant email in multisite mode
+	    if(is_network_admin()){
+		    return;
+	    }
         $user = new WP_User($user_id);
 
         $user_login = stripslashes($user->user_login);
