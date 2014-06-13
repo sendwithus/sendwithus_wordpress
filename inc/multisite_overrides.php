@@ -8,7 +8,7 @@
 // Solution: Filters!
 
 // Filter for when a new user has been activated - notify the network admin.
-add_filter("newuser_notify_siteadmin", "swu_newuser_notify_siteadmin", 10, 2);
+add_filter("newuser_notify_siteadmin", "swu_newuser_notify_siteadmin", 11, 2);
 function swu_newuser_notify_siteadmin($default_message, $user) {
     $api_key = get_site_option('api_key');
 	$api = new \sendwithus\API($api_key);
@@ -16,7 +16,7 @@ function swu_newuser_notify_siteadmin($default_message, $user) {
     $email = get_site_option( 'admin_email' );
     $options_site_url = esc_url(network_admin_url('settings.php'));
     $remote_ip = wp_unslash( $_SERVER['REMOTE_ADDR'] );
-    $default_email_subject = "New user ".$user->user_login." created at ". $site_name[1];
+    $default_email_subject = "New user " . $user-> user_login . " created at ". $site_name[1];
     $response = $api->send(
         get_site_option('ms_new_user_network_admin'),
         array('address' => $email),
@@ -118,8 +118,6 @@ function swu_wpmu_welcome_notification($blog_id, $user_id, $password, $title, $m
 	$api = new \sendwithus\API($api_key);
 
     $current_site = get_current_site();
-    $url = get_blogaddress_by_id($blog_id);
-    $user = get_userdata( $user_id );
 
     $admin_email = get_site_option( 'admin_email' );
 
@@ -148,11 +146,11 @@ We hope you enjoy your new site. Thanks!
     $url = get_blogaddress_by_id($blog_id);
     $user = get_userdata( $user_id );
 
-    $default_message = str_replace( 'SITE_NAME', $current_site->site_name, $default_message );
+    $default_message = str_replace( 'SITE_NAME',  $current_site->site_name, $default_message );
     $default_message = str_replace( 'BLOG_TITLE', $title, $default_message );
-    $default_message = str_replace( 'BLOG_URL', $url, $default_message );
-    $default_message = str_replace( 'USERNAME', $user->user_login, $default_message );
-    $default_message = str_replace( 'PASSWORD', $password, $default_message );
+    $default_message = str_replace( 'BLOG_URL',   $url, $default_message );
+    $default_message = str_replace( 'USERNAME',   $user->user_login, $default_message );
+    $default_message = str_replace( 'PASSWORD',   $password, $default_message );
   
     //Subject line for default wordpress email
     $default_email_subject = "Your site ".$title." has been added to ".get_option('blogname');
@@ -164,7 +162,7 @@ We hope you enjoy your new site. Thanks!
             'email_data' => array(
                 'default_email_subject' => $default_email_subject,
                 'user_email' => $user->user_email,
-                'user_password' => $password,
+                'user_password' => $user->password,
                 'admin_email' => $admin_email,
                 'site_name' => $current_site->site_name,
                 'site_url' => $url,
@@ -236,7 +234,7 @@ function swu_wpmu_signup_user_notification($content, $user, $user_email, $key, $
     $default_message = str_replace("%s",$url,$content);
 
     //Subject line for default wordpress email
-    $default_email_subject = "A new user has signed up at ".get_option('blogname');
+    $default_email_subject = "A new user has signed up at " . $blog_name;
 
     $response = $api->send(
         get_site_option('ms_signup_user_notification'),
