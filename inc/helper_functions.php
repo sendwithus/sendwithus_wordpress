@@ -143,6 +143,7 @@ function generate_template_table($notification_array) {
         echo '</td></tr>';
         echo '<tr><td colspan="2" style="padding-top: 0px;">';
         echo generate_parameter_listing($current, $text);
+        echo generate_test_button($text);
         echo '</td></tr>';
     }
 }
@@ -154,6 +155,11 @@ function generate_parameter_listing($name, $parameterData) {
         '</span>';
 
     return $parameterListing;
+}
+
+function generate_test_button($text){
+    $test_button = $text['test_button'];
+    return $test_button;
 }
 
 // Make 'default_message' HTML friendly.
@@ -294,6 +300,23 @@ function turn_off_help_callback() {
     die();
 }
 
+add_action( 'wp_ajax_test_email', 'send_test_email');
+function send_test_email(){
+    if(isset($_POST['email']) && !empty($_POST['email'])) {
+        $action = $_POST['email'];
+        switch($action) {
+            case 'ms_new_user_network_admin':
+                newuser_notify_siteadmin('test user');
+                break;
+            default:
+                echo "LOSER";
+                break;
+        }
+    }
+
+    die();
+}
+
 // Creates link to plugin settings in WordPress control panel.
 add_action( 'admin_menu', 'activate_sidebar_shortcut' );
 function activate_sidebar_shortcut() {
@@ -331,5 +354,6 @@ function sendwithus_no_api_key_warning() {
               </div>";
     }
 }
+
 
 ?>

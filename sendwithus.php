@@ -208,7 +208,9 @@ function sendwithus_conf_main() {
 
             $('.test_email_button').click(function(){
                 var className = this.classList[2];
-                alert(className);
+                var data = { action : 'test_email',
+                          email : className}
+                $.post(ajaxurl, data);
             });
 
             // Used to hide/display API entry/viewing area in main screen.
@@ -216,6 +218,7 @@ function sendwithus_conf_main() {
                 $(this).hide();
                 $('#api_entry').show();
             });
+
 
             // Used to get rid of the 'welcome' message that pops up.
             $('#dismiss_message').click(function() {
