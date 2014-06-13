@@ -5,7 +5,7 @@
 
 $GLOBALS['wp_notifications'] = array(
     'new_user'                       => array(
-        'event'       => 'New User Created - Sent to Administrator',
+        'event'       => 'New User Created - Sent to Registering User',
         'description' => 'Triggered when a new user signs up for an account.',
         'display_parameters' => '<input type="button" class="parameters_button" id="new_user" name="display_parameters" value="Display parameters"',
         'parameters'  => '   
@@ -165,16 +165,17 @@ $GLOBALS['wp_notifications'] = array(
 
 $GLOBALS['wp_ms_notifications'] = array(
     'ms_new_user_network_admin'    => array(
-        'event'       => 'New User Activation - Sent to Administrator',
+        'event'       => 'New User Activation - Sent to User',
         'description' => 'Triggered when a new user signs up.',
-        'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_network_admin" name="display_parameters" value="Display parameters"',
+        'display_parameters' => '<input type="button" class="parameters_button" id="ms_new_user_network_admin" name="display_parameters" value="Display parameters">',
         'parameters'  => '
             <ul>
                 <li><strong>user_name</strong> - User name.</li>
                 <li><strong>remote_ip</strong> - IP address of new user.</li>
                 <li><strong>control_panel</strong> - WordPress control panel URL.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'  
+            </ul>',
+        'test_button' => '<input type="button" class="button test_email_button ms_new_user_network_admin" id="ms_new_user_network_admin" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'
         /*
         default_message:
 

@@ -203,6 +203,12 @@ function sendwithus_conf_main() {
                 // Kinda sloppy in how it relies on the position.
                 var className = event.target.classList[3];
                 $('.parameters.' + className).slideToggle(150);
+                $('.test_email_button.' + className).slideToggle(150);
+            });
+
+            $('.test_email_button').click(function(){
+                var className = this.classList[2];
+                alert(className);
             });
 
             // Used to hide/display API entry/viewing area in main screen.
