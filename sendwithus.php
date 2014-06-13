@@ -210,7 +210,9 @@ function sendwithus_conf_main() {
                 var className = this.classList[2];
                 var data = { action : 'test_email',
                           email : className}
-                $.post(ajaxurl, data);
+                $.post(ajaxurl, data, function(response){
+                    alert(response);
+                });
             });
 
             // Used to hide/display API entry/viewing area in main screen.

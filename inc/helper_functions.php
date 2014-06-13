@@ -302,11 +302,41 @@ function turn_off_help_callback() {
 
 add_action( 'wp_ajax_test_email', 'send_test_email');
 function send_test_email(){
+    $current_user = wp_get_current_user();
     if(isset($_POST['email']) && !empty($_POST['email'])) {
         $action = $_POST['email'];
         switch($action) {
+            case 'new_user':
+                wp_new_user_notification(get_current_user_id(), 'N/A');
+                break;
+            case 'new_comment':
+                $comment_id = create_test_comment();
+                wp_notify_postauthor($comment_id);
+                wp_delete_comment( $comment_id, true );
+                break;
+            case 'awaiting_approval':
+                $comment_id = create_test_comment();
+                wp_notify_moderator($comment_id);
+                wp_delete_comment( $comment_id, true );
+                break;
+            case 'password_reset':
+                apply_filters('retrieve_password_message',$current_user->user_login, 'qwe12312412eqwe');
+                break;
+            case 'password_change_notification':
+                wp_password_change_notification($current_user);
+                break;
             case 'ms_new_user_network_admin':
                 newuser_notify_siteadmin('test user');
+                break;
+            case 'ms_new_blog_network_admin':
+                break;
+            case 'ms_welcome_user_notification':
+                break;
+            case 'ms_welcome_notification':
+                break;
+            case 'ms_signup_blog_verification':
+                break;
+            case 'ms_signup_user_notification':
                 break;
             default:
                 echo "LOSER";
@@ -315,6 +345,25 @@ function send_test_email(){
     }
 
     die();
+}
+
+function create_test_comment(){
+    $data = array(
+        'comment_post_ID' => 1,
+        'comment_author' => 'admin',
+        'comment_author_email' => 'admin@admin.com',
+        'comment_author_url' => 'http://',
+        'comment_content' => 'content here',
+        'comment_type' => '',
+        'comment_parent' => 0,
+        'user_id' => 1,
+        'comment_author_IP' => '127.0.0.1',
+        'comment_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
+        'comment_date' => $time,
+        'comment_approved' => 1,
+    );
+
+    return wp_insert_comment($data);
 }
 
 // Creates link to plugin settings in WordPress control panel.
@@ -354,6 +403,5 @@ function sendwithus_no_api_key_warning() {
               </div>";
     }
 }
-
 
 ?>

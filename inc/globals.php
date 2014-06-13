@@ -15,7 +15,8 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>caps</strong> - Capabilities the user has been given.</li>
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
-            </ul>'
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button new_user" id="new_user" name="test_email_button" value="Send test email" style="display:none; margin-top:2px;">'
         /*
         default_message:
 
@@ -47,7 +48,8 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>user_id</strong> - Numerical user ID of the commenter.</li>
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
-            </ul>'
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button new_comment" id="new_comment" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'
         /*
         default_message:
 
@@ -88,7 +90,8 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>user_id</strong> - Numerical user ID of the commenter.</li>
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
-            </ul>'
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button awaiting_approval" id="awaiting_approval" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'
         /*
         default_message:
 
@@ -121,7 +124,8 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>reset_url</strong> - URL allowing the user to reset their password.</li>
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
-            </ul>'
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button password_reset" id="password_reset" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'
         /*
         default_message:
 
@@ -154,7 +158,8 @@ $GLOBALS['wp_notifications'] = array(
                 <li><strong>user_registered</strong> - Date the user registered.</li>
                 <li><strong>blog_name</strong> - Name of the blog.</li>
                 <li><strong>default_message</strong> - Default WordPress email content.</li>
-            </ul>'
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button password_change_notification" id="password_change_notification" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'
     	/*
     	default_message:
 
@@ -196,7 +201,8 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>remote_ip</strong> - IP of blog registrant (?).</li>
                 <li><strong>control_panel</strong> -  WordPress control panel URL.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'       
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button ms_new_blog_network_admin" id="ms_new_blog_network_admin" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'       
         /*
         default_message:
 
@@ -218,7 +224,8 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>admin_email</strong> - Administrator\'s email.</li>
                 <li><strong>site_name</strong> - Blog\'s name.
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'        
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button ms_welcome_user_notification" id="ms_welcome_user_notification" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'
         /*
         default_message:
 
@@ -246,7 +253,8 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>site_name</strong> - New blog\'s name.</li>
                 <li><strong>site_url</strong> - New blog\'s URL.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button ms_welcome_notification" id="ms_welcome_notification" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'
         /*
         default_message:
 
@@ -278,7 +286,8 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>user_email</strong> - User\'s email address.</li>
                 <li><strong>content</strong> - Unformatted version of default_message, with no domain/path or links.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'        
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button ms_signup_blog_verification" id="ms_signup_blog_verification" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'        
         /*
         default_message: 
 
@@ -302,7 +311,8 @@ $GLOBALS['wp_ms_notifications'] = array(
                 <li><strong>blog_name</strong> - Name of the blog the user signed up for.</li>
                 <li><strong>blog_url</strong> - URL of the blog the user signed up for.</li>
                 <li><strong>default_message</strong> - The default WordPress email content.</li>
-            </ul>'
+            </ul>',
+            'test_button' => '<input type="button" class="button test_email_button ms_signup_user_notification" id="ms_signup_user_notification" name="test_email_button" value=" Send test email " style="display:none; margin-top:2px;">'
 
         /*
         default_message:
