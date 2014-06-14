@@ -137,7 +137,7 @@ function sendwithus_conf_main() {
                                 <input id="api_box" type="text" name="api_key"
                                        placeholder="Your sendwithus API key."
                                        value="<?php echo get_api_key(); ?>"/>
-                                <?php submit_button() ?>
+                                <?php submit_button(); ?>
                             </div>
 
                             <div id="api_button" class="button">Show API Key</div>
@@ -152,7 +152,7 @@ function sendwithus_conf_main() {
                 <table class="wp-list-table widefat sendwithus_table">
                     <?php generate_template_table( $GLOBALS['wp_notifications'] ); ?>
                 </table>
-	            <?php endif ?>
+	            <?php endif; ?>
                 <!-- Events that are displayed when multisite events are enabled -->
                 <?php if ( is_network_admin() ) : ?>
                     <table class="multisite wp-list-table widefat" id="multisite_table">
@@ -188,7 +188,7 @@ function sendwithus_conf_main() {
                 </table>
             <?php endif; ?>
             <div class="display_button_area">
-                <?php submit_button() ?>
+                <?php submit_button(); ?>
             </div>
         </form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -209,10 +209,8 @@ function sendwithus_conf_main() {
             $('.test_email_button').click(function(){
                 var className = this.classList[2];
                 var data = { action : 'test_email',
-                          email : className}
-                $.post(ajaxurl, data, function(response){
-                    alert(response);
-                });
+                          email : className};
+                $.post(ajaxurl, data);
             });
 
             // Used to hide/display API entry/viewing area in main screen.
