@@ -1,6 +1,6 @@
 === sendwithus ===
 Contributors: yokelpole, freshcelery, dylanemoore
-Tags: email, transactional, sendwithus, sendgrid, mandrill, mailgun, message bus, postmark
+Tags: email, transactional, sendwithus, sendgrid, mandrill, mailgun, message bus, postmark, multisite, network
 Requires at least: 3.9.0
 Tested up to: 3.9.1
 Stable tag: 4.3
