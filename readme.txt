@@ -1,6 +1,6 @@
 === sendwithus ===
 Contributors: yokelpole, freshcelery, dylanemoore
-Tags: email, transactional, sendwithus
+Tags: email, transactional, sendwithus, sendgrid, mandrill, mailgun, message bus, postmark, multisite, network, wpmu
 Requires at least: 3.9.0
 Tested up to: 3.9.1
 Stable tag: 4.3
@@ -50,6 +50,10 @@ Good news! This plugin creates a default template that looks just like the origi
 1. The Dashboard
 
 == Changelog ==
+
+= 1.01 =
+* Some bugfixes
+* Multisite configuration is now saner
 
 = 1.0 =
 * Initial release

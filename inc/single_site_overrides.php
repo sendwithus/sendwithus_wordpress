@@ -92,6 +92,10 @@ if (!function_exists('wp_notify_postauthor')) {
 // Replace new user email
 if (!function_exists('wp_new_user_notification')) {
     function wp_new_user_notification($user_id, $plaintext_pass = "") {
+	    // Stops the user from receiving a redundant email in multisite mode
+	    if(is_network_admin()){
+		    return;
+	    }
         $user = new WP_User($user_id);
 
         $user_login = stripslashes($user->user_login);
@@ -261,19 +265,24 @@ if (!function_exists('wp_password_change_notification')) {
 }
 
 // Adds a function to occur when the filter retrieve_password_message is called
-add_filter ("retrieve_password_message", "reset_password_notification", 10, 2 );
-function reset_password_notification($content, $key) {
-    //Grabs the information about the user attempting to reset their password
-    $input = filter_input( INPUT_POST, 'user_login', FILTER_SANITIZE_STRING );
+add_filter ("retrieve_password_message", "reset_password_notification", 10, 3 );
+function reset_password_notification($content, $key, $user_login_id = NULL) {
+    if($user_login_id != NULL){
+        $user = get_userdata($user_login_id);
+    }
+    else{
+        //Grabs the information about the user attempting to reset their password
+        $input = filter_input( INPUT_POST, 'user_login', FILTER_SANITIZE_STRING );   
+        if( is_email( $input ) ) {
+            $user = get_user_by( 'email', $input );
+        } else {
+            $user = get_user_by( 'login', sanitize_user( $input ) );
+        }
 
-    if( is_email( $input ) ) {
-        $user = get_user_by( 'email', $input );
-    } else {
-        $user = get_user_by( 'login', sanitize_user( $input ) );
+        $user_info = get_userdata($user->ID);
     }
 
-    $user_info = get_userdata($user->ID);
-
+    echo $user->user_login;
     //Creates a string to hold the end section of the password reset link
     $message = 'wp-login.php?action=rp&key='. $key. '&login='.$user->user_login;
     //Appends the password reset link to the url of the site we want the password to be reset on
@@ -305,6 +314,7 @@ function reset_password_notification($content, $key) {
             )
         )
     );
+
 
     return false;
 }

@@ -5,8 +5,11 @@
 
 // Wrapper for the emails() function in the API
 function get_templates() {
-	$template_names = [];
-    $api_key = get_option('api_key');
+	if(is_network_admin()) {
+		$api_key = get_site_option( 'api_key' );
+	} else {
+		$api_key = get_option( 'api_key' );
+	}
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
 
@@ -18,9 +21,10 @@ function set_globals(){
     $GLOBALS['api_key'] = get_api_key();
 }
 
+// Function for creating a default template if there isn't one already (Single Site Instance)
 function create_default_template(){
     $active_templates = get_templates();
-    
+
     $api_key = get_option('api_key');
     $api = new \sendwithus\API($api_key);
     $response = $api->emails();
@@ -34,10 +38,14 @@ function create_default_template(){
         if ( $current->id == $default_id && $default_id != "" ) {
             $default_deleted = false;
         }
+        if($current->name == 'Default Wordpress email'){
+            update_option('default_wordpress_email_id', $current->id);
+            return;
+        }
     }
 
     //If the default wordpress template id isn't in the array
-    if( $default_id == "" || $default_deleted ) {
+    if($default_id == "" || $default_deleted){
         //Create a new template for default wordpress emails
         $response = $api->create_email('Default Wordpress email',
                     '{{default_email_subject}} ',
@@ -49,20 +57,67 @@ function create_default_template(){
         }
     }
 }
+// Function for creating a default template if there isn't one already (Multi Site Instance)
+function ms_create_default_template(){
+    $active_templates = get_templates();
+
+    $api_key = get_site_option('api_key');
+    $api = new \sendwithus\API($api_key);
+    $response = $api->emails();
+
+    //Get the default wordpress email template ID
+    $default_id = get_site_option('ms_default_wordpress_email_id');
+    $default_deleted = true;
+
+    // Ensure that the default template hasn't been deleted.
+    foreach ( $active_templates as $current ) {
+        if ( $current->id == $default_id && $default_id != "" ) {
+            $default_deleted = false;
+        }
+        if($current->name == 'Default Wordpress email'){
+            update_site_option('ms_default_wordpress_email_id', $current->id);
+            return;
+        }
+    }
+
+    //If the default wordpress template id isn't in the array
+    if($default_id == "" || $default_deleted){
+        //Create a new template for default wordpress emails
+        $response = $api->create_email('Default Wordpress email',
+                    '{{default_email_subject}} ',
+                    '<html><head></head><body>{{default_message}}</body></html>');
+
+        // Only save if the response is good.
+        if ( is_object($response) ) {
+            update_site_option('ms_default_wordpress_email_id', $response->id);
+        }
+    }
+}
 
 // Get the API key for use as a global variable.
 function get_api_key() {
+	if(is_network_admin()){
+		return get_site_option('api_key');
+	}
     return get_option('api_key');
 }
 
 // Generate a template selection drop down list
 function generate_template_selection($name, $array) {
     $input_code = '<select name="' . $name . '" style="width: 100%">';
-    $current_template = get_option($name);
+	if(is_network_admin()) {
+		$current_template = get_site_option( $name );
+	} else {
+		$current_template = get_option( $name );
+	}
 
     // Assign it to the default if no template is returned.
     if($current_template == "") {
-        $current_template = get_option('default_wordpress_email_id');
+	    if(is_network_admin()){
+		    $current_template = get_site_option('ms_default_wordpress_email_id');
+	    } else {
+            $current_template = get_option('default_wordpress_email_id');
+	    }
     }
 
     foreach ($array as $template) {
@@ -88,6 +143,7 @@ function generate_template_table($notification_array) {
         echo '</td></tr>';
         echo '<tr><td colspan="2" style="padding-top: 0px;">';
         echo generate_parameter_listing($current, $text);
+        echo generate_test_button($text);
         echo '</td></tr>';
     }
 }
@@ -101,6 +157,11 @@ function generate_parameter_listing($name, $parameterData) {
     return $parameterListing;
 }
 
+function generate_test_button($text){
+    $test_button = $text['test_button'];
+    return $test_button;
+}
+
 // Make 'default_message' HTML friendly.
 function html_default_message($default_message) {
     // Convert newline into line breaks.
@@ -109,10 +170,17 @@ function html_default_message($default_message) {
 
 // Used to create an area to save plugin settings.
 function sendwithus_register_settings() {
-    // Make sure the default template ID doesn't get overwritten!
-    $default_id = get_option('default_wordpress_email_id');
-    register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
-    update_option('default_wordpress_email_id', $default_id);
+    //Use site_option if we are using a multisite instance
+	if ( is_network_admin() ) { // Only change site options if network admin
+	    $default_id = get_site_option( 'ms_default_wordpress_email_id' );
+	    update_site_option( 'ms_default_wordpress_email_id', $default_id );
+    }
+    else{
+        // Make sure the default template ID doesn't get overwritten!
+        $default_id = get_option('default_wordpress_email_id');
+        register_setting( 'sendwithus_settings', 'default_wordpress_email_id');
+        update_option('default_wordpress_email_id', $default_id);
+    }
 
     // Save settings within wp_options table as 'sendwithus_settings'
     register_setting( 'sendwithus_settings', 'api_key' );
@@ -130,13 +198,30 @@ function sendwithus_register_settings() {
     }
 
     foreach ( $GLOBALS['wp_ms_notifications'] as $key => $value ) {
-        register_setting( 'sendwithus_settings', $key );
+	    register_setting( 'sendwithus_settings', $key );
 
-        if ( get_option($key) == "" ) {
+        if ( get_site_option($key) == "" ) {
             // Assign default template.
-            update_option($key, $default_id);     
+            update_site_option($key, $default_id);
         }
     }
+}
+
+add_action('network_admin_edit_reg_settings','register_network_admin_settings');
+function register_network_admin_settings(){
+	update_site_option('api_key', $_POST['api_key']);
+
+	// Multisite Options
+	update_site_option('ms_new_user_network_admin',    $_POST['ms_new_user_network_admin']);
+	update_site_option('ms_new_blog_network_admin',    $_POST['ms_new_blog_network_admin']);
+	update_site_option('ms_welcome_user_notification', $_POST['ms_welcome_user_notification']);
+	update_site_option('ms_welcome_notification',      $_POST['ms_welcome_notification']);
+	update_site_option('ms_signup_blog_verification',  $_POST['ms_signup_blog_verification']);
+	update_site_option('ms_signup_user_notification',  $_POST['ms_signup_user_notification']);
+
+	wp_redirect(network_admin_url("admin.php?page=sendwithus.php&updated=true"));
+
+	exit;
 }
 
 // Add a simple WordPress pointer to Settings menu - shows new user where to find swu.
@@ -215,6 +300,86 @@ function turn_off_help_callback() {
     die();
 }
 
+add_action( 'wp_ajax_test_email', 'send_test_email');
+function send_test_email(){
+
+    $current_user = wp_get_current_user();
+    if(isset($_POST['email']) && !empty($_POST['email'])) {
+        $action = $_POST['email'];
+        switch($action) {
+            case 'new_user':
+                wp_new_user_notification(get_current_user_id(), 'N/A');
+                break;
+            case 'new_comment':
+                $comment_id = create_test_comment();
+                wp_notify_postauthor($comment_id);
+                wp_delete_comment( $comment_id, true );
+                break;
+            case 'awaiting_approval':
+                $comment_id = create_test_comment();
+                wp_notify_moderator($comment_id);
+                wp_delete_comment( $comment_id, true );
+                break;
+            case 'password_reset':
+                $message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
+                $message .= network_home_url( '/' ) . "\r\n\r\n";
+                $message .= sprintf(__('Username: %s'), $current_user->user_login) . "\r\n\r\n";
+                $message .= __('If this was a mistake, just ignore this email and nothing will happen.') . "\r\n\r\n";
+                $message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
+                $message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode( $current_user->user_login), 'login') . ">\r\n";
+                apply_filters('retrieve_password_message',$message,'N/A',get_current_user_id());
+                break;
+            case 'password_change_notification':
+                wp_password_change_notification($current_user);
+                echo $current_user->user_login;
+                break;
+            case 'ms_new_user_network_admin':
+                newuser_notify_siteadmin(get_current_user_id());
+                break;
+            case 'ms_new_blog_network_admin':
+                newblog_notify_siteadmin('');
+                break;
+            case 'ms_welcome_user_notification':
+                wpmu_welcome_user_notification(get_current_user_id(), 'N/A');
+                break;
+            case 'ms_welcome_notification':
+                wpmu_welcome_notification(1,get_current_user_id(), 'N/A', 'Test blog');
+                break;
+            case 'ms_signup_blog_verification':
+                $content = "Dear User, activate your new site here: http://{domain}{$path}wp-activate.php?key=$key";
+                apply_filters('wpmu_signup_blog_notification_email',$content,'Test Domain', get_bloginfo('url'), get_bloginfo('name'), $current_user->user_login, $current_user->user_email, 'N/A');
+                break;
+            case 'ms_signup_user_notification':
+                $content = "To activate your user, please click the following link:\n\n%s\n\nAfter you activate, you will receive *another email* with your login.\n\n";
+                apply_filters('wpmu_signup_user_notification_email',$content, $current_user->user_login, $current_user->user_email, 'N/A');
+                break;
+            default:
+                break;
+        }
+    }
+
+    die();
+}
+
+function create_test_comment(){
+    $data = array(
+        'comment_post_ID' => 1,
+        'comment_author' => 'admin',
+        'comment_author_email' => 'admin@admin.com',
+        'comment_author_url' => 'http://',
+        'comment_content' => 'content here',
+        'comment_type' => '',
+        'comment_parent' => 0,
+        'user_id' => 1,
+        'comment_author_IP' => '127.0.0.1',
+        'comment_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
+        'comment_date' => $time,
+        'comment_approved' => 1,
+    );
+
+    return wp_insert_comment($data);
+}
+
 // Creates link to plugin settings in WordPress control panel.
 add_action( 'admin_menu', 'activate_sidebar_shortcut' );
 function activate_sidebar_shortcut() {
@@ -225,6 +390,22 @@ function activate_sidebar_shortcut() {
     add_action( 'admin_init', 'sendwithus_register_settings' );
 }
 
+// Creates link to plugin settings in Network Administrator Control Panel
+add_action('network_admin_menu', 'activate_network_sidebar_shortcut');
+function activate_network_sidebar_shortcut() {
+	// Add the shortcut for the plugin settings underneath the 'plugins' sidebar menu.
+	add_menu_page( 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus.php', 'sendwithus_conf_main', 'dashicons-email-alt' );
+
+	// Create an area in WordPress to store the settings saved by the user.
+	add_action( 'admin_init', 'sendwithus_register_settings' );
+}
+
+/*
+add_action('network_admin_menu', 'activate_sidebar_shortcut_network_admin');
+function activate_sidebar_shortcut_network_admin(){
+    add_menu_page( 'sendwithus', 'sendwithus', 'manage_options', 'sendwithus.php', 'sendwithus_conf_main', 'dashicons-email-alt' );
+}
+*/
 // Warn the user if their api key is invalid
 add_action( 'admin_notices', 'sendwithus_no_api_key_warning' );
 function sendwithus_no_api_key_warning() {
