@@ -159,6 +159,8 @@ function generate_parameter_listing($name, $parameterData) {
 
 function generate_test_button($text){
     $test_button = $text['test_button'];
+    $dir = WP_PLUGIN_URL.'/sendwithus_wordpress/css/ajax-loader.gif';
+    $test_button .=  "<img class='loading' src='".$dir."'>";
     return $test_button;
 }
 
@@ -309,16 +311,19 @@ function send_test_email(){
         switch($action) {
             case 'new_user':
                 wp_new_user_notification(get_current_user_id(), 'N/A');
+                return true;
                 break;
             case 'new_comment':
                 $comment_id = create_test_comment();
                 wp_notify_postauthor($comment_id);
                 wp_delete_comment( $comment_id, true );
+                return true;
                 break;
             case 'awaiting_approval':
                 $comment_id = create_test_comment();
                 wp_notify_moderator($comment_id);
                 wp_delete_comment( $comment_id, true );
+                return true;
                 break;
             case 'password_reset':
                 $message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
@@ -328,30 +333,38 @@ function send_test_email(){
                 $message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
                 $message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode( $current_user->user_login), 'login') . ">\r\n";
                 apply_filters('retrieve_password_message',$message,'N/A',get_current_user_id());
+                return true;
                 break;
             case 'password_change_notification':
                 wp_password_change_notification($current_user);
                 echo $current_user->user_login;
+                return true;
                 break;
             case 'ms_new_user_network_admin':
                 newuser_notify_siteadmin(get_current_user_id());
+                return true;
                 break;
             case 'ms_new_blog_network_admin':
                 newblog_notify_siteadmin('');
+                return true;
                 break;
             case 'ms_welcome_user_notification':
                 wpmu_welcome_user_notification(get_current_user_id(), 'N/A');
+                return true;
                 break;
             case 'ms_welcome_notification':
                 wpmu_welcome_notification(1,get_current_user_id(), 'N/A', 'Test blog');
+                return true;
                 break;
             case 'ms_signup_blog_verification':
                 $content = "Dear User, activate your new site here: http://{domain}{$path}wp-activate.php?key=$key";
                 apply_filters('wpmu_signup_blog_notification_email',$content,'Test Domain', get_bloginfo('url'), get_bloginfo('name'), $current_user->user_login, $current_user->user_email, 'N/A');
+                return true;
                 break;
             case 'ms_signup_user_notification':
                 $content = "To activate your user, please click the following link:\n\n%s\n\nAfter you activate, you will receive *another email* with your login.\n\n";
                 apply_filters('wpmu_signup_user_notification_email',$content, $current_user->user_login, $current_user->user_email, 'N/A');
+                return true;
                 break;
             default:
                 break;

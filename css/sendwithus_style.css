@@ -157,3 +157,8 @@ p.submit {
     margin-top: 2px;
     display:none;
 }
+
+.loading{
+    float:right;
+    display:none;
+}
