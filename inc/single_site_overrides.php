@@ -100,7 +100,6 @@ if (!function_exists('wp_new_user_notification')) {
 
         $user_login = stripslashes($user->user_login);
         $user_email = stripslashes($user->user_email);
-
         $api = new \sendwithus\API($GLOBALS['api_key']);
 
         $user = get_userdata( $user_id );
@@ -282,7 +281,6 @@ function reset_password_notification($content, $key, $user_login_id = NULL) {
         $user_info = get_userdata($user->ID);
     }
 
-    echo $user->user_login;
     //Creates a string to hold the end section of the password reset link
     $message = 'wp-login.php?action=rp&key='. $key. '&login='.$user->user_login;
     //Appends the password reset link to the url of the site we want the password to be reset on

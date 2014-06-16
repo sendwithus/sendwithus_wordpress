@@ -193,6 +193,7 @@ function sendwithus_conf_main() {
         </form>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script type="text/javascript">
+            $('.loading').hide();
             // Triggered when user chooses to see parameters passed to sendwithus.
             $('.display_info').click(function(event) {
                 $(this).text(function(i, text) {
@@ -205,12 +206,14 @@ function sendwithus_conf_main() {
                 $('.parameters.' + className).slideToggle(150);
                 $('.test_email_button.' + className).slideToggle(150);
             });
-
             $('.test_email_button').click(function(){
+                $(this).parent().find('.loading').show();
                 var className = this.classList[2];
                 var data = { action : 'test_email',
                           email : className};
-                $.post(ajaxurl, data);
+                $.post(ajaxurl, data, function(response){
+                    $('.loading').hide();
+                });
             });
 
             // Used to hide/display API entry/viewing area in main screen.
