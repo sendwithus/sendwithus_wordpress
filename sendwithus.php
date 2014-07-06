@@ -18,6 +18,9 @@ require( 'inc/helper_functions.php' );
 require( 'inc/single_site_overrides.php' );
 require( 'inc/multisite_overrides.php' );
 
+// API key is needed throughout. 
+$GLOBALS['api_key'] = get_api_key();
+
 // Add stylesheet
 add_action( 'admin_enqueue_scripts', 'register_style_sheet' );
 function register_style_sheet() {
@@ -25,39 +28,39 @@ function register_style_sheet() {
     wp_enqueue_style( 'sendwithus_style' );
 }
 
-set_globals();
-
-if(is_network_admin()){
-	$GLOBALS['api_key'] = get_site_option('api_key');
-}
-
-if ( $GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error' ) {
-    $GLOBALS['valid_key'] = false;
-} else {
-    // Establish whether an API key has been entered and that it is valid.
-    $GLOBALS['valid_key'] = true;
-    if(is_network_admin()){
-        add_action( 'init', 'ms_create_default_template');
-        // Some sites don't work with muplugins_loaded for some reason.
-        // This will make default be created.
-        if ( did_action('create_default_template') == 0 ) {
-           add_action( 'plugins_loaded', 'ms_create_default_template');
-        } 
-    }
-    else{
-        add_action( 'init', 'create_default_template');      
-        // Some sites don't work with muplugins_loaded for some reason.
-        // This will make default be created.
-        if ( did_action('create_default_template') == 0 ) {
-	       add_action( 'plugins_loaded', 'create_default_template');
-        }
-    }
-    add_action( 'plugins_loaded', 'set_globals');
-}
-
 // Used for displaying the main menu page.
 // Activated when user clicks on link in sidebar.
 function sendwithus_conf_main() {
+    set_globals();
+
+    if(is_network_admin()){
+        $GLOBALS['api_key'] = get_site_option('api_key');
+    }
+
+    if ( $GLOBALS['api_key'] == '' || $GLOBALS['templates']->status == 'error' ) {
+        $GLOBALS['valid_key'] = false;
+    } else {
+        // Establish whether an API key has been entered and that it is valid.
+        $GLOBALS['valid_key'] = true;
+        if(is_network_admin()){
+            add_action( 'init', 'ms_create_default_template');
+            // Some sites don't work with muplugins_loaded for some reason.
+            // This will make default be created.
+            if ( did_action('create_default_template') == 0 ) {
+               add_action( 'plugins_loaded', 'ms_create_default_template');
+            } 
+        }
+        else{
+            add_action( 'init', 'create_default_template');      
+            // Some sites don't work with muplugins_loaded for some reason.
+            // This will make default be created.
+            if ( did_action('create_default_template') == 0 ) {
+               add_action( 'plugins_loaded', 'create_default_template');
+            }
+        }
+        add_action( 'plugins_loaded', 'set_globals');
+    }
+
     // Make sure that the user has appropriate permissions to be here.
     if ( ! current_user_can( 'manage_options' ) ) {
         wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
