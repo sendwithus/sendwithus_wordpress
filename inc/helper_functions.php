@@ -5,7 +5,6 @@
 
 // Wrapper for the emails() function in the API
 function get_templates() {
-    error_log('Getting templates');
 	if(is_network_admin()) {
 		$api_key = get_site_option( 'api_key' );
 	} else {
@@ -23,7 +22,6 @@ function set_globals(){
 
 // Function for creating a default template if there isn't one already (Single Site Instance)
 function create_default_template(){
-    error_log('making template');
     $active_templates = $GLOBALS['templates'];
 
     $api_key = get_option('api_key');
@@ -60,7 +58,6 @@ function create_default_template(){
 }
 // Function for creating a default template if there isn't one already (Multi Site Instance)
 function ms_create_default_template(){
-    error_log('making template 2');
     $active_templates = $GLOBALS['templates'];
 
     $api_key = get_site_option('api_key');
