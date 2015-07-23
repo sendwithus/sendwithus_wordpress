@@ -236,9 +236,11 @@ if (!function_exists('wp_notify_moderator')) {
 
 if (!function_exists('wp_password_change_notification')) {
     function wp_password_change_notification( $user ) {
+
         $default_message = sprintf(__('Password Lost and Changed for user: %s'), $user->user_login) . "\r\n";
         $blogname = get_bloginfo('name');
         $api = new \sendwithus\API($GLOBALS['api_key']);
+        error_log(print_r($blogname,true));
 
         //Subject line for default wordpress email
         $default_email_subject = "Password reset request at ".$blogname;
@@ -264,14 +266,14 @@ if (!function_exists('wp_password_change_notification')) {
 }
 
 // Adds a function to occur when the filter retrieve_password_message is called
-add_filter ("retrieve_password_message", "reset_password_notification", 10, 3 );
+add_filter ('retrieve_password_message', 'reset_password_notification', 10, 3 );
 function reset_password_notification($content, $key, $user_login_id = NULL) {
     if($user_login_id != NULL){
-        $user = get_userdata($user_login_id);
+        $user = get_user_by('login', $user_login_id);
     }
     else{
         //Grabs the information about the user attempting to reset their password
-        $input = filter_input( INPUT_POST, 'user_login', FILTER_SANITIZE_STRING );   
+        $input = filter_input( INPUT_POST, 'user_login', FILTER_SANITIZE_STRING );
         if( is_email( $input ) ) {
             $user = get_user_by( 'email', $input );
         } else {
@@ -312,6 +314,7 @@ function reset_password_notification($content, $key, $user_login_id = NULL) {
             )
         )
     );
+    error_log(print_r($response, true));
 
 
     return false;

@@ -1,14 +1,14 @@
 <?php
 /**
  * @package sendwithus
- * @version 1.01
+ * @version 1.1.0
  */
 /*
 Plugin Name: sendwithus
 Plugin URI: http://www.sendwithus.com
 Description: Easily integrate transactional email into WordPress' default emails.
 Author: Dylan Moore, Kyle Poole, and Cory Purnell
-Version: 1.01
+Version: 1.1.0
 Author URI: http://www.sendwithus.com
 */
 
