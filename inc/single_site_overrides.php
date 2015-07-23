@@ -273,7 +273,7 @@ function reset_password_notification($content, $key, $user_login_id = NULL) {
     }
     else{
         //Grabs the information about the user attempting to reset their password
-        $input = trim($_POST['user_login']);
+        $input = filter_input( INPUT_POST, 'user_login', FILTER_SANITIZE_STRING );
         if( is_email( $input ) ) {
             $user = get_user_by( 'email', $input );
         } else {
